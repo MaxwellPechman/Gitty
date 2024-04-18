@@ -10,7 +10,11 @@ export default {
     "./src/**/**/**/**/**/*.{html,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'robot': ['Roboto']
+      }
+    },
   },
   plugins: [],
 }
