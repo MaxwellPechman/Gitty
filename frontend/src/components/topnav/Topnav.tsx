@@ -1,4 +1,8 @@
 import {useState} from "react";
+import {BurgerMenu} from "./BurgerMenu.tsx";
+import gitty_icon from "../../assets/icons/gitty.png";
+import {Searchbar} from "../searchbar/Searchbar.tsx";
+import {useNavigate} from "react-router-dom";
 
 /**
  * Obere Navigationsleiste zum Navigieren (captain obvious) der Webseite.
@@ -12,15 +16,25 @@ export function Topnav() {
      * oder die LogoutSection (Wenn der Nutzer eingeloggt ist) in die Topnav rendern.
      */
     const [loggedIn, setLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
     return (
-        <div className="w-screen h-16 sticky top-0 bg-neutral-100 flex items-center justify-between">
-            <ul className="px-4 flex items-center gap-x-4">
-                <li className="text-neutral-800 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">HOME</li>
-                <li className="text-neutral-800 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">PROJECTS</li>
-                <li className="text-neutral-800 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">ABOUT</li>
-                <li className="text-neutral-800 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">CONTACT</li>
-            </ul>
+        <div className="w-screen h-[74px] sticky top-0 bg-code-grey-700 flex items-center justify-between">
+            <div className="px-4 flex items-center">
+                <BurgerMenu/>
+                <img className="mx-6 mt-2 w-[30px] h-[29px]" src={gitty_icon} alt="gitty_icon"/>
+                <ul className="flex gap-x-4">
+                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out"
+                        onClick={() => navigate("/")}>Home
+                    </li>
+                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out"
+                        onClick={() => navigate("/projects")}>Projects
+                    </li>
+                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">Docs</li>
+                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">About</li>
+                </ul>
+            </div>
+            <Searchbar/>
             {
                 loggedIn ?
                     <LogoutSection/>
@@ -32,11 +46,13 @@ export function Topnav() {
 }
 
 function LoginSection() {
+    const navigate = useNavigate();
+
     return (
-        <ul className="px-4 flex items-center gap-x-4">
-            <li className="px-2 py-1 text-neutral-800 cursor-pointer border border-neutral-800 rounded hover:text-neutral-500 hover:border-neutral-500 transition duration-200 ease-in-out">Login</li>
-            <li className="px-2 py-1 text-white bg-neutral-800 cursor-pointer border border-neutral-800 rounded hover:bg-neutral-950 transition duration-200 ease-in-out">Sign
-                Up
+        <ul className="px-4 flex items-center gap-x-3">
+            <li className="px-2 py-1 text-white cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">Login</li>
+            <li className="px-2 py-1 text-white border border-code-grey-950 bg-code-grey-950 rounded cursor-pointer hover:bg-code-grey-700 transition duration-200 ease-in-out"
+                onClick={() => navigate("/register")}>Sign Up
             </li>
         </ul>
     )
