@@ -20,12 +20,17 @@ export default {
         '54': '13.5rem',
         '570': '35rem'
       },
-      textColor: {
+      colors: {
         'code-blue': '#1779BA',
         'code-red': '#CC4B37',
         'code-purple': '#CC3795',
         'code-yellow': '#FFAE00',
         'code-green': '#3ADB76',
+        'code-grey-300': '#CACACA',
+        'code-grey-500': '#8A8A8A',
+        'code-grey-700': '#17181F',
+        'code-grey-800': '#09090F',
+        'code-grey-950': '#06060a',
       }
     },
   },
