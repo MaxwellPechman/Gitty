@@ -12,7 +12,20 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'robot': ['Roboto']
+        'robot': ['Roboto'],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '42': '10.5rem',
+        '54': '13.5rem',
+        '570': '35rem'
+      },
+      textColor: {
+        'code-blue': '#1779BA',
+        'code-red': '#CC4B37',
+        'code-purple': '#CC3795',
+        'code-yellow': '#FFAE00',
+        'code-green': '#3ADB76',
       }
     },
   },
