@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {MainPage} from "./components/pages/MainPage.tsx";
 import './index.css'
+import {Application} from "./components/Application.tsx";
 
 /**
  * Hier ist quasi der entry-point für ein React Projekt
@@ -11,6 +11,6 @@ import './index.css'
  */
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-      <MainPage/>
+      <Application/>
   </React.StrictMode>,
 )

@@ -8,7 +8,7 @@ import icon3 from "../../assets/icons/Icon3.png";
 /**
  * Hauptseite für das Projekt. Kb was da drauf kommt, Namen können wir auch noch ändern von der page.
  */
-export function MainPage() {
+export function LandingPage() {
 
     return (
         <div className="w-screen bg-gradient-to-br from-gray-950  to-gray-900">
