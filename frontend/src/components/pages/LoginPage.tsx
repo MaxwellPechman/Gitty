@@ -1,8 +1,8 @@
-export function RegisterPage() {
+export function LoginPage() {
 
     return (
         <div className="w-screen h-screen">
-            Register
+            Login
         </div>
     )
 }
