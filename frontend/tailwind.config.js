@@ -19,6 +19,7 @@ export default {
         '42': '10.5rem',
         '54': '13.5rem',
         '275': '17.2rem',
+        '360': '22.5rem',
         '570': '35rem'
       },
       colors: {
@@ -32,6 +33,7 @@ export default {
         'code-grey-700': '#17181F',
         'code-grey-800': '#09090F',
         'code-grey-950': '#06060a',
+        'code-login-gray': '#121321',
       }
     },
   },
