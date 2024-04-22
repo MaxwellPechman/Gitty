@@ -12,7 +12,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'robot': ['Roboto'],
+        'roboto': ['Roboto', 'sans-serif'],
       },
       spacing: {
         '18': '4.5rem',
@@ -30,9 +30,10 @@ export default {
         'code-green': '#3ADB76',
         'code-grey-300': '#CACACA',
         'code-grey-500': '#8A8A8A',
+        'code-grey-600': '#121321',
         'code-grey-700': '#17181F',
         'code-grey-800': '#09090F',
-        'code-grey-950': '#06060a',
+        'code-grey-950': '#06060A',
         'code-login-gray': '#121321',
       }
     },
