@@ -5,7 +5,6 @@ import {RegisterPage} from "./pages/RegisterPage.tsx";
 import {LoginPage} from "./pages/LoginPage.tsx";
 
 export function Application() {
-
     return (
         <BrowserRouter>
             <Routes>
