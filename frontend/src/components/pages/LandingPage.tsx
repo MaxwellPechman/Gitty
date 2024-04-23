@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom";
 export function LandingPage() {
     const navigate = useNavigate();
     return (
-        <div className="w-screen bg-gradient-to-br from-gray-950 to-gray-900">
+        <div className="w-screen lg:h-screen bg-gradient-to-br from-gray-950 to-gray-900">
             <img className="mx-5 py-5" src={logo} alt="Gitty Logo"/>
             <div className="text-white text-center overflow-auto">
                 <h1 className="mt-40 text-5xl">&lt;/Managing code easier&gt;</h1>
