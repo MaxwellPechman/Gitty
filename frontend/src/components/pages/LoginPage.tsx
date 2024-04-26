@@ -8,7 +8,7 @@ export function LoginPage() {
         <div className="flex w-screen h-screen justify-center bg-gradient-to-br from-gray-950 to-gray-900">
             <img className="h-14 mt-20 absolute" src={logo} alt="Gitty Logo"/>
             <h1 className="mt-40 text-4xl absolute">Log in to Gitty</h1>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mt-20">
 
 
             <form className="p-6 w-[459px] bg-code-grey-800 rounded-xl flex flex-col gap-y-5">
@@ -39,7 +39,7 @@ export function LoginPage() {
                     </div>
                 </div>
                 <div className="flex gap-y-3 ml-1">
-                    <input className="w-5 accent-transparent bg-white" type="checkbox"/>
+                    <input className="w-5 accent-transparent" type="checkbox"/>
                     <label className="ml-3 text-lg">Remember me</label>
                 </div>
                 <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl">Login</button>
