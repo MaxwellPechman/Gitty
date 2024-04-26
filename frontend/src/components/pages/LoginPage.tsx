@@ -38,9 +38,13 @@ export function LoginPage() {
                             placeholder="Enter your password"/>
                     </div>
                 </div>
+                <div className="flex gap-y-3 ml-1">
+                    <input className="w-5 accent-transparent bg-white" type="checkbox"/>
+                    <label className="ml-3 text-lg">Remember me</label>
+                </div>
                 <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl">Login</button>
                 <div className="-mt-3 flex gap-x-2 justify-center">
-                    <div className="text-code-grey-500">You don't have an account?</div>
+                    <div className="text-code-grey-500">No account?</div>
                     <button className="text-code-blue hover:underline" onClick={() => navigate("/register")}>Register now
                     </button>
                 </div>
