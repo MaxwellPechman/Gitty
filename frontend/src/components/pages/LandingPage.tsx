@@ -12,7 +12,7 @@ import {useNavigate} from "react-router-dom";
 export function LandingPage() {
     const navigate = useNavigate();
     return (
-        <div className="w-screen lg:h-screen bg-gradient-to-br from-gray-950 to-gray-900">
+        <div className="w-screen 4xl:h-screen bg-gradient-to-br from-gray-950 to-gray-900">
             <img className="mx-5 py-5" src={logo} alt="Gitty Logo"/>
             <div className="text-white text-center overflow-auto">
                 <h1 className="mt-40 text-5xl">&lt;/Managing code easier&gt;</h1>
@@ -22,18 +22,18 @@ export function LandingPage() {
                     manage your coding projects? Say hello to Gitty, the ultimate project management<br/>
                     platform designed specifically for coders like you."</p>
                 <br/>
-                <button className="bg-black border-white mb-3 lg:mr-7 lg:mb-0 md:mr-3.5 w-56 hover:bg-gray-900" onClick={() => navigate("/register")}>Register</button>
-                <button className="bg-white border-white text-black w-56 lg:ml-7 md:ml-3.5 hover:bg-gray-400" onClick={() => navigate("/login")}>Login</button>
+                <button className="bg-black border-white mb-3 xl:mr-7 xl:mb-0 md:mr-3.5 w-56 hover:bg-gray-900 my-2 py-2 font-roboto font-bold rounded-xl" onClick={() => navigate("/register")}>Register</button>
+                <button className="bg-white border-white text-black w-56 xl:ml-7 md:ml-3.5 hover:bg-gray-400 my-2 py-2 font-roboto font-bold rounded-xl" onClick={() => navigate("/login")}>Login</button>
             </div>
-            <div className="hidden lg:flex flex-row w-screen mt-5 justify-between">
+            <div className="hidden xl:flex flex-row w-screen mt-5 justify-between">
                 <div className="bg-none mx-3 w-275">
-                    <div className="text-white bg-black w-56 h-56 rounded-2xl absolute z-50 shadow-2xl">
+                    <div className="text-white bg-black w-56 xl:w-44 h-56 xl:h-44 rounded-2xl absolute z-50 shadow-2xl">
                         <img src={manageLogo} className="w-16 mx-3 my-3 pt-3" alt="Project Logo"/>
                         <h2 className="font-bold mx-3 text-lg leading-none">Manage Projects with Gitty</h2>
                         <p className="text-gray-400 text-xs mx-3">Gitty is awesome!</p>
                     </div>
-                    <div className="bg-black w-56 h-56 rounded-2xl absolute z-0 mt-6 ml-6 shadow-2xl"></div>
-                    <div className="bg-black w-56 h-56 rounded-2xl absolute z-0 mt-12 ml-12 shadow-2xl"></div>
+                    <div className="bg-black w-56 xl:w-44 h-56 xl:h-44 rounded-2xl absolute z-0 mt-6 ml-6 shadow-2xl"></div>
+                    <div className="bg-black w-56 xl:w-44 h-56 xl:h-44 rounded-2xl absolute z-0 mt-12 ml-12 shadow-2xl"></div>
                 </div>
                 <div className="bg-black mt-12 rounded-2xl h-auto">
                     <img src={projectsImg} className="px-2 mx-2 py-2 my-2 object-fit rounded-2xl"
@@ -63,7 +63,7 @@ export function LandingPage() {
                     <img src={icon1} className="ml-18" alt=""/>
                 </div>
             </div>
-            <div className="flex flex-col lg:hidden w-screen my-5 justify-center items-center">
+            <div className="flex flex-col xl:hidden w-screen my-5 justify-center items-center">
                 <div className="bg-none mb-5">
                     <div className="text-white bg-black w-56 h-56 rounded-2xl shadow-2xl">
                         <img src={manageLogo} className="w-16 mx-3 my-3 pt-3" alt="Project Logo"/>
