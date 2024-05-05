@@ -3,11 +3,33 @@ import lock_icon from "../../assets/icons/lock2.png"
 import {useState} from "react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {UserRegister} from "../../api/Api.ts";
 
+/**
+ *
+ * TODO: 1. Write input fields into separate React-Components, so that the code is more dynamic
+ *       2. Check if "password" and "confirm-password" are the same.
+ *       3. Check if E-Mail actually exists
+ *       4. (Optional) check if the password is good (e.g. at least 8 characters, has numbers, symbols, etc.)
+ */
 export function RegisterPage() {
     const [passwordBorder, setPasswordBorder] = useState(false)
     const [confPasswordBorder, setConfPasswordBorder] = useState(false)
+    const [registerData, setRegisterData] = useState({} as UserRegister)
     const navigate = useNavigate();
+
+    function registerUser() {
+        axios.post("http://localhost:3000/api/register", registerData)
+            .then((res) => {
+                console.log(res)
+                navigate("/projects")
+
+            })
+            .catch((err) => {
+                console.log("An error occurred while registering user", err);
+            })
+    }
 
     return (
         <div className="w-screen h-screen flex">
@@ -23,7 +45,12 @@ export function RegisterPage() {
                             className="px-4 py-5 bg-code-grey-950 font-roboto rounded-xl border border-code-grey-600 text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300 hover:border-code-grey-300 transition duration-200 ease-in-out"
                             type="text"
                             name="username"
-                            placeholder="Enter your username"/>
+                            placeholder="Enter your username"
+                            onChange={(event) => setRegisterData({
+                                name: event.target.value,
+                                mail: registerData.mail,
+                                password: registerData.password,
+                            })}/>
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2">
@@ -34,7 +61,12 @@ export function RegisterPage() {
                             className="px-4 py-5 bg-code-grey-950 font-roboto rounded-xl border border-code-grey-600 text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300 hover:border-code-grey-300 transition duration-200 ease-in-out"
                             type="text"
                             name="mail"
-                            placeholder="Enter your email"/>
+                            placeholder="Enter your email"
+                            onChange={(event) => setRegisterData({
+                                name: registerData.name,
+                                mail: event.target.value,
+                                password: registerData.password,
+                            })}/>
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2">
@@ -51,7 +83,12 @@ export function RegisterPage() {
                                 name="password"
                                 placeholder="Enter your password"
                                 onFocus={() => setPasswordBorder(true)}
-                                onBlur={() => setPasswordBorder(false)}/>
+                                onBlur={() => setPasswordBorder(false)}
+                                onChange={(event) => setRegisterData({
+                                    name: registerData.name,
+                                    mail: registerData.mail,
+                                    password: event.target.value,
+                                })}/>
                         </div>
                     </div>
                     <div className="flex flex-col gap-y-3">
@@ -72,7 +109,8 @@ export function RegisterPage() {
                                 onBlur={() => setConfPasswordBorder(false)}/>
                         </div>
                     </div>
-                    <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl">Register</button>
+                    <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
+                            onClick={() => registerUser()}>Register</button>
                     <div className="-mt-3 flex gap-x-2 justify-center">
                         <div className="text-code-grey-500">Already got an account?</div>
                         <button className="text-code-blue hover:underline" onClick={() => navigate("/login")}>Login now</button>
