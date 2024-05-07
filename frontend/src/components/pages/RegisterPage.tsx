@@ -4,7 +4,7 @@ import {useState} from "react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {UserRegister} from "../../api/Api.ts";
+import {requestUserRegister, UserRegister} from "../../api/Api.ts";
 
 /**
  *
@@ -18,18 +18,6 @@ export function RegisterPage() {
     const [confPasswordBorder, setConfPasswordBorder] = useState(false)
     const [registerData, setRegisterData] = useState({} as UserRegister)
     const navigate = useNavigate();
-
-    function registerUser() {
-        axios.post("http://localhost:3000/api/register", registerData)
-            .then((res) => {
-                console.log(res)
-                navigate("/projects")
-
-            })
-            .catch((err) => {
-                console.log("An error occurred while registering user", err);
-            })
-    }
 
     return (
         <div className="w-screen h-screen flex">
@@ -110,7 +98,9 @@ export function RegisterPage() {
                         </div>
                     </div>
                     <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
-                            onClick={() => registerUser()}>Register</button>
+                            onClick={() => requestUserRegister(registerData).then((response) => {
+                                navigate("/projects")
+                            })}>Register</button>
                     <div className="-mt-3 flex gap-x-2 justify-center">
                         <div className="text-code-grey-500">Already got an account?</div>
                         <button className="text-code-blue hover:underline" onClick={() => navigate("/login")}>Login now</button>
