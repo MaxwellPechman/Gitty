@@ -9,5 +9,9 @@ export function createRouter() {
         ctx.body = "registered"
     })
 
+    router.post("/api/login", (ctx) => {
+        ctx.body = "logined"
+    })
+
     return router;
 }

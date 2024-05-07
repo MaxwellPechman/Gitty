@@ -1,8 +1,13 @@
 import logo from "../../assets/icons/Gitty_Logo@2.png"
 import lock_icon from "../../assets/icons/lock2.png";
 import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {requestUserLogin, UserLogin} from "../../api/Api.ts";
 
 export function LoginPage() {
+
+    const [loginData, setLoginData] = useState({} as UserLogin)
+
     const navigate = useNavigate();
     return (
         <div className="flex flex-col w-screen h-screen justify-center bg-code-grey-950">
@@ -21,7 +26,12 @@ export function LoginPage() {
                             className="px-4 py-5 bg-code-grey-950 font-roboto rounded-xl border border-code-grey-600 text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300 hover:border-code-grey-300 transition duration-200 ease-in-out"
                             type="text"
                             name="mail"
-                            placeholder="Enter your email"/>
+                            placeholder="Enter your email"
+                            onChange={(event) => setLoginData({
+                                mail: event.target.value,
+                                password: loginData.password,
+                                remember: loginData.remember
+                        })}/>
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2">
@@ -35,14 +45,28 @@ export function LoginPage() {
                                 className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300"
                                 type="password"
                                 name="password"
-                                placeholder="Enter your password"/>
+                                placeholder="Enter your password"
+                                onChange={(event) => setLoginData({
+                                    mail: loginData.mail,
+                                    password: event.target.value,
+                                    remember: loginData.remember
+                                })}/>
                         </div>
                     </div>
                     <div className="flex gap-y-3 ml-1">
-                        <input className="w-5 accent-transparent" type="checkbox"/>
+                        <input className="w-5 accent-transparent" type="checkbox"
+                                onChange={(event) => setLoginData({
+                                    mail: loginData.mail,
+                                    password: loginData.password,
+                                    remember: event.target.value
+                                })}/>
                         <label className="ml-3 text-lg">Remember me</label>
                     </div>
-                    <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl">Login</button>
+                    <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
+                            onClick={() => requestUserLogin(loginData).then((response) => {
+                                navigate("/projects")
+                                console.log(response)
+                            })}>Login</button>
                     <div className="-mt-3 flex gap-x-2 justify-center">
                         <div className="text-code-grey-500">No account?</div>
                         <button className="text-code-blue hover:underline" onClick={() => navigate("/register")}>Register now

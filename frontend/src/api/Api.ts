@@ -6,6 +6,12 @@ export type UserRegister = {
     password: string
 }
 
+export type UserLogin = {
+    mail: string
+    password: string
+    remember: string
+}
+
 // Probably needs to be changed
 function getBackendBaseUrl() {
     const host = import.meta.env.VITE_BACKEND_HOST
@@ -16,6 +22,12 @@ function getBackendBaseUrl() {
 
 export async function requestUserRegister(userData: UserRegister): Promise<UserRegister> {
     const url = getBackendBaseUrl() + "/register"
+
+    return post(url, userData)
+}
+
+export async function requestUserLogin(userData: UserLogin): Promise<UserLogin> {
+    const url = getBackendBaseUrl() + "/login"
 
     return post(url, userData)
 }

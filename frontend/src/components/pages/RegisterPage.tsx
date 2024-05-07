@@ -1,9 +1,8 @@
-import gitty_register2 from "../../assets/img/gitty_register2.png"
-import lock_icon from "../../assets/icons/lock2.png"
+import gitty_register2 from "../../assets/img/gitty_register2.png";
+import lock_icon from "../../assets/icons/lock2.png";
 import {useState} from "react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {requestUserRegister, UserRegister} from "../../api/Api.ts";
 
 /**
@@ -100,6 +99,7 @@ export function RegisterPage() {
                     <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
                             onClick={() => requestUserRegister(registerData).then((response) => {
                                 navigate("/projects")
+                                console.log(response)
                             })}>Register</button>
                     <div className="-mt-3 flex gap-x-2 justify-center">
                         <div className="text-code-grey-500">Already got an account?</div>
