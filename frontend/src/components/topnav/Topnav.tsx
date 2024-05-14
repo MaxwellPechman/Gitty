@@ -27,11 +27,6 @@ export function Topnav() {
                     <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out"
                         onClick={() => navigate("/")}>Home
                     </li>
-                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out"
-                        onClick={() => navigate("/projects")}>Projects
-                    </li>
-                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">Docs</li>
-                    <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out">About</li>
                 </ul>
             </div>
             <Searchbar/>
