@@ -57,7 +57,7 @@ export function LandingPage() {
                         factorial(n))
                     </p>
                 </div>
-                <div className="bg-black h-42 mt-36 rounded-2xl mr-3">
+                <div className="bg-black h-42 mt-36 rounded-2xl">
                     <img src={icon3} className="w-20 mt-4 ml-4" alt=""/>
                     <img src={icon2} className="-mt-10 ml-32 mr-4" alt=""/>
                     <img src={icon1} className="ml-18" alt=""/>

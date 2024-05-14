@@ -17,7 +17,7 @@ export default {
       'lg': '1024px',
       'xl': '1280px',
       '2xl': '1536px',
-      '3xl': '1920px',
+      '3xl': '1921px',
       '4xl': '2480px',
     },
     extend: {
@@ -45,6 +45,10 @@ export default {
         'code-grey-800': '#09090F',
         'code-grey-950': '#06060A',
         'code-login-gray': '#121321',
+        'code-border-gray': '#8C8C8C',
+      },
+      fontSize: {
+        'burger': '19px',
       }
     },
   },
