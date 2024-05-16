@@ -46,6 +46,7 @@ export default {
         'code-grey-950': '#06060A',
         'code-login-gray': '#121321',
         'code-border-gray': '#8C8C8C',
+        'code-border-projects': '#121321',
       },
       fontSize: {
         'burger': '19px',
