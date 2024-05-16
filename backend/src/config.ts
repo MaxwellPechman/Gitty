@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fs from "node:fs";
 
 export class BackendConfig {
     private readonly _env_path: string
@@ -7,6 +8,12 @@ export class BackendConfig {
         this._env_path = env_path;
 
         dotenv.config({ path: this._env_path });
+    }
+
+    public loadDBCertificate(path: string = "../ca.pem"): string {
+        const caCert = fs.readFileSync(path);
+
+        return caCert.toString()
     }
 
     public loadHost(): string {
