@@ -3,7 +3,7 @@ import {BackendConfig} from "./config";
 import {PostgresClient, SSLObjectType} from "./db/db";
 
 export async function createDatabaseTables(client: PostgresClient) {
-    return await client.execute(`
+    await client.execute(`
         CREATE TABLE IF NOT EXISTS users (
             uid SERIAL PRIMARY KEY,
             username VARCHAR(16) NOT NULL,
@@ -12,6 +12,25 @@ export async function createDatabaseTables(client: PostgresClient) {
             date_created DATE NOT NULL,
             date_changed DATE NOT NULL,
             active BOOLEAN NOT NULL
+        );
+    `)
+
+    await client.execute(`
+    CREATE TABLE IF NOT EXISTS projects (
+        pid SERIAL PRIMARY KEY,
+        project_name Varchar(128) NOT NULL,
+        description TEXT,
+        date_created DATE NOT NULL,
+        date_changed DATE NOT NULL,
+        active BOOLEAN NOT NULL
+        );`
+    )
+
+    await client.execute(`
+    CREATE TABLE IF NOT EXISTS ProjectUsers (
+        pid INTEGER REFERENCES projects (pid),
+        uid INTEGER REFERENCES users (uid),
+        owner BOOLEAN NOT NULL
         );
     `)
 }
