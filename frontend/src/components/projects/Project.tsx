@@ -13,11 +13,11 @@ interface IProject {
 
 export const Project: React.FC<IProject> = ({projectName, projectType = "Reaserach", projectStatus = 0}) => {
     return (
-        <div className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2">
+        <div className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
             <img src={getIcon(projectType)} className="pl-[18px] pt-[18px] h-[51px]"/>
             <div className="mt-[20px]">
                 <span className="pl-[18px] text-[16px] font-bold">{projectName}</span>
-                <p className="mt-[7px] text-[12px] pl-[18px] text-code-grey-500">{projectType}</p>
+                <p className="mt-[7px] text-[12px] pl-[18px]">{projectType}</p>
             </div>
             <div className="mt-[60px] ml-[17px]">
                 <Status projectStatus={projectStatus} projectName={""} projectType={""} />

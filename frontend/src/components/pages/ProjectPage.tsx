@@ -1,9 +1,6 @@
 import {Topnav} from "../topnav/Topnav.tsx";
-import {Project} from "../projects/Project.tsx"
-import {Task} from "../projects/Task.tsx"
-
-
-
+import {Project} from "../projects/Project.tsx";
+import {Tasks} from "../projects/Task.tsx";
 
 export function ProjectPage() {
 
@@ -18,7 +15,7 @@ export function ProjectPage() {
                         Create project
                     </button>
                     <div
-                        className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll">
+                        className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll noScrollbar">
                         <span className="hidden">Projekte Laden</span>
                         <Project projectName="Gitty" projectType="Code" projectStatus={1} />
                         <Project projectName="Overwatch" projectType="Game" />
@@ -34,7 +31,7 @@ export function ProjectPage() {
                         Create task
                     </button>
                     <div className="mt-4">
-                        <Task/>
+                        <Tasks/>
                     </div>
 
                 </div>

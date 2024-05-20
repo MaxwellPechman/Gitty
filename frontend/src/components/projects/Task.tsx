@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
-import "ag-grid-community/styles/ag-theme-alpine.css";
+import "./ag-theme-TaskGrid.css";
 
 
-export function Task() {
+export function Tasks() {
     var task = [
         {Taskname: "Tesla", Project: "Songwebsite", Working: 1, Status: getStatus(1), Action: "..."},
         {Taskname: "Ford", Project: "Code for a friend", Working: 2, Status: getStatus(2), Action: "..."},
@@ -21,7 +21,7 @@ export function Task() {
         {field: "Action", flex: 2}
     ])
 
-    return <div className="ag-theme-alpine-dark" style={{height: 350}}>
+    return <div className="ag-theme-TaskGrid" style={{height: 350}}>
         <AgGridReact rowData={rowData} columnDefs={colDefs}/>
     </div>
 }
