@@ -8,10 +8,10 @@ import React from "react";
 interface IProject {
     projectName: string;
     projectType?: string;
-    projectStatus?: number;
+    projectStatus?: boolean;
 }
 
-export const Project: React.FC<IProject> = ({projectName, projectType = "Reaserach", projectStatus = 0}) => {
+export const Project: React.FC<IProject> = ({projectName, projectType = "Reaserach", projectStatus = false}) => {
     return (
         <div className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
             <img src={getIcon(projectType)} className="pl-[18px] pt-[18px] h-[51px]"/>
@@ -41,7 +41,7 @@ const Status: React.FC<IProject> = ({projectName , projectType, projectStatus}) 
     projectName
     projectType
     switch (projectStatus) {
-        case 1:
+        case false:
             return <div className="flex flex-row">
                         <img src={cancelIcon} className="h-[18px] w-[18px]" alt="Progress Icon"></img>
                         <span className="text-code-red leading-[18px] text-[16px] ml-[6px]">canceled</span>

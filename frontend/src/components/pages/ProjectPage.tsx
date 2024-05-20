@@ -17,7 +17,7 @@ export function ProjectPage() {
                     <div
                         className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll noScrollbar">
                         <span className="hidden">Projekte Laden</span>
-                        <Project projectName="Gitty" projectType="Code" projectStatus={1} />
+                        <Project projectName="Gitty" projectType="Code" projectStatus={true} />
                         <Project projectName="Overwatch" projectType="Game" />
                         <Project projectName="Project" />
                     </div>
