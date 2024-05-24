@@ -15,7 +15,7 @@ export function BurgerMenu() {
     }
 
     return (
-        <div>
+        <div className="z-50">
             <button className="flex flex-col gap-y-1 cursor-pointer" type="button" onClick={toggleView}>
                 <VerticalLine/>
                 <VerticalLine/>

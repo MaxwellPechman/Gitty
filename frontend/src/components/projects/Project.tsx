@@ -11,20 +11,39 @@ interface IProject {
     projectStatus?: boolean;
 }
 
-export const Project: React.FC<IProject> = ({projectName, projectType = "Reaserach", projectStatus = false}) => {
+export function Projects() {
+    var projects = [
+        {pid: 0, projectName: "Gitty", projectType: "Code", projectStatus: false},
+        {pid: 1, projectName: "Overwatch", projectType: "Game", projectStatus: true},
+        {pid: 2, projectName: "Project", projectType: "Other", projectStatus: false},
+        {pid: 3, projectName: "Gitty", projectType: "Code", projectStatus: false},
+        {pid: 4, projectName: "Overwatch", projectType: "Game", projectStatus: true},
+        {pid: 5, projectName: "Project", projectType: "Other", projectStatus: false},
+    ];
+
+    const renderProjects = projects.map(project => {
+        return (
+            <div key={project.pid}
+                className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
+                <img src={getIcon(project.projectType)} className="pl-[18px] pt-[18px] h-[51px]" alt=""/>
+                <div className="mt-[20px]">
+                    <span className="pl-[18px] text-[16px] font-bold">{project.projectName}</span>
+                    <p className="mt-[7px] text-[12px] pl-[18px]">{project.projectType}</p>
+                </div>
+                <div className="mt-[60px] ml-[17px]">
+                    <Status projectStatus={project.projectStatus} projectName={project.projectName}
+                            projectType={project.projectType}/>
+                </div>
+            </div>
+        )
+    })
+
     return (
-        <div className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
-            <img src={getIcon(projectType)} className="pl-[18px] pt-[18px] h-[51px]"/>
-            <div className="mt-[20px]">
-                <span className="pl-[18px] text-[16px] font-bold">{projectName}</span>
-                <p className="mt-[7px] text-[12px] pl-[18px]">{projectType}</p>
-            </div>
-            <div className="mt-[60px] ml-[17px]">
-                <Status projectStatus={projectStatus} projectName={""} projectType={""} />
-            </div>
+        <div className="flex flex-row">
+            {renderProjects}
         </div>
-    );
-};
+    )
+}
 
 function getIcon(projectType: string) {
     switch (projectType) {
@@ -37,15 +56,15 @@ function getIcon(projectType: string) {
     }
 }
 
-const Status: React.FC<IProject> = ({projectName , projectType, projectStatus}) => {
+const Status: React.FC<IProject> = ({projectName, projectType, projectStatus}) => {
     projectName
     projectType
     switch (projectStatus) {
         case false:
             return <div className="flex flex-row">
-                        <img src={cancelIcon} className="h-[18px] w-[18px]" alt="Progress Icon"></img>
-                        <span className="text-code-red leading-[18px] text-[16px] ml-[6px]">canceled</span>
-                   </div>
+                <img src={cancelIcon} className="h-[18px] w-[18px]" alt="Progress Icon"></img>
+                <span className="text-code-red leading-[18px] text-[16px] ml-[6px]">canceled</span>
+            </div>
         default:
             return <div className="flex flex-row">
                 <img src={progressIcon} className="h-[18px] w-[18px]" alt="Progress Icon"></img>
@@ -53,3 +72,17 @@ const Status: React.FC<IProject> = ({projectName , projectType, projectStatus}) 
             </div>
     }
 }
+
+/*
+<div
+    className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
+    <img src={getIcon(projectType)} className="pl-[18px] pt-[18px] h-[51px]"/>
+    <div className="mt-[20px]">
+        <span className="pl-[18px] text-[16px] font-bold">{projectName}</span>
+        <p className="mt-[7px] text-[12px] pl-[18px]">{projectType}</p>
+    </div>
+    <div className="mt-[60px] ml-[17px]">
+        <Status projectStatus={projectStatus} projectName={""} projectType={""}/>
+    </div>
+</div>
+ */

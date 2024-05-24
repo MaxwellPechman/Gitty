@@ -19,7 +19,7 @@ export function Topnav() {
     const navigate = useNavigate();
 
     return (
-        <div className="w-screen h-[74px] sticky top-0 bg-code-grey-700 flex items-center justify-between">
+        <div className="w-screen h-[74px] sticky top-0 bg-code-grey-700 flex items-center justify-between z-50">
             <div className="px-4 flex items-center">
                 <BurgerMenu/>
                 <img className="mx-6 mt-2 w-[30px] h-[29px]" src={gitty_icon} alt="gitty_icon"/>

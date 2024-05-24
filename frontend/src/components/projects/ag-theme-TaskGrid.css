@@ -6,6 +6,7 @@
 }
 
 .ag-theme-TaskGrid {
+    z-index: 0;
     --ag-borders: solid 1px;
     --ag-border-radius: 3px;
     --ag-borders-side-button: none;
