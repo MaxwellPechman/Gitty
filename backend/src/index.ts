@@ -1,51 +1,20 @@
 import {createApp} from "./app";
 import {BackendConfig} from "./config";
-import {PostgresClient, SSLObjectType} from "./db/db";
+import {SQLFileManager} from "./db/sql";
+import {PostgresClient} from "./db/db";
 
-export async function createDatabaseTables(client: PostgresClient) {
-    await client.execute(`
-        CREATE TABLE IF NOT EXISTS users (
-            uid SERIAL PRIMARY KEY,
-            username VARCHAR(16) NOT NULL,
-            mail VARCHAR(128) NOT NULL,
-            password VARCHAR(32) NOT NULL,
-            date_created DATE NOT NULL,
-            date_changed DATE NOT NULL,
-            active BOOLEAN NOT NULL
-        );
-    `)
-
-    await client.execute(`
-    CREATE TABLE IF NOT EXISTS projects (
-        pid SERIAL PRIMARY KEY,
-        project_name Varchar(128) NOT NULL,
-        description TEXT,
-        date_created DATE NOT NULL,
-        date_changed DATE NOT NULL,
-        active BOOLEAN NOT NULL
-        );`
-    )
-
-    await client.execute(`
-    CREATE TABLE IF NOT EXISTS ProjectUsers (
-        pid INTEGER REFERENCES projects (pid),
-        uid INTEGER REFERENCES users (uid),
-        owner BOOLEAN NOT NULL
-        );
-    `)
+async function initializeDatabase(db: PostgresClient, sql: SQLFileManager) {
+    await db.execute(sql.getSQLStatement("initialize.sql"))
 }
 
-export function runApp() {
-    const app = createApp()
+async function runApp() {
     const config = new BackendConfig()
-    const ssl: SSLObjectType = {
-        rejectUnauthorized: true,
-        ca: config.loadDBCertificate()
-    }
-    const pgClient = new PostgresClient(ssl)
+    const pg = new PostgresClient(config.loadSSLObject())
+    const sql = new SQLFileManager()
+    const app = createApp(pg, sql)
 
-    createDatabaseTables(pgClient).catch((err) => {
-        console.error("nope", err)
+    initializeDatabase(pg, sql).catch((err) => {
+        console.log("Unable to initialize database", err)
     })
 
     app.listen(config.loadPort(), config.loadHost(),() => {
@@ -53,4 +22,6 @@ export function runApp() {
     })
 }
 
-runApp()
+runApp().catch((err) => {
+    console.error("Error while starting Backend", err)
+})
