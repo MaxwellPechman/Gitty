@@ -34,9 +34,15 @@ export class PostgresClient {
     }
 
     // use this if you execute a SQL statement and expect a result
-    public async query(sql: string) {
+    public async query(sql: string, value: any): Promise<any> {
+        if(value === undefined || value === null) {
+            throw Error("Undefined ")
+        }
+
         try {
-            return await this.pool.query(sql)
+            const result = await this.pool.query(sql, value)
+
+            return result.rows
 
         } catch(exception) {
             if(exception instanceof SyntaxError) {
@@ -58,12 +64,10 @@ export class PostgresClient {
                 throw Error("no client") // to be logged
             }
 
-            client.query(sql, (err, result) => {
+            client.query(sql, (err) => {
                 if (err) {
                     console.error('Error acquiring client', err.stack); // to be logged
                 }
-
-                console.log("success", result)
             })
         })
     }
