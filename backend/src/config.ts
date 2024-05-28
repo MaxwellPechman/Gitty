@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import fs from "node:fs";
+import {SSLObjectType} from "./db/db";
 
 export class BackendConfig {
     private readonly _env_path: string
@@ -10,10 +11,19 @@ export class BackendConfig {
         dotenv.config({ path: this._env_path });
     }
 
-    public loadDBCertificate(path: string = "../ca.pem"): string {
-        const caCert = fs.readFileSync(path);
+    public loadSSLObject(path: string = "../ca.pem"): SSLObjectType {
+        if(!fs.existsSync(path)) {
+            throw Error("Can not find path."); // TODO log
+        }
 
-        return caCert.toString()
+        if(fs.lstatSync(path).isDirectory()) {
+            throw Error("Unable to read file."); // TODO log
+        }
+
+        return {
+            rejectUnauthorized: true,
+            ca: fs.readFileSync(path).toString()
+        }
     }
 
     public loadHost(): string {
