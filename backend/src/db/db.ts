@@ -52,8 +52,8 @@ export class PostgresClient {
         }
     }
 
-    // use this if you execute a SQL statement an expect no result
-    public async execute(sql: string) {
+    // use this if you execute a SQL statement and expect no result
+    public async execute(sql: string, value?: any) {
         this.pool.connect((err, client, release) => {
             if (err) {
                 console.error('Error acquiring client', err.stack); // to be logged
@@ -64,11 +64,20 @@ export class PostgresClient {
                 throw Error("no client") // to be logged
             }
 
-            client.query(sql, (err) => {
-                if (err) {
-                    console.error('Error acquiring client', err.stack); // to be logged
-                }
-            })
+            if(value === undefined || value === null) {
+                client.query(sql, (err) => {
+                    if(err) {
+                        console.error('Error acquiring client', err.stack); // to be logged
+                    }
+                })
+
+            } else {
+                client.query(sql, value, (err) => {
+                    if(err) {
+                        console.error('Error acquiring client', err.stack); // to be logged
+                    }
+                })
+            }
         })
     }
 
