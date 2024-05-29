@@ -3,3 +3,7 @@ export type UserRegister = {
     mail: string
     password: string
 }
+
+export type requestUserId = {
+    uid: number
+}
