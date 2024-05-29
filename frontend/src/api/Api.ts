@@ -12,6 +12,10 @@ export type UserLogin = {
     remember: string
 }
 
+export type requestUserId = {
+    uid: number
+}
+
 // Probably needs to be changed
 function getBackendBaseUrl() {
     const host = import.meta.env.VITE_BACKEND_HOST
@@ -30,6 +34,18 @@ export async function requestUserLogin(userData: UserLogin): Promise<UserLogin> 
     const url = getBackendBaseUrl() + "/login"
 
     return post(url, userData)
+}
+
+export async function getUserProjects(uid: requestUserId): Promise<any> {
+    const url = getBackendBaseUrl() + "/getUserProjects"
+
+    return post(url, uid)
+}
+
+export async function getUserTasks(uid: requestUserId): Promise<any> {
+    const url = getBackendBaseUrl() + "/getUserTasks"
+
+    return post(url, uid)
 }
 
 async function post<Request, Response>(
