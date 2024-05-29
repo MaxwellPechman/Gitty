@@ -1,8 +1,8 @@
 import Router from "koa-router";
 import {PostgresClient} from "./db/db";
 import {SQLFileManager} from "./db/sql";
-import {registerUser} from "./controllers/user";
-import {UserRegister} from "./types/user";
+import {registerUser, getUserProjects, getUserTasks} from "./controllers/user";
+import {UserRegister, requestUserId} from "./types/user";
 
 export function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
@@ -20,6 +20,14 @@ export function createRouter(db: PostgresClient, sql: SQLFileManager) {
 
     router.post("/api/login", (ctx) => {
         ctx.body = "logined"
+    })
+
+    router.post("/api/getUserProjects", async (ctx) => {
+       ctx.body = await getUserProjects(db, ctx.request.body as requestUserId)
+    })
+
+    router.post("/api/getUserTasks", async (ctx) => {
+        ctx.body = await getUserTasks(db, ctx.request.body as requestUserId)
     })
 
     return router;
