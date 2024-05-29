@@ -28,3 +28,24 @@ CREATE TABLE IF NOT EXISTS projectsUsers (
     FOREIGN KEY (uid)
     REFERENCES users (uid) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS tasks (
+    tid SERIAL PRIMARY KEY,
+    taskname VARCHAR(16) NOT NULL,
+    taskstatus INTEGER NOT NULL,
+    pid INTEGER,
+    CONSTRAINT fk_pid
+        FOREIGN KEY (pid)
+        REFERENCES projects (pid) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS taskUser (
+    tid INTEGER,
+    uid INTEGER,
+    CONSTRAINT fk_tid
+        FOREIGN KEY (tid)
+        REFERENCES tasks (tid) ON DELETE CASCADE,
+    CONSTRAINT fk_uid
+        FOREIGN KEY (uid)
+            REFERENCES users (uid) ON DELETE CASCADE
+);
