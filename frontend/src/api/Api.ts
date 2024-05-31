@@ -28,6 +28,14 @@ export type Project = {
     projectStatus: boolean;
 }
 
+export type newProject = {
+    pid: number,
+    projectName: string;
+    projectType?: string;
+    projectStatus: boolean;
+    uid: number;
+}
+
 // Probably needs to be changed
 function getBackendBaseUrl() {
     const host = import.meta.env.VITE_BACKEND_HOST
@@ -66,7 +74,7 @@ export async function getTypes(type_classification: requestId): Promise<any> {
     return post(url, type_classification)
 }
 
-export async function createProject(projectData: Project): Promise<any> {
+export async function createProject(projectData: Project, id: requestId): Promise<any> {
     const url = getBackendBaseUrl() + "/createProject"
 
     return post(url, projectData)
