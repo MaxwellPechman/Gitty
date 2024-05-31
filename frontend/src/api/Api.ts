@@ -12,8 +12,20 @@ export type UserLogin = {
     remember: string
 }
 
-export type requestUserId = {
-    uid: number
+export type types = {
+    typeId: number
+    type_name: string
+}
+
+export type requestId = {
+    id: number
+}
+
+export type Project = {
+    pid: number,
+    projectName: string;
+    projectType?: string;
+    projectStatus: boolean;
 }
 
 // Probably needs to be changed
@@ -36,16 +48,28 @@ export async function requestUserLogin(userData: UserLogin): Promise<UserLogin> 
     return post(url, userData)
 }
 
-export async function getUserProjects(uid: requestUserId): Promise<any> {
+export async function getUserProjects(uid: requestId): Promise<any> {
     const url = getBackendBaseUrl() + "/getUserProjects"
 
     return post(url, uid)
 }
 
-export async function getUserTasks(uid: requestUserId): Promise<any> {
+export async function getUserTasks(uid: requestId): Promise<any> {
     const url = getBackendBaseUrl() + "/getUserTasks"
 
     return post(url, uid)
+}
+
+export async function getTypes(type_classification: requestId): Promise<any> {
+    const url = getBackendBaseUrl() + "/getTypes"
+
+    return post(url, type_classification)
+}
+
+export async function createProject(projectData: Project): Promise<any> {
+    const url = getBackendBaseUrl() + "/createProject"
+
+    return post(url, projectData)
 }
 
 async function post<Request, Response>(
