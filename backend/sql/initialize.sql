@@ -26,6 +26,13 @@ CREATE TABLE IF NOT EXISTS users (
     active BOOLEAN NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS sessions (
+    sid VARCHAR(64) PRIMARY KEY NOT NULL,
+    username VARCHAR(16) NOT NULL,
+    date_created DATE NOT NULL,
+    active BOOLEAN NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS projectsUsers (
     pid INTEGER NOT NULL,
     uid INTEGER NOT NULL,
