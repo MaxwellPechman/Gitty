@@ -89,7 +89,7 @@ export function ProjectPage() {
                             </div>
                         </div>
                         <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
-                                onClick={(e: any) => createProject(project).then(response => {
+                                onClick={() => createProject(project).then(response => {
                                     toggleView()
                                     console.log(response)
                                     setProject({
