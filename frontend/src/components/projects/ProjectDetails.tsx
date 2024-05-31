@@ -11,7 +11,6 @@ export function ProjectDetails() {
         projectType: "",
     })
     const [type_classification] = useState<requestId>({id: 0})
-
     useEffect(() => {
         getTypes(type_classification).then((data) => {
             setOptions(data)
