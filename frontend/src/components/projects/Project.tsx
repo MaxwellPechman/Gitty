@@ -4,17 +4,11 @@ import iconCode from "../../assets/icons/Icon3.png"
 import progressIcon from "../../assets/icons/projects/small/Progress.png"
 import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
 import React, {useEffect, useState} from "react";
-import {getUserProjects, requestUserId} from "../../api/Api.ts";
+import {getUserProjects, requestId, Project} from "../../api/Api.ts";
 
-export interface IProject {
-    pid: number,
-    projectName: string;
-    projectType?: string;
-    projectStatus: boolean;
-}
 export function Projects() {
-    const [projects, setProjects] = useState<IProject[]>([])
-    const [userId, setUserId] = useState<requestUserId>({uid: 2})
+    const [projects, setProjects] = useState<Project[]>([])
+    const [userId, setUserId] = useState<requestId>({id: 1})
 
     useEffect(() => {
         getUserProjects(userId).then((data) => {
@@ -52,6 +46,8 @@ function getIcon(projectType: string | undefined) {
             return iconCode
         case "Game":
             return iconGame
+        case "Table":
+            return iconTable
         default:
             return iconTable
     }
@@ -71,17 +67,3 @@ const Status: React.FC<boolean> = ({projectStatus}) => {
             </div>
     }
 }
-
-/*
-<div
-    className="mt-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
-    <img src={getIcon(projectType)} className="pl-[18px] pt-[18px] h-[51px]"/>
-    <div className="mt-[20px]">
-        <span className="pl-[18px] text-[16px] font-bold">{projectName}</span>
-        <p className="mt-[7px] text-[12px] pl-[18px]">{projectType}</p>
-    </div>
-    <div className="mt-[60px] ml-[17px]">
-        <Status projectStatus={projectStatus} projectName={""} projectType={""}/>
-    </div>
-</div>
- */
