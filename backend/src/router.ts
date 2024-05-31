@@ -4,7 +4,7 @@ import {SQLFileManager} from "./db/sql";
 import {registerUser, getUserProjects, getUserTasks} from "./controllers/user";
 import {UserRegister, requestId} from "./types/user";
 import {getTypes} from "./controllers/types";
-import {Project} from "./types/project";
+import {newProject} from "./types/project";
 import {createProject} from "./controllers/projects";
 
 export function createRouter(db: PostgresClient, sql: SQLFileManager) {
@@ -38,9 +38,9 @@ export function createRouter(db: PostgresClient, sql: SQLFileManager) {
     })
 
     router.post("/api/createProject", (ctx) => {
-        createProject(db, sql, ctx.request.body as Project)
+        createProject(db, sql, ctx.request.body as newProject)
             .then(() => {
-                ctx.body = "create"
+                ctx.body = "created"
             })
             .catch((err) => {
                 ctx.body = "error"
