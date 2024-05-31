@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import {createProject, getTypes, newProject, requestId, types} from "../../api/Api.ts";
 
 export function ProjectPage() {
-    // @ts-ignore
     const [userId, setUserId] = useState( 1);
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [options, setOptions] = useState<types[]>([])
