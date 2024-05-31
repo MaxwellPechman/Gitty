@@ -47,6 +47,7 @@ export default {
         'code-login-gray': '#121321',
         'code-border-gray': '#8C8C8C',
         'code-border-projects': '#121321',
+        'code-project-detail': '#15161F',
       },
       fontSize: {
         'burger': '19px',
