@@ -4,6 +4,6 @@ export type UserRegister = {
     password: string
 }
 
-export type requestUserId = {
-    uid: number
+export type requestId = {
+    id: number
 }
