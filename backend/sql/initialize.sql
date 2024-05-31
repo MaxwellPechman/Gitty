@@ -1,7 +1,16 @@
+CREATE TABLE IF NOT EXISTS types (
+    typeId SERIAL PRIMARY KEY,
+    type_name VARCHAR(32) NOT NULL,
+    type_classification INTEGER NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS projects (
     pid SERIAL PRIMARY KEY,
     project_name VARCHAR(64) NOT NULL,
-    description VARCHAR(1024) NOT NULL,
+    project_type INTEGER,
+    CONSTRAINT fk_types
+        FOREIGN KEY (project_type)
+            REFERENCES types (typeId) on DELETE CASCADE,
     date_created DATE NOT NULL,
     date_changed DATE NOT NULL,
     active BOOLEAN NOT NULL
@@ -31,8 +40,12 @@ CREATE TABLE IF NOT EXISTS projectsUsers (
 
 CREATE TABLE IF NOT EXISTS tasks (
     tid SERIAL PRIMARY KEY,
-    taskname VARCHAR(16) NOT NULL,
-    taskstatus INTEGER NOT NULL,
+    task_name VARCHAR(16) NOT NULL,
+    task_status INTEGER NOT NULL,
+    task_type INTEGER,
+    CONSTRAINT fk_types
+        FOREIGN KEY (task_type)
+            REFERENCES types (typeId) ON DELETE CASCADE,
     pid INTEGER,
     CONSTRAINT fk_pid
         FOREIGN KEY (pid)
