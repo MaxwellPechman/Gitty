@@ -34,15 +34,18 @@ export class PostgresClient {
     }
 
     // use this if you execute a SQL statement and expect a result
-    public async query(sql: string, value: any): Promise<any> {
-        if(value === undefined || value === null) {
-            throw Error("Undefined ")
-        }
-
+    public async query(sql: string, value?: any): Promise<any> {
         try {
-            const result = await this.pool.query(sql, value)
+            if(value === undefined || value === null) {
+                const result = await this.pool.query(sql)
+                
+                return result.rows
 
-            return result.rows
+            } else {
+                const result = await this.pool.query(sql, value)
+
+                return result.rows
+            }
 
         } catch(exception) {
             if(exception instanceof SyntaxError) {

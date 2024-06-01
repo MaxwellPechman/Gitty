@@ -20,9 +20,16 @@ CREATE TABLE IF NOT EXISTS users (
     uid SERIAL PRIMARY KEY,
     username VARCHAR(16) NOT NULL,
     mail VARCHAR(128) NOT NULL,
-    password VARCHAR(32) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     date_created DATE NOT NULL,
     date_changed DATE NOT NULL,
+    active BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+    sid VARCHAR(64) PRIMARY KEY NOT NULL,
+    username VARCHAR(16) NOT NULL,
+    date_created DATE NOT NULL,
     active BOOLEAN NOT NULL
 );
 
