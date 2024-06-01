@@ -1,9 +1,14 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
+import {Session} from "../types/session.ts";
 
 export type UserRegister = {
     name: string
     mail: string
     password: string
+}
+
+export type UserRegisterResponse = {
+    session: Session
 }
 
 export type UserLogin = {
@@ -45,10 +50,10 @@ function getBackendBaseUrl() {
     return "http://" + host + ":" + port + "/api"
 }
 
-export async function requestUserRegister(userData: UserRegister): Promise<UserRegister> {
+export async function requestUserRegister(userData: UserRegister): Promise<UserRegisterResponse> {
     const url = getBackendBaseUrl() + "/register"
 
-    return post(url, userData)
+    return post<UserRegister, UserRegisterResponse>(url, userData)
 }
 
 export async function requestUserLogin(userData: UserLogin): Promise<UserLogin> {
