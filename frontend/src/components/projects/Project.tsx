@@ -1,18 +1,27 @@
-import iconGame from "../../assets/icons/Icon1.png"
-import iconTable from "../../assets/icons/Icon2.png"
-import iconCode from "../../assets/icons/Icon3.png"
+import iconGame from "../../assets/icons/projects/small/Game.png"
+import iconWebsite from "../../assets/icons/projects/small/Website.png"
+import iconCode from "../../assets/icons/projects/small/Code.png"
+import iconDatabase from "../../assets/icons/projects/small/Database.png"
+import iconOther from "../../assets/icons/projects/small/Other.png"
 import progressIcon from "../../assets/icons/projects/small/Progress.png"
 import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
 import React, {useEffect, useState} from "react";
 import {getUserProjects, requestId, Project} from "../../api/Api.ts";
 
 export function Projects() {
-    const [projects, setProjects] = useState<Project[]>([])
+    const [projects, setProjects] = useState<Project[]>([{
+        pid: 0,
+        projectName: "Introduction",
+        projectStatus: true,
+        projectType: 0
+    }])
     const [userId, setUserId] = useState<requestId>({id: 1})
 
     useEffect(() => {
         getUserProjects(userId).then((data) => {
-            setProjects(data)
+            if (data != "") {
+                setProjects(data)
+            }
         })
         return
     }, [])
@@ -24,7 +33,7 @@ export function Projects() {
                 <img src={getIcon(project.projectType)} className="pl-[18px] pt-[18px] h-[51px]" alt=""/>
                 <div className="mt-[20px]">
                     <span className="pl-[18px] text-[16px] font-bold">{project.projectName}</span>
-                    <p className="mt-[7px] text-[12px] pl-[18px]">{project.projectType}</p>
+                    <p className="mt-[7px] text-[12px] pl-[18px]">{getType(project.projectType)}</p>
                 </div>
                 <div className="mt-[60px] ml-[17px]">
                     <Status projectStatus={project.projectStatus} />
@@ -40,16 +49,33 @@ export function Projects() {
     )
 }
 
-function getIcon(projectType: string | undefined) {
+function getIcon(projectType: number | undefined) {
     switch (projectType) {
-        case "Code":
+        case 1:
             return iconCode
-        case "Game":
+        case 2:
             return iconGame
-        case "Table":
-            return iconTable
+        case 3:
+            return iconWebsite
+        case 4:
+            return iconDatabase
         default:
-            return iconTable
+            return iconOther
+    }
+}
+
+function getType(projectTpye: number | undefined) {
+    switch (projectTpye) {
+        case 1:
+            return "Code"
+        case 2:
+            return "Game"
+        case 3:
+            return "Website"
+        case 4:
+            return "Database"
+        default:
+            return "Other"
     }
 }
 
