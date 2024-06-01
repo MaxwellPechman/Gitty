@@ -1,32 +1,44 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
-import {requestId, UserRegister} from "../types/user";
+import {requestUserId, UserRegister} from "../types/user";
+import {createUniqueSessionsID} from "../utils/sessions";
+import {sha256} from "../utils/crypto";
 
-export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister) {
-    const data = [userData.name, userData.mail, userData.password]
+export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<string> {
+    const data = [userData.name, userData.mail, sha256(userData.password)]
+    const usid = await createUniqueSessionsID(db, sql)
 
-    await db.execute(sql.getSQLStatement("registerUser.sql"), data)
+    db.execute(sql.getSQLStatement("registerUser.sql"), data)
+        .then(() => {
+            db.execute(sql.getSQLStatement("createSession.sql"), [usid, userData.name])
+                .catch((err) => {
+                console.log(err); // should be logged
+            })
+    })
+        .catch((err) => {
+        console.log(err) // should be logged
+    })
+
+    return usid
 }
 
-export async function getUserProjects(db: PostgresClient, userData: requestId) {
-    const values = [userData.id]
+export async function getUserProjects(db: PostgresClient, userData: requestUserId) {
+    const values = [userData.uid]
     const SQL = `
     SELECT 
         projects.pid as pid, 
         projects.project_name as "projectName", 
-        types.type_name as "projectType", 
+        projects.description as "projectType", 
         projects.active as "projectStatus" 
     FROM projectsusers
     JOIN projects on projectsusers.pid = projects.pid
-    JOIN types on projects.project_type = types.typeId
     where uid = $1;
     `
-
     return await db.query(SQL, values)
 }
 
-export async function getUserTasks(db: PostgresClient, userData: requestId) {
-    const values = [userData.id]
+export async function getUserTasks(db: PostgresClient, userData: requestUserId) {
+    const values = [userData.uid]
     const SQL = `
     SELECT
         tasks.taskname AS "Taskname",
