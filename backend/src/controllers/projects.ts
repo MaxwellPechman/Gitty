@@ -6,7 +6,7 @@ export async function createProject(db: PostgresClient, sql: SQLFileManager, pro
     var typeId = await db.query(sql.getSQLStatement("selectSingleType.sql"), [projectData.projectType])
 
     const dataNewProject = [projectData.projectName, typeId[0].typeid, projectData.projectDescription]
-    console.log(dataNewProject)
+
     var pid = await db.query(sql.getSQLStatement("createProject.sql"), dataNewProject);
     const dataLink = [pid[0].pid, projectData.uid]
 
