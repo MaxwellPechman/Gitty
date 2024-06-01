@@ -33,6 +33,7 @@ export type newProject = {
     projectName: string;
     projectType?: string;
     projectStatus: boolean;
+    projectDescription?: string;
     uid: number;
 }
 
