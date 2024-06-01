@@ -26,7 +26,7 @@ export function createRouter(db: PostgresClient, sql: SQLFileManager) {
     })
 
     router.post("/api/getUserProjects", async (ctx) => {
-       ctx.body = await getUserProjects(db, ctx.request.body as requestId)
+       ctx.body = await getUserProjects(db, sql, ctx.request.body as requestId)
     })
 
     router.post("/api/getUserTasks", async (ctx) => {
@@ -34,18 +34,11 @@ export function createRouter(db: PostgresClient, sql: SQLFileManager) {
     })
 
     router.post("/api/getTypes", async (ctx) => {
-        ctx.body = await getTypes(db, ctx.request.body as requestId)
+        ctx.body = await getTypes(db, sql, ctx.request.body as requestId)
     })
 
-    router.post("/api/createProject", (ctx) => {
-        createProject(db, sql, ctx.request.body as newProject)
-            .then(() => {
-                ctx.body = "created"
-            })
-            .catch((err) => {
-                ctx.body = "error"
-                console.log(err);
-            })
+    router.post("/api/createProject", async (ctx) => {
+        ctx.body = await createProject(db, sql, ctx.request.body as newProject)
     })
     return router;
 }
