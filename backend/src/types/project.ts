@@ -8,7 +8,7 @@ export type Project = {
 export type newProject = {
     pid: number,
     projectName: string;
-    projectType?: number;
+    projectType?: string;
     projectStatus: boolean;
     uid: number;
 }
