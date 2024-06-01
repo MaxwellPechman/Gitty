@@ -1,9 +1,9 @@
 import logo from "../../assets/icons/gitty.png"
-import manageLogo from "../../assets/icons/manageProjects.png";
+import manageLogo from "../../assets/icons/projects/small/Database.png";
 import projectsImg from "../../assets/img/projects.png";
-import icon1 from "../../assets/icons/Icon1.png";
-import icon2 from "../../assets/icons/Icon2.png";
-import icon3 from "../../assets/icons/Icon3.png";
+import icon1 from "../../assets/icons/projects/small/Game.png";
+import icon2 from "../../assets/icons/projects/small/Website.png";
+import icon3 from "../../assets/icons/projects/small/Code.png";
 import {useNavigate} from "react-router-dom";
 
 /**
