@@ -24,7 +24,7 @@ export type requestId = {
 export type Project = {
     pid: number,
     projectName: string;
-    projectType?: string;
+    projectType?: number;
     projectStatus: boolean;
 }
 
