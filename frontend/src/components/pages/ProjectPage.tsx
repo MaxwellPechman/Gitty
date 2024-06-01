@@ -2,7 +2,7 @@ import {Topnav} from "../topnav/Topnav.tsx";
 import {Projects} from "../projects/Project.tsx";
 import {Tasks} from "../projects/Task.tsx";
 import {useEffect, useState} from "react";
-import {createProject, getTypes, newProject, requestId, types} from "../../api/Api.ts";
+import {createProject, getTypes, newProject, types} from "../../api/Api.ts";
 
 export function ProjectPage() {
     const [userId, setUserId] = useState( 1);
@@ -12,15 +12,14 @@ export function ProjectPage() {
         pid: 0,
         projectName: "",
         projectStatus: true,
-        projectType: "1",
+        projectType: "Code",
         uid: userId
     })
-    const [type_classification] = useState<requestId>({id: 0})
+
     useEffect(() => {
-        getTypes(type_classification).then((data) => {
+        getTypes({id: 0}).then((data) => {
             setOptions(data)
         })
-        return
     }, [])
 
     function toggleView() {
@@ -77,7 +76,7 @@ export function ProjectPage() {
                                             uid: project.uid,
                                         })}>
                                     {options.map((option) => (
-                                        <option value={option.typeid}>{option.type_name}</option>
+                                        <option value={option.type_name} key={option.typeId}>{option.type_name}</option>
                                     ))}
                                 </select>
                             </div>
@@ -91,12 +90,11 @@ export function ProjectPage() {
                         <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
                                 onClick={() => createProject(project).then(response => {
                                     toggleView()
-                                    console.log(response)
                                     setProject({
                                         pid: 0,
                                         projectName: "",
                                         projectStatus: project.projectStatus,
-                                        projectType: "1",
+                                        projectType: "Code",
                                         uid: project.uid,
                                     })
                                     window.location.reload()
