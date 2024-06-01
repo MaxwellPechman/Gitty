@@ -1,11 +1,25 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
 import {requestUserId, UserRegister} from "../types/user";
+import {createUniqueSessionsID} from "../utils/sessions";
+import {sha256} from "../utils/crypto";
 
-export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister) {
-    const data = [userData.name, userData.mail, userData.password]
+export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<string> {
+    const data = [userData.name, userData.mail, sha256(userData.password)]
+    const usid = await createUniqueSessionsID(db, sql)
 
-    await db.execute(sql.getSQLStatement("registerUser.sql"), data)
+    db.execute(sql.getSQLStatement("registerUser.sql"), data)
+        .then(() => {
+            db.execute(sql.getSQLStatement("createSession.sql"), [usid, userData.name])
+                .catch((err) => {
+                console.log(err); // should be logged
+            })
+    })
+        .catch((err) => {
+        console.log(err) // should be logged
+    })
+
+    return usid
 }
 
 export async function getUserProjects(db: PostgresClient, userData: requestUserId) {
