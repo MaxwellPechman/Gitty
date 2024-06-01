@@ -18,6 +18,19 @@ export function RegisterPage() {
     const [registerData, setRegisterData] = useState({} as UserRegister)
     const navigate = useNavigate();
 
+    function registerUser() {
+        requestUserRegister(registerData)
+            .then((response) => {
+                if(response.session === undefined) {
+                console.log("An error occurred while receiving backend response.")
+
+                } else {
+                    localStorage.setItem("session-key", response.session)
+                    navigate("/projects")
+                }
+        })
+    }
+
     return (
         <div className="w-screen h-screen flex">
             <div className="w-screen h-screen bg-code-grey-950 flex flex-col items-center justify-center">
@@ -97,10 +110,7 @@ export function RegisterPage() {
                         </div>
                     </div>
                     <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
-                            onClick={() => requestUserRegister(registerData).then((response) => {
-                                navigate("/projects")
-                                console.log(response)
-                            })}>Register</button>
+                            onClick={() => registerUser()}>Register</button>
                     <div className="-mt-3 flex gap-x-2 justify-center">
                         <div className="text-code-grey-500">Already got an account?</div>
                         <button className="text-code-blue hover:underline" onClick={() => navigate("/login")}>Login now</button>

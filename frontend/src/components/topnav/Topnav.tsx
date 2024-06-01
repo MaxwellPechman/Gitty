@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {BurgerMenu} from "./BurgerMenu.tsx";
 import gitty_icon from "../../assets/icons/gitty.png";
 import {Searchbar} from "../searchbar/Searchbar.tsx";
@@ -17,6 +17,15 @@ export function Topnav() {
      */
     const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const key = localStorage.getItem("session-key")
+
+        if(key !== null) {
+            setLoggedIn(true)
+        }
+
+    }, [setLoggedIn]);
 
     return (
         <div className="w-screen h-[74px] sticky top-0 bg-code-grey-700 flex items-center justify-between z-50">
@@ -60,6 +69,9 @@ function LoginSection() {
  */
 function LogoutSection() {
     return (
-        <></>
+        <div>
+            <div></div>
+            <button className="px-2 py-1.5 bg-red-600">logout</button>
+        </div>
     )
 }
