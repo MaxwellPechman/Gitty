@@ -4,9 +4,14 @@ CREATE TABLE IF NOT EXISTS types (
     type_classification INTEGER NOT NULL
 );
 
+INSERT INTO types (typeId, type_name, type_classification)
+VALUES (1, 'Code', 0), (2, 'Game', 0), (3, 'Website', 0), (4, 'Database', 0)
+ON CONFLICT DO NOTHING;
+
 CREATE TABLE IF NOT EXISTS projects (
     pid SERIAL PRIMARY KEY,
     project_name VARCHAR(64) NOT NULL,
+    project_description VARCHAR(256),
     project_type INTEGER,
     CONSTRAINT fk_types
         FOREIGN KEY (project_type)
@@ -49,6 +54,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     tid SERIAL PRIMARY KEY,
     task_name VARCHAR(16) NOT NULL,
     task_status INTEGER NOT NULL,
+    task_description VARCHAR(256),
     task_type INTEGER,
     CONSTRAINT fk_types
         FOREIGN KEY (task_type)
