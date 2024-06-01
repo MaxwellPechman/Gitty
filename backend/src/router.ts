@@ -7,18 +7,11 @@ import {getTypes} from "./controllers/types";
 import {newProject} from "./types/project";
 import {createProject} from "./controllers/projects";
 
-export function createRouter(db: PostgresClient, sql: SQLFileManager) {
+export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
 
-    router.post("/api/register", (ctx) => {
-        ctx.body = registerUser(db, sql, ctx.request.body as UserRegister)
-            .then(() => {
-                ctx.body = "registered"
-            })
-            .catch((err) => {
-                ctx.body = "error"
-                console.log(err);
-        })
+    router.post("/api/register", async (ctx) => {
+        ctx.body = await registerUser(db, sql, ctx.request.body as UserRegister)
     })
 
     router.post("/api/login", (ctx) => {

@@ -11,7 +11,7 @@ async function runApp() {
     const config = new BackendConfig()
     const pg = new PostgresClient(config.loadSSLObject())
     const sql = new SQLFileManager()
-    const app = createApp(pg, sql)
+    const app = await createApp(pg, sql)
 
     initializeDatabase(pg, sql).catch((err) => {
         console.log("Unable to initialize database", err)

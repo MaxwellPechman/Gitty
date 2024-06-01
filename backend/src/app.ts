@@ -5,9 +5,9 @@ import {PostgresClient} from "./db/db";
 import {SQLFileManager} from "./db/sql";
 import bodyParser from "koa-bodyparser";
 
-export function createApp(db: PostgresClient, sql: SQLFileManager) {
+export async function createApp(db: PostgresClient, sql: SQLFileManager) {
     const app = new Koa()
-    const router = createRouter(db, sql)
+    const router = await createRouter(db, sql)
 
     app.use(cors())
     app.use(bodyParser())
