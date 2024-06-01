@@ -11,7 +11,7 @@ export function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
 
     router.post("/api/register", (ctx) => {
-        registerUser(db, sql, ctx.request.body as UserRegister)
+        ctx.body = registerUser(db, sql, ctx.request.body as UserRegister)
             .then(() => {
                 ctx.body = "registered"
             })
