@@ -1,6 +1,6 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
-import {requestUserId, UserRegister} from "../types/user";
+import {requestId, UserRegister} from "../types/user";
 import {createUniqueSessionsID} from "../utils/sessions";
 import {sha256} from "../utils/crypto";
 
@@ -22,23 +22,13 @@ export async function registerUser(db: PostgresClient, sql: SQLFileManager, user
     return usid
 }
 
-export async function getUserProjects(db: PostgresClient, userData: requestUserId) {
-    const values = [userData.uid]
-    const SQL = `
-    SELECT 
-        projects.pid as pid, 
-        projects.project_name as "projectName", 
-        projects.description as "projectType", 
-        projects.active as "projectStatus" 
-    FROM projectsusers
-    JOIN projects on projectsusers.pid = projects.pid
-    where uid = $1;
-    `
-    return await db.query(SQL, values)
+export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
+    const values = [userData.id]
+    return await db.query(sql.getSQLStatement("selectUserProjects.sql"), values)
 }
 
-export async function getUserTasks(db: PostgresClient, userData: requestUserId) {
-    const values = [userData.uid]
+export async function getUserTasks(db: PostgresClient, userData: requestId) {
+    const values = [userData.id]
     const SQL = `
     SELECT
         tasks.taskname AS "Taskname",
