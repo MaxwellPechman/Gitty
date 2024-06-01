@@ -1,10 +1,10 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
-import {requestId, UserRegister} from "../types/user";
+import {requestId, UserRegister, UserRegisterResponse} from "../types/user";
 import {createUniqueSessionsID} from "../utils/sessions";
 import {sha256} from "../utils/crypto";
 
-export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<string> {
+export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<UserRegisterResponse> {
     const data = [userData.name, userData.mail, sha256(userData.password)]
     const usid = await createUniqueSessionsID(db, sql)
 
@@ -19,7 +19,9 @@ export async function registerUser(db: PostgresClient, sql: SQLFileManager, user
         console.log(err) // should be logged
     })
 
-    return usid
+    return {
+        session: usid
+    }
 }
 
 export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
