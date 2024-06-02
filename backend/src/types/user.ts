@@ -10,6 +10,16 @@ export type UserRegisterResponse = {
     session: Session
 }
 
+export type UserLogin = {
+    username: string
+    password: string
+    remember: boolean
+}
+
+export type UserLoginResponse = {
+    session: Session
+}
+
 export type requestUserId = {
     uid: number
 }
@@ -17,3 +27,5 @@ export type requestUserId = {
 export type requestId = {
     id: number
 }
+
+export type PasswordRequest = [{ password: string } | null]

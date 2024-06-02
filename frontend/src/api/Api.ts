@@ -1,46 +1,6 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
-import {Session} from "../types/session.ts";
-
-export type UserRegister = {
-    name: string
-    mail: string
-    password: string
-}
-
-export type UserRegisterResponse = {
-    session: Session
-}
-
-export type UserLogin = {
-    mail: string
-    password: string
-    remember: string
-}
-
-export type types = {
-    typeId: number
-    type_name: string
-}
-
-export type requestId = {
-    id: number
-}
-
-export type Project = {
-    pid: number,
-    projectName: string;
-    projectType?: number;
-    projectStatus: boolean;
-}
-
-export type newProject = {
-    pid: number,
-    projectName: string;
-    projectType?: string;
-    projectStatus: boolean;
-    projectDescription?: string;
-    uid: number;
-}
+import {UserLogin, UserLoginResponse, UserRegister, UserRegisterResponse} from "../types/user.ts";
+import {Project, requestId} from "../types/project.ts";
 
 // Probably needs to be changed
 function getBackendBaseUrl() {
@@ -56,10 +16,10 @@ export async function requestUserRegister(userData: UserRegister): Promise<UserR
     return post<UserRegister, UserRegisterResponse>(url, userData)
 }
 
-export async function requestUserLogin(userData: UserLogin): Promise<UserLogin> {
+export async function requestUserLogin(userData: UserLogin): Promise<UserLoginResponse> {
     const url = getBackendBaseUrl() + "/login"
 
-    return post(url, userData)
+    return post<UserLogin, UserLoginResponse>(url, userData)
 }
 
 export async function getUserProjects(uid: requestId): Promise<any> {
