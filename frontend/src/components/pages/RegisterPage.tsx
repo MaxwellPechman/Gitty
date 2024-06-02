@@ -1,9 +1,10 @@
 import gitty_register2 from "../../assets/img/gitty_register2.png";
 import lock_icon from "../../assets/icons/lock2.png";
 import {useState} from "react";
-import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
-import {requestUserRegister, UserRegister} from "../../api/Api.ts";
+import {requestUserRegister} from "../../api/Api.ts";
+import {UserRegister} from "../../types/user.ts";
+import clsx from "clsx";
 
 /**
  *
@@ -21,12 +22,10 @@ export function RegisterPage() {
     function registerUser() {
         requestUserRegister(registerData)
             .then((response) => {
-                if(response.session === undefined) {
-                console.log("An error occurred while receiving backend response.")
-
-                } else {
+                if(response.session !== undefined) {
                     localStorage.setItem("session-key", response.session)
                     navigate("/projects")
+
                 }
         })
     }
