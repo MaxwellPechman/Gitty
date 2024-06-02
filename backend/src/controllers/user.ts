@@ -1,6 +1,13 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
-import {requestId, UserRegister, UserRegisterResponse} from "../types/user";
+import {
+    PasswordRequest,
+    requestId,
+    UserLogin,
+    UserLoginResponse,
+    UserRegister,
+    UserRegisterResponse
+} from "../types/user";
 import {createUniqueSessionsID} from "../utils/sessions";
 import {sha256} from "../utils/crypto";
 
@@ -22,6 +29,25 @@ export async function registerUser(db: PostgresClient, sql: SQLFileManager, user
     return {
         session: usid
     }
+}
+
+// TODO needs some error checking
+export async function loginUser(db: PostgresClient, sql: SQLFileManager, userData: UserLogin): Promise<UserLoginResponse | null> {
+    const usid = await createUniqueSessionsID(db, sql)
+    const result: PasswordRequest = await db.query(sql.getSQLStatement("selectUser.sql"), [userData.username])
+    const password: string | undefined = result[0]?.password
+
+    if(password === undefined) {
+
+    } else {
+        if(password === sha256(userData.password)) {
+            return {
+                session: usid
+            }
+        }
+    }
+
+    return null
 }
 
 export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
