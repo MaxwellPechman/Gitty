@@ -4,7 +4,9 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {requestUserRegister} from "../../api/Api.ts";
 import {UserRegister} from "../../types/user.ts";
+import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
 import clsx from "clsx";
+import logo from "../../assets/icons/Gitty_Logo@2.png";
 
 /**
  *
@@ -16,24 +18,55 @@ import clsx from "clsx";
 export function RegisterPage() {
     const [passwordBorder, setPasswordBorder] = useState(false)
     const [confPasswordBorder, setConfPasswordBorder] = useState(false)
-    const [registerData, setRegisterData] = useState({} as UserRegister)
+    const [confPassword, setConfPassword] = useState("")
+    const [registerData, setRegisterData] = useState<UserRegister>({
+        name: "",
+        mail: "",
+        password: ""
+    })
+    const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
     const navigate = useNavigate();
 
     function registerUser() {
-        requestUserRegister(registerData)
-            .then((response) => {
-                if(response.session !== undefined) {
-                    localStorage.setItem("session-key", response.session)
-                    navigate("/projects")
+        if(registerData.name === "") {
+            setDisplayErrorDialog("EMPTY_USERNAME")
 
-                }
-        })
+        } else if(registerData.mail === "") {
+            setDisplayErrorDialog("EMPTY_EMAIL")
+
+        } else if(registerData.password === "") {
+            setDisplayErrorDialog("EMPTY_PASSWORD")
+
+        } else {
+            if(confPassword === registerData.password) {
+                requestUserRegister(registerData)
+                    .then((response) => {
+                        if(response.session === "") {
+                            setDisplayErrorDialog("INVALID_CREDENTIALS")
+
+                        } else {
+                            localStorage.setItem("sessionID", response.session)
+                            navigate("/projects")
+                        }
+                    })
+                    .catch(() => {
+                        setDisplayErrorDialog("NETWORK_ERROR")
+                    })
+
+            } else {
+                setDisplayErrorDialog("REGISTER_PASSWORD_MATCH")
+            }
+        }
     }
 
     return (
         <div className="w-screen h-screen flex">
             <div className="w-screen h-screen bg-code-grey-950 flex flex-col items-center justify-center">
-                <h1 className="py-10 font-roboto text-3xl text-white">Create your account</h1>
+                <img className="h-14 cursor-pointer" src={logo} alt="Gitty Logo" onClick={() => navigate("/")}/>
+                <h1 className="pb-4 pt-6 font-roboto text-3xl text-white">Create your account</h1>
+                {
+                    displayErrorDialog === "NONE" ?  <></> : <ErrorDialog errorType={displayErrorDialog}/>
+                }
                 <form className="p-6 w-[459px] bg-code-grey-800 rounded-xl flex flex-col gap-y-5">
                     <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2">
@@ -105,14 +138,18 @@ export function RegisterPage() {
                                 name="conf_password"
                                 placeholder="Confirm your password"
                                 onFocus={() => setConfPasswordBorder(true)}
-                                onBlur={() => setConfPasswordBorder(false)}/>
+                                onBlur={() => setConfPasswordBorder(false)}
+                                onChange={(event) => setConfPassword(event.target.value)}/>
                         </div>
                     </div>
                     <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
-                            onClick={() => registerUser()}>Register</button>
+                            onClick={() => registerUser()}>Register
+                    </button>
                     <div className="-mt-3 flex gap-x-2 justify-center">
                         <div className="text-code-grey-500">Already got an account?</div>
-                        <button className="text-code-blue hover:underline" onClick={() => navigate("/login")}>Login now</button>
+                        <button className="text-code-blue hover:underline" onClick={() => navigate("/login")}>Login
+                            now
+                        </button>
                     </div>
                 </form>
             </div>
