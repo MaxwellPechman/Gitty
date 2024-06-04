@@ -1,1 +1,1 @@
-export type Session = string | undefined
+export type Session = string
