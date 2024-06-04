@@ -2,7 +2,8 @@ import {useEffect, useState} from "react";
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "./ag-theme-TaskGrid.css";
-import {getUserTasks, requestId} from "../../api/Api.ts";
+import {getUserTasks} from "../../api/Api.ts";
+import {requestId} from "../../types/project.ts";
 
 export interface ITask {
     Taskname: string,
@@ -13,7 +14,7 @@ export interface ITask {
 
 export function Tasks() {
     const [tasks, setTasks] = useState<ITask[]>([])
-    const [userId, setUserId] = useState<requestId>({uid: 1})
+    const [userId, setUserId] = useState<requestId>({id: 1})
 
     useEffect(() => {
         getUserTasks(userId).then((data) => {
