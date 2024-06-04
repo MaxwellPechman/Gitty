@@ -1,11 +1,10 @@
 CREATE TABLE IF NOT EXISTS types (
     typeId SERIAL PRIMARY KEY,
-    type_name VARCHAR(32) NOT NULL,
-    type_classification INTEGER NOT NULL
+    type_name VARCHAR(32) NOT NULL
 );
 
-INSERT INTO types (typeId, type_name, type_classification)
-VALUES (1, 'Code', 0), (2, 'Game', 0), (3, 'Website', 0), (4, 'Database', 0)
+INSERT INTO types (typeId, type_name)
+VALUES (0, 'Other'), (1, 'Code'), (2, 'Game'), (3, 'Website'), (4, 'Database')
 ON CONFLICT DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS projects (
@@ -55,10 +54,6 @@ CREATE TABLE IF NOT EXISTS tasks (
     task_name VARCHAR(16) NOT NULL,
     task_status INTEGER NOT NULL,
     task_description VARCHAR(256),
-    task_type INTEGER,
-    CONSTRAINT fk_types
-        FOREIGN KEY (task_type)
-            REFERENCES types (typeId) ON DELETE CASCADE,
     pid INTEGER,
     CONSTRAINT fk_pid
         FOREIGN KEY (pid)
