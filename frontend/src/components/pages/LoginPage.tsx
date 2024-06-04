@@ -4,28 +4,51 @@ import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {requestUserLogin} from "../../api/Api.ts";
 import {UserLogin} from "../../types/user.ts";
+import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
 
 export function LoginPage() {
     const [loginData, setLoginData] = useState({} as UserLogin)
+    const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
     const navigate = useNavigate();
 
     function loginUser() {
         requestUserLogin(loginData)
             .then((response) => {
-                if(response.session !== undefined) {
-                    localStorage.setItem("session-key", response.session)
+                console.log(response)
+                if(response.session === "") {
+                    setDisplayErrorDialog("INVALID_CREDENTIALS")
+                } else {
+                    localStorage.setItem("sessionID", response.session)
                     navigate("/projects")
                 }
         })
+            .catch(() => {
+                setDisplayErrorDialog("NETWORK_ERROR")
+            })
+    }
+
+    function toggleRememberPassword() {
+        const remember = localStorage.getItem("rememberPassword")
+
+        if(remember === null) {
+            localStorage.setItem("rememberPassword", JSON.stringify(true))
+
+        } else {
+            const password: boolean = JSON.parse(remember)
+            localStorage.setItem("rememberPassword", JSON.stringify(password))
+        }
     }
 
     return (
         <div className="flex flex-col w-screen h-screen justify-center bg-code-grey-950">
             <div className="flex flex-col items-center justify-center">
-                <img className="h-14" src={logo} alt="Gitty Logo"/>
-                <h1 className="text-4xl">Log in to Gitty</h1>
+                <img className="h-14 cursor-pointer" src={logo} alt="Gitty Logo" onClick={() => navigate("/")} />
+                <h1 className="pt-4 text-4xl text-white font-roboto">Log in to Gitty</h1>
             </div>
-            <div className="flex items-center justify-center mt-2">
+            <div className="flex flex-col items-center justify-center mt-2">
+                {
+                    displayErrorDialog === "NONE" ?  <></> : <ErrorDialog errorType={displayErrorDialog}/>
+                }
                 <form className="p-6 w-[459px] bg-code-grey-800 rounded-xl flex flex-col gap-y-5">
                     <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2">
@@ -65,11 +88,7 @@ export function LoginPage() {
                     </div>
                     <div className="flex gap-y-3 ml-1">
                         <input className="w-5 accent-transparent" type="checkbox"
-                                onChange={(event) => setLoginData({
-                                    username: loginData.username,
-                                    password: loginData.password,
-                                    remember: false
-                                })}/>
+                               onChange={() => toggleRememberPassword()}/>
                         <label className="ml-3 text-lg">Remember me</label>
                     </div>
                     <button className="my-2 py-2 bg-white text-black font-roboto font-bold rounded-xl" type="button"
