@@ -13,41 +13,38 @@ import {sha256} from "../utils/crypto";
 
 export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<UserRegisterResponse> {
     const data = [userData.name, userData.mail, sha256(userData.password)]
-    const usid = await createUniqueSessionsID(db, sql)
 
-    db.execute(sql.getSQLStatement("registerUser.sql"), data)
-        .then(() => {
-            db.execute(sql.getSQLStatement("createSession.sql"), [usid, userData.name])
-                .catch((err) => {
-                console.log(err); // should be logged
-            })
-    })
-        .catch((err) => {
-        console.log(err) // should be logged
-    })
-
-    return {
-        session: usid
-    }
+    return createUniqueSessionsID(db, sql)
+        .then((sessionId) => {
+            return db.execute(sql.getSQLStatement("registerUser.sql"), data)
+                .then(() => {
+                   return db.execute(sql.getSQLStatement("createSession.sql"), [sessionId, userData.name])
+                        .then(() => {
+                            return {
+                                session: sessionId,
+                            }
+                        })
+                })
+        })
 }
 
 // TODO needs some error checking
 export async function loginUser(db: PostgresClient, sql: SQLFileManager, userData: UserLogin): Promise<UserLoginResponse | null> {
-    const usid = await createUniqueSessionsID(db, sql)
+    const sessionID = await createUniqueSessionsID(db, sql)
     const result: PasswordRequest = await db.query(sql.getSQLStatement("selectUser.sql"), [userData.username])
     const password: string | undefined = result[0]?.password
 
-    if(password === undefined) {
-
-    } else {
+    if(password !== undefined) {
         if(password === sha256(userData.password)) {
             return {
-                session: usid
+                session: sessionID
             }
         }
     }
 
-    return null
+    return {
+        session: ""
+    }
 }
 
 export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
