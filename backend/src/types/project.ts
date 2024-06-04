@@ -13,3 +13,12 @@ export type newProject = {
     projectDescription: string;
     uid: number;
 }
+
+export type newTask = {
+    tid: number;
+    taskName: string;
+    taskStatus: number;
+    taskDescription: string;
+    taskPid: string;
+    uid: number;
+}

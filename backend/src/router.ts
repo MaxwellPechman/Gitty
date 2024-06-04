@@ -4,8 +4,9 @@ import {SQLFileManager} from "./db/sql";
 import {registerUser, getUserProjects, getUserTasks, loginUser} from "./controllers/user";
 import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
-import {newProject} from "./types/project";
+import {newProject, newTask} from "./types/project";
 import {createProject} from "./controllers/projects";
+import {createTask} from "./controllers/task";
 
 export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
@@ -23,15 +24,19 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     })
 
     router.post("/api/getUserTasks", async (ctx) => {
-        ctx.body = await getUserTasks(db, ctx.request.body as requestId)
+        ctx.body = await getUserTasks(db, sql, ctx.request.body as requestId)
     })
 
-    router.post("/api/getTypes", async (ctx) => {
-        ctx.body = await getTypes(db, sql, ctx.request.body as requestId)
+    router.get("/api/getTypes", async (ctx) => {
+        ctx.body = await getTypes(db, sql)
     })
 
     router.post("/api/createProject", async (ctx) => {
         ctx.body = await createProject(db, sql, ctx.request.body as newProject)
+    })
+
+    router.post("/api/createTask", async (ctx) => {
+        ctx.body = await createTask(db, sql, ctx.request.body as newTask)
     })
     return router;
 }

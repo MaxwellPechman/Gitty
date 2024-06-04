@@ -52,24 +52,8 @@ export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, u
     return await db.query(sql.getSQLStatement("selectUserProjects.sql"), values)
 }
 
-export async function getUserTasks(db: PostgresClient, userData: requestId) {
+export async function getUserTasks(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
     const values = [userData.id]
-    const SQL = `
-    SELECT
-        tasks.taskname AS "Taskname",
-        projects.project_name AS "Project",
-        CASE taskstatus
-            WHEN 1 THEN 'new'
-            WHEN 2 THEN 'in progress'
-            WHEN 3 THEN 'cancled'
-            WHEN 4 THEN 'done'
-        END as "Status",
-        '...' AS "Action"
-    FROM tasks
-    JOIN projects ON tasks.pid = projects.pid
-    JOIN taskUser ON tasks.tid = taskUser.tid
-    where uid = $1;
-    `
 
-    return await db.query(SQL, values)
+    return await db.query(sql.getSQLStatement("selectUserTasks.sql"), values)
 }
