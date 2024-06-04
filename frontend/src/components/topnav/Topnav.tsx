@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
 import {BurgerMenu} from "./BurgerMenu.tsx";
 import gitty_icon from "../../assets/icons/gitty.png";
 import {Searchbar} from "../searchbar/Searchbar.tsx";
 import {useNavigate} from "react-router-dom";
+import profile_icon from "../../assets/icons/profile_icon_that_looks_overweight.png"
 
 /**
  * Obere Navigationsleiste zum Navigieren (captain obvious) der Webseite.
@@ -15,17 +15,7 @@ export function Topnav() {
      * dementsprechend entweder die LoginSection (Wenn der Nutzer nicht eingeloggt ist, also quasi der default-state)
      * oder die LogoutSection (Wenn der Nutzer eingeloggt ist) in die Topnav rendern.
      */
-    const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const key = localStorage.getItem("session-key")
-
-        if(key !== null) {
-            setLoggedIn(true)
-        }
-
-    }, [setLoggedIn]);
 
     return (
         <div className="w-screen h-[74px] sticky top-0 bg-code-grey-700 flex items-center justify-between z-50">
@@ -40,10 +30,10 @@ export function Topnav() {
             </div>
             <Searchbar/>
             {
-                loggedIn ?
-                    <LogoutSection/>
-                    :
+                localStorage.getItem("sessionID") === null ?
                     <LoginSection/>
+                    :
+                    <LogoutSection/>
             }
         </div>
     )
@@ -68,10 +58,19 @@ function LoginSection() {
  * Gibt im Moment nur ein leeres JSX-Element zurück, quasi wie "null".
  */
 function LogoutSection() {
+    const navigate = useNavigate()
+
+    function logoutUser() {
+        localStorage.setItem("sessionID", "");
+        navigate("/login")
+    }
+
     return (
-        <div>
-            <div></div>
-            <button className="px-2 py-1.5 bg-red-600">logout</button>
-        </div>
+        <ul className="flex items-center gap-x-6">
+            <li><img className="w-[16px h-[16px]" src={profile_icon} alt={"profile_icon"}/></li>
+            <li className="mx-4 px-2 py-1 text-white border border-code-grey-950 bg-code-grey-950 rounded cursor-pointer hover:bg-code-grey-700 transition duration-200 ease-in-out"
+                onClick={() => logoutUser}>Logout
+            </li>
+        </ul>
     )
 }
