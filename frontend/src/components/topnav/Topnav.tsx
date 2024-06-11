@@ -24,7 +24,7 @@ export function Topnav() {
                 <img className="mx-6 mt-2 w-[30px] h-[29px]" src={gitty_icon} alt="gitty_icon"/>
                 <ul className="flex gap-x-4">
                     <li className="text-white leading-8 cursor-pointer hover:text-neutral-500 transition duration-200 ease-in-out"
-                        onClick={() => navigate("/")}>Home
+                        onClick={() => navigate("/home")}>Home
                     </li>
                 </ul>
             </div>

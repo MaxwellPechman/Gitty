@@ -1,6 +1,6 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import {UserLogin, UserLoginResponse, UserRegister, UserRegisterResponse} from "../types/user.ts";
-import {newTask, Project, requestId} from "../types/project.ts";
+import {newProject, newTask, requestId} from "../types/project.ts";
 
 // Probably needs to be changed
 function getBackendBaseUrl() {
@@ -40,7 +40,7 @@ export async function getTypes(): Promise<any> {
     return axios.get(url)
 }
 
-export async function createProject(projectData: Project): Promise<any> {
+export async function createProject(projectData: newProject): Promise<any> {
     const url = getBackendBaseUrl() + "/createProject"
 
     return post(url, projectData)
