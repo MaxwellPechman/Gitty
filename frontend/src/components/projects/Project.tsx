@@ -8,6 +8,7 @@ import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
 import React, {useEffect, useState} from "react";
 import {getUserProjects} from "../../api/Api.ts";
 import {Project, requestId} from "../../types/project.ts";
+import {useNavigate} from "react-router-dom";
 
 export function Projects() {
     const [projects, setProjects] = useState<Project[]>([{
@@ -17,6 +18,7 @@ export function Projects() {
         projectType: 0
     }])
     const [userId, setUserId] = useState<requestId>({id: 1})
+    const navigate = useNavigate();
 
     useEffect(() => {
         getUserProjects(userId).then((data) => {
@@ -30,7 +32,8 @@ export function Projects() {
     const renderProjects = projects.map(project => {
         return (
             <div key={project.pid}
-                 className="mt-[38px] mb-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black">
+                 className="mt-[38px] mb-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black"
+                 onClick={() => navigate(`/project/${project.pid}`)}>
                 <img src={getIcon(project.projectType)} className="pl-[18px] pt-[18px] h-[51px]" alt=""/>
                 <div className="mt-[20px]">
                     <span className="pl-[18px] text-[16px] font-bold">{project.projectName}</span>
