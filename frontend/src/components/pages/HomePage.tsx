@@ -90,7 +90,7 @@ export function HomePage() {
                             aswell as information <br/>regarding the allocation.</p>
                         <p className="text-[16px] mt-6 text-code-grey-500">Title</p>
                         <input type="text"
-                               className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px]"
+                               className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
                                onChange={(event) => setProject({
                                    projectName: event.target.value,
                                    projectType: project.projectType,
@@ -102,7 +102,7 @@ export function HomePage() {
                         <div className="flex justify-between flex-row">
                             <div>
                                 <p className="text-[16px] mt-2 text-code-grey-500">Project type</p>
-                                <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl"
+                                <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
                                         onChange={(event) => setProject({
                                             pid: project.pid,
                                             projectName: project.projectName,
@@ -125,7 +125,7 @@ export function HomePage() {
                         </div>
                         <p className="text-[16px] mt-2 text-code-grey-500">Description</p>
                         <textarea
-                            className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px]"
+                            className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
                             placeholder="What is your task about..."
                             onChange={(event) => setProject({
                                 pid: project.pid,
@@ -182,7 +182,7 @@ export function HomePage() {
                             aswell as information <br/>regarding the allocation.</p>
                         <p className="text-[16px] mt-6 text-code-grey-500">Title</p>
                         <input type="text"
-                               className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px]"
+                               className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
                                onChange={(event) => setTask({
                                    tid: task.tid,
                                    taskName: event.target.value,
@@ -194,7 +194,7 @@ export function HomePage() {
                         <div className="flex justify-between flex-row">
                             <div>
                                 <p className="text-[16px] mt-2 text-code-grey-500">Project</p>
-                                <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl"
+                                <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
                                         onChange={(event) => setTask({
                                             tid: task.tid,
                                             taskName: task.taskName,
@@ -217,7 +217,7 @@ export function HomePage() {
                         </div>
                         <p className="text-[16px] mt-2 text-code-grey-500">Description</p>
                         <textarea
-                            className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px]"
+                            className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
                             placeholder="What is your task about..."
                             onChange={(event) => setTask({
                                 tid: task.tid,
