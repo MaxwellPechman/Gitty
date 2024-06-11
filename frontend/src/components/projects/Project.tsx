@@ -6,7 +6,8 @@ import iconOther from "../../assets/icons/projects/small/Other.png"
 import progressIcon from "../../assets/icons/projects/small/Progress.png"
 import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
 import React, {useEffect, useState} from "react";
-import {getUserProjects, requestId, Project} from "../../api/Api.ts";
+import {getUserProjects} from "../../api/Api.ts";
+import {Project, requestId} from "../../types/project.ts";
 
 export function Projects() {
     const [projects, setProjects] = useState<Project[]>([{
