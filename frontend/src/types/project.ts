@@ -14,6 +14,13 @@ export type Project = {
     projectStatus: boolean;
 }
 
+export type projectDetails = {
+    pid: number,
+    project_name: string,
+    project_type?: number,
+    project_description?: string
+}
+
 export type newProject = {
     pid: number,
     projectName: string;
