@@ -28,6 +28,12 @@ export async function getUserProjects(uid: requestId): Promise<any> {
     return post(url, uid)
 }
 
+export async function getProjectById(pid: requestId): Promise<any> {
+    const url = getBackendBaseUrl() + "/getProjectById"
+
+    return post(url, pid)
+}
+
 export async function getUserTasks(uid: requestId): Promise<any> {
     const url = getBackendBaseUrl() + "/getUserTasks"
 
