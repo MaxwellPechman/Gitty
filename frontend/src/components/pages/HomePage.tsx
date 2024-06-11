@@ -5,8 +5,8 @@ import {useEffect, useState} from "react";
 import {createProject, createTask, getTypes, getUserProjects} from "../../api/Api.ts";
 import {newProject, types, newTask} from "../../types/project.ts";
 
-export function ProjectPage() {
-    const [userId, setUserId] = useState( 1);
+export function HomePage() {
+    const [userId] = useState( 1);
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
     const [optionsProject, setOptionsProject] = useState<types[]>([])
@@ -136,7 +136,7 @@ export function ProjectPage() {
                                 uid: project.uid,
                             })}></textarea>
                         <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
-                                onClick={() => createProject(project).then(response => {
+                                onClick={() => createProject(project).then(() => {
                                     toggleViewProjects()
                                     setProject({
                                         pid: 0,
@@ -228,7 +228,7 @@ export function ProjectPage() {
                                 uid: task.uid
                             })}></textarea>
                         <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
-                                onClick={() => createTask(task).then(response => {
+                                onClick={() => createTask(task).then(() => {
                                     toggleViewProjects()
                                     setTask({
                                         tid: 0,
