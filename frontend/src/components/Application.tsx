@@ -6,6 +6,7 @@ import {LoginPage} from "./pages/LoginPage.tsx";
 import {ProfilePage} from "./pages/ProfilePage.tsx";
 import {ProjectsPage} from "./pages/ProjectsPage.tsx";
 import {TasksPage} from "./pages/TasksPage.tsx";
+import {ProjectDetails} from "./pages/ProjectDetails.tsx";
 
 export function Application() {
     return (
@@ -14,6 +15,7 @@ export function Application() {
                 <Route path="/" element={<LandingPage/>}/>
                 <Route path="/home" element={<HomePage/>}/>
                 <Route path="/projects" element={<ProjectsPage/>}/>
+                <Route path="/project/:id" element={<ProjectDetails/>}/>
                 <Route path="/tasks" element={<TasksPage/>}/>
                 <Route path="/register" element={<RegisterPage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
