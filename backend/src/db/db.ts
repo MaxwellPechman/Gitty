@@ -38,7 +38,7 @@ export class PostgresClient {
         try {
             if(value === undefined || value === null) {
                 const result = await this.pool.query(sql)
-                
+
                 return result.rows
 
             } else {

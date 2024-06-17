@@ -4,11 +4,11 @@ import {newProject} from "../types/project";
 import {requestId} from "../types/user";
 
 export async function createProject(db: PostgresClient, sql: SQLFileManager, projectData: newProject) {
-    var typeId = await db.query(sql.getSQLStatement("selectSingleType.sql"), [projectData.projectType])
+    const typeId = await db.query(sql.getSQLStatement("selectSingleType.sql"), [projectData.projectType]);
 
     const dataNewProject = [projectData.projectName, typeId[0].typeid, projectData.projectDescription]
 
-    var pid = await db.query(sql.getSQLStatement("createProject.sql"), dataNewProject);
+    const pid = await db.query(sql.getSQLStatement("createProject.sql"), dataNewProject);
     const dataLink = [pid[0].pid, projectData.uid]
 
     await createUserLink(db, sql, dataLink)
