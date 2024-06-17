@@ -10,21 +10,29 @@ import {
 } from "../types/user";
 import {createUniqueSessionsID} from "../utils/sessions";
 import {sha256} from "../utils/crypto";
+import {SessionUserId} from "../types/session";
 
-export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<UserRegisterResponse> {
+export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<UserRegisterResponse | void> {
     const data = [userData.name, userData.mail, sha256(userData.password)]
 
     return createUniqueSessionsID(db, sql)
         .then((sessionId) => {
-            return db.execute(sql.getSQLStatement("registerUser.sql"), data)
-                .then(() => {
-                   return db.execute(sql.getSQLStatement("createSession.sql"), [sessionId, userData.name])
+            return db.query(sql.getSQLStatement("registerUser.sql"), data)
+                .then((result: SessionUserId) => {
+                    return db.execute(sql.getSQLStatement("createSession.sql"), [sessionId, result[0].uid])
                         .then(() => {
                             return {
                                 session: sessionId,
                             }
-                        })
+                        }).catch((err) => {
+                            console.log("Error when creating session:", err) // TODO logging
+                       })
+                }).catch((err) => {
+                    console.log("Error when registering user:", err) // TODO logging
                 })
+        })
+        .catch((err) => {
+            console.log("Error when creating session ID:", err) // TODO logging
         })
 }
 
