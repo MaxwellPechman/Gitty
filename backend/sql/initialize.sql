@@ -32,9 +32,10 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS sessions (
     sid VARCHAR(64) PRIMARY KEY NOT NULL,
-    username VARCHAR(16) NOT NULL,
+    uid INTEGER NOT NULL,
     date_created DATE NOT NULL,
-    active BOOLEAN NOT NULL
+    active BOOLEAN NOT NULL,
+    FOREIGN KEY (uid) REFERENCES users(uid)
 );
 
 CREATE TABLE IF NOT EXISTS projectsUsers (
