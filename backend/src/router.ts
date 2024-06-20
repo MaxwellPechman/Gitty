@@ -7,6 +7,8 @@ import {getTypes} from "./controllers/types";
 import {newProject, newTask} from "./types/project";
 import {createProject, getProjectById} from "./controllers/projects";
 import {createTask} from "./controllers/task";
+import {getProfileData} from "./controllers/profile";
+import {SessionRequest} from "./types/session";
 
 export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
@@ -17,6 +19,10 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
 
     router.post("/api/login", async (ctx) => {
         ctx.body = await loginUser(db, sql, ctx.request.body as UserLogin)
+    })
+
+    router.post("/api/getUserProfile", async (ctx) => {
+        ctx.body = await getProfileData(db, sql, ctx.request.body as SessionRequest)
     })
 
     router.post("/api/getUserProjects", async (ctx) => {

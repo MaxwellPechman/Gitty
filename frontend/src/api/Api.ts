@@ -1,6 +1,8 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import {UserLogin, UserLoginResponse, UserRegister, UserRegisterResponse} from "../types/user.ts";
 import {newProject, newTask, requestId} from "../types/project.ts";
+import {SessionRequest} from "../types/session.ts";
+import {ProfileResponse} from "../types/profile.ts";
 
 // Probably needs to be changed
 function getBackendBaseUrl() {
@@ -8,6 +10,12 @@ function getBackendBaseUrl() {
     const port = import.meta.env.VITE_BACKEND_PORT
 
     return "http://" + host + ":" + port + "/api"
+}
+
+export async function requestUserProfile(sessionId: SessionRequest): Promise<ProfileResponse> {
+    const url = getBackendBaseUrl() + "/getUserProfile"
+
+    return post<SessionRequest, ProfileResponse>(url, sessionId)
 }
 
 export async function requestUserRegister(userData: UserRegister): Promise<UserRegisterResponse> {
