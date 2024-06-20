@@ -19,7 +19,7 @@ export function LoginPage() {
                     setDisplayErrorDialog("INVALID_CREDENTIALS")
                 } else {
                     localStorage.setItem("sessionID", response.session)
-                    navigate("/projects")
+                    navigate("/home")
                 }
         })
             .catch(() => {

@@ -6,7 +6,7 @@ import {createProject, createTask, getTypes, getUserProjects} from "../../api/Ap
 import {newProject, types, newTask} from "../../types/project.ts";
 
 export function HomePage() {
-    const [userId] = useState( 1);
+    const [userId, setUserId] = useState<number>(1);
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
     const [optionsProject, setOptionsProject] = useState<types[]>([])
@@ -29,12 +29,6 @@ export function HomePage() {
     })
 
     useEffect(() => {
-        getTypes().then((data) => {
-            setOptionsProject(data.data)
-        })
-    }, [])
-
-    useEffect(() => {
         getUserProjects({id: userId}).then((data) => {
             setOptionsTask(data)
             setTask({
@@ -46,6 +40,11 @@ export function HomePage() {
                 uid: userId
             })
         })
+
+        getTypes().then((data) => {
+            setOptionsProject(data.data)
+        })
+
     }, []);
 
     function toggleViewProjects() {
