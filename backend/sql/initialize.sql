@@ -43,11 +43,11 @@ CREATE TABLE IF NOT EXISTS projectsUsers (
     uid INTEGER NOT NULL,
     owner BOOLEAN NOT NULL,
     CONSTRAINT fk_pid
-    FOREIGN KEY (pid)
-    REFERENCES projects (pid) ON DELETE CASCADE,
+        FOREIGN KEY (pid)
+            REFERENCES projects (pid) ON DELETE CASCADE,
     CONSTRAINT fk_uid
-    FOREIGN KEY (uid)
-    REFERENCES users (uid) ON DELETE CASCADE
+        FOREIGN KEY (uid)
+            REFERENCES users (uid) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     pid INTEGER,
     CONSTRAINT fk_pid
         FOREIGN KEY (pid)
-        REFERENCES projects (pid) ON DELETE CASCADE
+            REFERENCES projects (pid) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS taskUser (
@@ -66,8 +66,35 @@ CREATE TABLE IF NOT EXISTS taskUser (
     uid INTEGER,
     CONSTRAINT fk_tid
         FOREIGN KEY (tid)
-        REFERENCES tasks (tid) ON DELETE CASCADE,
+            REFERENCES tasks (tid) ON DELETE CASCADE,
     CONSTRAINT fk_uid
         FOREIGN KEY (uid)
             REFERENCES users (uid) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS directories (
+    dirid SERIAL PRIMARY KEY,
+    dir_name VARCHAR(256) NOT NULL,
+    dir_parentdir INTEGER,
+    dir_pid integer NOT NULL,
+    CONSTRAINT fk_parentdir
+        FOREIGN KEY (dir_parentdir)
+            REFERENCES directories (dirid) ON DELETE CASCADE,
+    CONSTRAINT fk_pid
+        FOREIGN KEY (dir_pid)
+            REFERENCES projects (pid) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS files(
+    fid SERIAL PRIMARY KEY,
+    file_name VARCHAR(256),
+    file_content VARCHAR(256),
+    file_parentdir INTEGER,
+    CONSTRAINT fk_dirid
+        FOREIGN KEY (file_parentdir)
+            REFERENCES directories (dirid) ON DELETE CASCADE,
+    file_pid INTEGER,
+    CONSTRAINT fk_pid
+        FOREIGN KEY (file_pid)
+            REFERENCES projects (pid) ON DELETE CASCADE
 );
