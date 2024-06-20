@@ -1,7 +1,7 @@
 import {Topnav} from "../topnav/Topnav.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {fetchFileSystem, getProjectById} from "../../api/Api.ts";
+import {createFolder, fetchFileSystem, getProjectById} from "../../api/Api.ts";
 import {projectDetails} from "../../types/project.ts";
 import folder from "../../assets/icons/folder/small/folder.png";
 import file from "../../assets/icons/folder/small/file.png";
@@ -67,7 +67,8 @@ export function ProjectDetails() {
                     <div className="flex flex-row">
                         <div className="w-2/3">
                             <span className="text-code-grey-500">Folder:</span>
-                            <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5">Add Folder
+                            <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5"
+                            onClick={() => createFolder(1, 1, "test")}>Add Folder
                             </button>
                             <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5">Upload File
                             </button>
