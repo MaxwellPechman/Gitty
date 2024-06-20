@@ -27,7 +27,7 @@ export type newProject = {
     projectType?: string;
     projectStatus: boolean;
     projectDescription?: string;
-    uid: number;
+    uid?: string;
 }
 
 export type newTask = {
@@ -36,5 +36,5 @@ export type newTask = {
     taskStatus: number;
     taskDescription: string;
     taskPid: string;
-    uid: number;
+    uid?: string;
 }

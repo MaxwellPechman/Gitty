@@ -7,7 +7,7 @@ import progressIcon from "../../assets/icons/projects/small/Progress.png"
 import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
 import React, {useEffect, useState} from "react";
 import {getUserProjects} from "../../api/Api.ts";
-import {Project, requestId} from "../../types/project.ts";
+import {Project} from "../../types/project.ts";
 import {useNavigate} from "react-router-dom";
 
 export function Projects() {
@@ -17,7 +17,7 @@ export function Projects() {
         projectStatus: true,
         projectType: 0
     }])
-    const [userId, setUserId] = useState<requestId>({id: 1})
+    const [userId] = useState<string>(localStorage.getItem("sessionID") || "")
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,8 +25,7 @@ export function Projects() {
             if (data != "") {
                 setProjects(data)
             }
-        })
-        return
+        });
     }, [])
 
     const renderProjects = projects.map(project => {

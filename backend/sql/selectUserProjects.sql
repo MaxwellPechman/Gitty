@@ -5,4 +5,5 @@ SELECT
     projects.active as "projectStatus"
 FROM projectsusers
 JOIN projects on projectsusers.pid = projects.pid
-where uid = $1;
+JOIN sessions on sessions.uid = projectsusers.uid
+where sessions.sid = $1;

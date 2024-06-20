@@ -6,7 +6,9 @@ import {createProject, createTask, getTypes, getUserProjects} from "../../api/Ap
 import {newProject, types, newTask} from "../../types/project.ts";
 
 export function HomePage() {
-    const [userId, setUserId] = useState<number>(1);
+
+    const [userId] = useState<string>(localStorage.getItem("sessionID") || "");
+
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
     const [optionsProject, setOptionsProject] = useState<types[]>([])
@@ -29,7 +31,7 @@ export function HomePage() {
     })
 
     useEffect(() => {
-        getUserProjects({id: userId}).then((data) => {
+        getUserProjects(userId || "").then((data) => {
             setOptionsTask(data)
             setTask({
                 tid: 0,
@@ -39,11 +41,11 @@ export function HomePage() {
                 taskDescription: task.taskDescription,
                 uid: userId
             })
-        })
+        });
 
         getTypes().then((data) => {
             setOptionsProject(data.data)
-        })
+        });
 
     }, []);
 

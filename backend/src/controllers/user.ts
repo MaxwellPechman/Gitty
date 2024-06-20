@@ -2,7 +2,6 @@ import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
 import {
     PasswordRequest,
-    requestId,
     UserLogin,
     UserLoginResponse,
     UserRegister,
@@ -55,13 +54,14 @@ export async function loginUser(db: PostgresClient, sql: SQLFileManager, userDat
     }
 }
 
-export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
-    const values = [userData.id]
+export async function getUserProjects(db: PostgresClient, sql: SQLFileManager, userData: {sid: string}) {
+    const values = [userData.sid]
+
     return await db.query(sql.getSQLStatement("selectUserProjects.sql"), values)
 }
 
-export async function getUserTasks(db: PostgresClient, sql: SQLFileManager, userData: requestId) {
-    const values = [userData.id]
+export async function getUserTasks(db: PostgresClient, sql: SQLFileManager, userData: {sid: string}) {
+    const values = [userData.sid]
 
     return await db.query(sql.getSQLStatement("selectUserTasks.sql"), values)
 }

@@ -27,11 +27,11 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     })
 
     router.post("/api/getUserProjects", async (ctx) => {
-       ctx.body = await getUserProjects(db, sql, ctx.request.body as requestId)
+       ctx.body = await getUserProjects(db, sql, ctx.request.body as {sid: string})
     })
 
     router.post("/api/getUserTasks", async (ctx) => {
-        ctx.body = await getUserTasks(db, sql, ctx.request.body as requestId)
+        ctx.body = await getUserTasks(db, sql, ctx.request.body as { sid: string })
     })
 
     router.get("/api/getTypes", async (ctx) => {

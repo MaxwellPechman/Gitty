@@ -20,5 +20,5 @@ export type newTask = {
     taskStatus: number;
     taskDescription: string;
     taskPid: string;
-    uid: number;
+    uid: string;
 }

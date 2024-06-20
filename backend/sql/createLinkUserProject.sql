@@ -1,2 +1,2 @@
 INSERT INTO projectsusers (pid, uid, owner)
-VALUES ($1, $2, TRUE);
+SELECT $1, s.uid, TRUE FROM sessions s where s.sid = $2;

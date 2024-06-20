@@ -11,4 +11,5 @@ SELECT
 FROM tasks
 JOIN projects ON tasks.pid = projects.pid
 JOIN taskUser ON tasks.tid = taskUser.tid
-WHERE uid = $1;
+JOIN sessions ON taskUser.uid = sessions.uid
+WHERE sessions.sid = $1;
