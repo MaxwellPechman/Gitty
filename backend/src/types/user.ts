@@ -20,10 +20,6 @@ export type UserLoginResponse = {
     session: Session
 }
 
-export type requestUserId = {
-    uid: number
-}
-
 export type requestId = {
     id: number
 }
