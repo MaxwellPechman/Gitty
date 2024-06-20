@@ -66,8 +66,11 @@ function LogoutSection() {
     }
 
     return (
-        <ul className="flex items-center gap-x-6">
-            <li><img className="w-[16px h-[16px]" src={profile_icon} alt={"profile_icon"}/></li>
+        <ul className="flex items-center">
+            <li className="cursor-pointer hover:bg-code-grey-700 transition duration-200 ease-in-out"
+                onClick={() => navigate("/profile")}>
+                <img className="w-[22px h-[22px]" src={profile_icon} alt={"profile_icon"}/>
+            </li>
             <li className="mx-4 px-2 py-1 text-white border border-code-grey-950 bg-code-grey-950 rounded cursor-pointer hover:bg-code-grey-700 transition duration-200 ease-in-out"
                 onClick={() => logoutUser}>Logout
             </li>
