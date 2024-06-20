@@ -72,3 +72,7 @@ function buildDirectoryHierarchy(directories: FilesystemItem[]): FilesystemItem[
     return rootDirectories;
 }
 
+export async function createFolder(db: PostgresClient, sql: SQLFileManager, pid: number, parentDir: number, dirName: string) {
+    console.log([pid, parentDir, dirName])
+    return await db.execute(sql.getSQLStatement("createFolder.sql"), [pid, parentDir, dirName]);
+}
