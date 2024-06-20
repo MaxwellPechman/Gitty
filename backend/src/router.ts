@@ -9,7 +9,7 @@ import {createProject, getProjectById} from "./controllers/projects";
 import {createTask} from "./controllers/task";
 import {getProfileData} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
-import {fetchDirectories} from "./controllers/filesystem";
+import {createFolder, fetchDirectories} from "./controllers/filesystem";
 
 export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
@@ -52,6 +52,11 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
 
     router.post("/api/getFileSystem", async (ctx) => {
         ctx.body = await fetchDirectories(db, sql, ctx.request.body as requestId)
+    })
+
+    router.post("/api/createFolder", async (ctx) => {
+        const data = ctx.request.body as [number, number, string]
+        ctx.body = await createFolder(db, sql, data[0], data[1], data[2])
     })
 
     return router;

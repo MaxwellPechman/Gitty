@@ -71,6 +71,12 @@ export async function fetchFileSystem(pid: requestId): Promise<any> {
     return post(url, pid)
 }
 
+export async function createFolder(pid: number, parent_dir: number, dirName: string): Promise<any> {
+    const url = getBackendBaseUrl() + "/createFolder"
+    const data = [pid, parent_dir, dirName]
+    return post(url, data)
+}
+
 async function post<Request, Response>(
     url: string,
     data?: Request,
