@@ -1,6 +1,6 @@
 import {BurgerMenu} from "./BurgerMenu.tsx";
 import gitty_icon from "../../assets/icons/gitty.png";
-import {Searchbar} from "../searchbar/Searchbar.tsx";
+import {Searchbar} from "./Searchbar.tsx";
 import {useNavigate} from "react-router-dom";
 import profile_icon from "../../assets/icons/profile_icon_that_looks_overweight.png"
 
