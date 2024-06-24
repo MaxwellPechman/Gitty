@@ -6,43 +6,54 @@ import {projectDetails} from "../../types/project.ts";
 import folder from "../../assets/icons/folder/small/folder.png";
 import file from "../../assets/icons/folder/small/file.png";
 import {Directory} from "../../types/filesystem.ts";
+import {Tasks} from "../projects/Task.tsx";
 
 export function ProjectDetails() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [ items, setItems] = useState<Directory[]>([]);
     const [ projectData, setProjectData] = useState<projectDetails>();
+    const [ folderName, setFolderName] = useState("");
+    const [ focusedFolder] = useState<number | null>(null);
     useEffect(() => {
         getProjectById({id: Number(id)}).then((data) => {
             setProjectData(data[0])
         })
 
         fetchFileSystem({id: Number(id)}).then((data) => setItems(data))
-    }, [])
+    }, [id])
 
     // @ts-ignore
     const RecursiveComponent = ({ data}) => {
         const [showNested, setShowNested] = useState({});
         // @ts-ignore
         const toggleNested = (name) => {
-            // @ts-ignore
-            setShowNested({ ...showNested, [name]: !showNested[name] });
+            setShowNested((prev) => ({
+                ...prev,
+                // @ts-ignore
+                [name]: !prev[name]
+            }));
         };
+
 
         return (
             <div className="pl-3">
                 {// @ts-ignore
                     data.map((parent) => {
                     return (
-                        <div key={parent.name}>
-                            <div className="flex flex-row p-1 hover:bg-code-grey-500 rounded-2xl" onClick={() => toggleNested(parent.name)}>
+                        <div key={parent.id}>
+                            <div className="flex flex-row p-1 hover:bg-code-grey-500 rounded-2xl"
+                                 onClick={() => {
+                                     toggleNested(parent.name);
+                                 }}
+                                 key={parent.id}>
                                 <img src={parent.folder ? folder : file} alt=""/>
                                 <span>{parent.name}</span>
                             </div>
 
                             <div className={// @ts-ignore
                                 !showNested[parent.name] ? "hidden" : ""}>
-                            {parent.children && <RecursiveComponent data={parent.children} />}
+                            {parent.children && <RecursiveComponent data={parent.children}/>}
                             </div>
                         </div>
                     );
@@ -67,19 +78,28 @@ export function ProjectDetails() {
                     <div className="flex flex-row">
                         <div className="w-2/3">
                             <span className="text-code-grey-500">Folder:</span>
+                            <input type="text"
+                                   className="pl-2 bg-transparent ml-2 rounded-2xl border-white border-[1px]"
+                                   placeholder="Foldername"
+                                   onChange={(event) => {
+                                    setFolderName(event.target.value);
+                            }}/>
                             <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5"
-                            onClick={() => createFolder(1, 1, "test")}>Add Folder
+                            onClick={() => {
+                                createFolder(Number(id), focusedFolder, folderName);
+                                window.location.reload();
+                            }}>Add Folder
                             </button>
                             <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5">Upload File
                             </button>
-                            <div className="w-full border border-code-border-projects rounded-2xl p-2 mt-2">
+                            <div className="w-full h-360 border border-code-border-projects rounded-2xl p-2 mt-2 overflow-y-scroll">
                                 <RecursiveComponent data={items} />
                             </div>
                         </div>
                         <div className="w-1/3">
                             <span className="text-code-grey-500">Tasks:</span>
                             <div className="w-full border border-code-border-projects rounded-2xl p-2">
-                                TODO: Projecttasks
+                                <Tasks />
                             </div>
                         </div>
                     </div>
