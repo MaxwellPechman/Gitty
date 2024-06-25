@@ -21,8 +21,8 @@ export function Tasks() {
         return
     }, [])
 
-    const [colDefs] = useState([
-        {field: "Taskname", flex: 10},
+    const [colDefs] = useState<any>([
+        {field: "Task name", flex: 10},
         {field: "Project", flex: 3},
         {field: "Status", flex: 2},
         {field: "Action", flex: 2}
