@@ -5,7 +5,7 @@ import iconDatabase from "../../assets/icons/projects/small/Database.png"
 import iconOther from "../../assets/icons/projects/small/Other.png"
 import progressIcon from "../../assets/icons/projects/small/Progress.png"
 import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {getUserProjects} from "../../api/Api.ts";
 import {Project} from "../../types/project.ts";
 import {useNavigate} from "react-router-dom";
@@ -39,7 +39,7 @@ export function Projects() {
                     <p className="mt-[7px] text-[12px] pl-[18px]">{getType(project.projectType)}</p>
                 </div>
                 <div className="mt-[60px] ml-[17px]">
-                    <Status projectStatus={project.projectStatus} />
+                    <StatusDisplay projectStatus={project.projectStatus} />
                 </div>
             </div>
         )
@@ -82,7 +82,7 @@ function getType(projectTpye: number | undefined) {
     }
 }
 
-const Status: React.FC<boolean> = ({projectStatus}) => {
+function StatusDisplay({ projectStatus }: { projectStatus: boolean })  {
     switch (projectStatus) {
         case false:
             return <div className="flex flex-row">
