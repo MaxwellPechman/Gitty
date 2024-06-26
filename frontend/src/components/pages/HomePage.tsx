@@ -127,7 +127,7 @@ export function HomePage() {
                         <p className="text-[16px] mt-2 text-code-grey-500">Description</p>
                         <textarea
                             className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
-                            placeholder="What is your task about..."
+                            placeholder="What is your project about..."
                             onChange={(event) => setProject({
                                 pid: project.pid,
                                 projectName: project.projectName,
