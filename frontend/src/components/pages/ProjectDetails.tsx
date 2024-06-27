@@ -1,12 +1,13 @@
 import {Topnav} from "../topnav/Topnav.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {createFolder, fetchFileSystem, getProjectById} from "../../api/Api.ts";
+import {createFolder, fetchFileSystem, getProjectById, getProjectTasks} from "../../api/Api.ts";
 import {projectDetails} from "../../types/project.ts";
 import folder from "../../assets/icons/folder/small/folder.png";
 import file from "../../assets/icons/folder/small/file.png";
 import {Directory} from "../../types/filesystem.ts";
-import {Tasks} from "../projects/Task.tsx";
+import {ITask} from "../projects/Task.tsx";
+import {AgGridReact} from "ag-grid-react";
 
 export function ProjectDetails() {
     const navigate = useNavigate();
@@ -23,8 +24,28 @@ export function ProjectDetails() {
         fetchFileSystem({id: Number(id)}).then((data) => setItems(data))
     }, [id])
 
+    const [tasks, setTasks] = useState<ITask[]>([])
+
+    const actionComponent = (props: any) => {
+        return (
+            <button onClick={() => console.log(props.data)}>...</button>
+        )
+    }
+
+    const [colDefs] = useState<any>([
+        {field: "Taskname", flex: 5},
+        {field: "Project", flex: 4},
+        {field: "Status", flex: 2},
+        {field: "Action", flex: 2, cellRenderer: actionComponent}
+    ])
+    useEffect(() => {
+        getProjectTasks(Number(id)).then((data) => {
+            setTasks(data)
+        })
+    }, [])
+
     // @ts-ignore
-    const RecursiveComponent = ({ data}) => {
+    const RecursiveComponent = ({ data }) => {
         const [showNested, setShowNested] = useState({});
         // @ts-ignore
         const toggleNested = (name) => {
@@ -99,7 +120,9 @@ export function ProjectDetails() {
                         <div className="w-1/3">
                             <span className="text-code-grey-500">Tasks:</span>
                             <div className="w-full border border-code-border-projects rounded-2xl p-2">
-                                <Tasks />
+                                <div className="ag-theme-TaskGrid" style={{height: 350}}>
+                                    <AgGridReact rowData={tasks} columnDefs={colDefs}/>
+                                </div>
                             </div>
                         </div>
                     </div>
