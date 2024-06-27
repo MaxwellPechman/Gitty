@@ -25,3 +25,8 @@ export async function getProjectById(db: PostgresClient, sql: SQLFileManager, pr
 
     return await db.query(sql.getSQLStatement("selectProjectById.sql"), values)
 }
+
+export async function getProjectTasks(db: PostgresClient, sql: SQLFileManager, projectId: number) {
+    const values = [projectId]
+    return await db.query(sql.getSQLStatement("selectProjectTasks.sql"), values)
+}

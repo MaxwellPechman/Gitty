@@ -5,8 +5,8 @@ import {registerUser, getUserProjects, getUserTasks, loginUser} from "./controll
 import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
 import {newProject, newTask} from "./types/project";
-import {createProject, getProjectById} from "./controllers/projects";
-import {createTask} from "./controllers/task";
+import {createProject, getProjectById, getProjectTasks} from "./controllers/projects";
+import {createTask, updateTaskStatus} from "./controllers/task";
 import {getProfileData} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
 import {createFolder, fetchDirectories} from "./controllers/filesystem";
@@ -59,5 +59,14 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
         ctx.body = await createFolder(db, sql, data[0], data[1], data[2])
     })
 
+    router.post("/api/getProjectTasks", async (ctx) => {
+        const data = ctx.request.body as [number]
+        ctx.body = await getProjectTasks(db, sql, data[0])
+    })
+
+    router.post("/api/updateTaskStatus", async (ctx) => {
+        const data = ctx.request.body as [number, number]
+        ctx.body = await updateTaskStatus(db, sql, data[0], data[1])
+    })
     return router;
 }
