@@ -73,6 +73,9 @@ function buildDirectoryHierarchy(directories: FilesystemItem[]): FilesystemItem[
 }
 
 export async function createFolder(db: PostgresClient, sql: SQLFileManager, pid: number, parentDir: number, dirName: string) {
-    console.log([pid, parentDir, dirName])
     return await db.execute(sql.getSQLStatement("createFolder.sql"), [pid, parentDir, dirName]);
+}
+
+export async function uploadFile(db: PostgresClient, sql: SQLFileManager, pid: number, parentDir: number, fileName: string, fileContent: string) {
+    return await db.execute(sql.getSQLStatement("uploadFile.sql"), [pid, parentDir, fileName, fileContent]);
 }

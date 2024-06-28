@@ -9,7 +9,7 @@ import {createProject, getProjectById, getProjectTasks} from "./controllers/proj
 import {createTask, updateTaskStatus} from "./controllers/task";
 import {getProfileData} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
-import {createFolder, fetchDirectories} from "./controllers/filesystem";
+import {createFolder, fetchDirectories, uploadFile} from "./controllers/filesystem";
 
 export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
@@ -68,5 +68,11 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
         const data = ctx.request.body as [number, number]
         ctx.body = await updateTaskStatus(db, sql, data[0], data[1])
     })
+
+    router.post("/api/uploadFile", async (ctx) => {
+        const data = ctx.request.body as [number, number, string, string]
+        ctx.body = await uploadFile(db, sql, data[0], data[1], data[2], data[3])
+    })
+
     return router;
 }

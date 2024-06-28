@@ -10,7 +10,7 @@ export async function createApp(db: PostgresClient, sql: SQLFileManager) {
     const router = await createRouter(db, sql)
 
     app.use(cors())
-    app.use(bodyParser())
+    app.use(bodyParser({textLimit: '200mb'}))
     app.use(router.routes())
     app.use(router.allowedMethods())
 

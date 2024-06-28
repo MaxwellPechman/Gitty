@@ -1,7 +1,7 @@
 import {Topnav} from "../topnav/Topnav.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {createFolder, fetchFileSystem, getProjectById, getProjectTasks} from "../../api/Api.ts";
+import {createFolder, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../api/Api.ts";
 import {projectDetails} from "../../types/project.ts";
 import folder from "../../assets/icons/folder/small/folder.png";
 import file from "../../assets/icons/folder/small/file.png";
@@ -69,7 +69,7 @@ export function ProjectDetails() {
                                  }}
                                  key={parent.id}>
                                 <img src={parent.folder ? folder : file} alt=""/>
-                                <span>{parent.name}</span>
+                                {parent.folder ? <span>{parent.name}</span> : <a href={parent.file_content} className="text-white" download={parent.name}>{parent.name}</a>}
                             </div>
 
                             <div className={// @ts-ignore
@@ -111,8 +111,14 @@ export function ProjectDetails() {
                                 window.location.reload();
                             }}>Add Folder
                             </button>
-                            <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5">Upload File
-                            </button>
+                            <input type="file" name="file" onChange={(event) => {
+                                // @ts-ignore
+                                convertFileToBase64(event.target.files[0]).then((data) => {
+                                   // @ts-ignore
+                                    uploadFile(Number(id), focusedFolder, event.target.files[0].name, data)
+                                });
+                            }}
+                                className="p-2 rounded-2xl"></input>
                             <div className="w-full h-360 border border-code-border-projects rounded-2xl p-2 mt-2 overflow-y-scroll">
                                 <RecursiveComponent data={items} />
                             </div>
@@ -130,4 +136,15 @@ export function ProjectDetails() {
             </div>
         </div>
     )
+}
+
+async function convertFileToBase64(file: any) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            resolve(reader.result);
+        }
+        reader.onerror = reject;
+    })
 }

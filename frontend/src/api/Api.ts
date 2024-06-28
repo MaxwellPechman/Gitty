@@ -92,6 +92,13 @@ export async function updateTaskStatus(status: number, tid: number): Promise<any
     return post(url, data)
 }
 
+export async function uploadFile(pid: number, parent_dir: number | null, fileName: string, fileContent: unknown): Promise<any> {
+    const url = getBackendBaseUrl() + "/uploadFile"
+    const data = [pid, parent_dir, fileName, fileContent]
+
+    return post(url, data)
+}
+
 async function post<Request, Response>(
     url: string,
     data?: Request,
