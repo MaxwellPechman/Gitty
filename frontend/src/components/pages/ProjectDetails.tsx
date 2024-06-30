@@ -3,16 +3,16 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {createFolder, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../api/Api.ts";
 import {projectDetails} from "../../types/project.ts";
-import folder from "../../assets/icons/folder/small/folder.png";
-import file from "../../assets/icons/folder/small/file.png";
-import {Directory} from "../../types/filesystem.ts";
+
+import {FilesystemItem} from "../../types/filesystem.ts";
 import {ITask} from "../projects/Task.tsx";
 import {AgGridReact} from "ag-grid-react";
+import {FolderView} from "./projects/Folderview.tsx";
 
 export function ProjectDetails() {
     const navigate = useNavigate();
     const { id } = useParams();
-    const [ items, setItems] = useState<Directory[]>([]);
+    const [ items, setItems] = useState<FilesystemItem[]>([]);
     const [ projectData, setProjectData] = useState<projectDetails>();
     const [ folderName, setFolderName] = useState("");
     const [ focusedFolder] = useState<number | null>(null);
@@ -43,45 +43,6 @@ export function ProjectDetails() {
             setTasks(data)
         })
     }, [])
-
-    // @ts-ignore
-    const RecursiveComponent = ({ data }) => {
-        const [showNested, setShowNested] = useState({});
-        // @ts-ignore
-        const toggleNested = (name) => {
-            setShowNested((prev) => ({
-                ...prev,
-                // @ts-ignore
-                [name]: !prev[name]
-            }));
-        };
-
-
-        return (
-            <div className="pl-3">
-                {// @ts-ignore
-                    data.map((parent) => {
-                    return (
-                        <div key={parent.id}>
-                            <div className="flex flex-row p-1 hover:bg-code-grey-500 rounded-2xl"
-                                 onClick={() => {
-                                     toggleNested(parent.name);
-                                 }}
-                                 key={parent.id}>
-                                <img src={parent.folder ? folder : file} alt=""/>
-                                {parent.folder ? <span>{parent.name}</span> : <a href={parent.file_content} className="text-white" download={parent.name}>{parent.name}</a>}
-                            </div>
-
-                            <div className={// @ts-ignore
-                                !showNested[parent.name] ? "hidden" : ""}>
-                            {parent.children && <RecursiveComponent data={parent.children}/>}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    }
 
     return (
         <div className="w-screen h-screen bg-code-grey-950">
@@ -120,7 +81,7 @@ export function ProjectDetails() {
                             }}
                                 className="p-2 rounded-2xl"></input>
                             <div className="w-full h-360 border border-code-border-projects rounded-2xl p-2 mt-2 overflow-y-scroll">
-                                <RecursiveComponent data={items} />
+                                <FolderView id={0} name={""} isDir={true} parentDir={null} children={items}/>
                             </div>
                         </div>
                         <div className="w-1/3">

@@ -1,8 +1,8 @@
 export type FilesystemItem = {
     id: number;
     name: string;
-    folder: boolean;
-    parent_id?: number;
+    isDir: boolean;
+    parentDir: number | null;
     children?: FilesystemItem[];
     file_content?: string;
 }

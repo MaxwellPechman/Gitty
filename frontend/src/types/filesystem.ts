@@ -1,6 +1,8 @@
-export type Directory = {
+export type FilesystemItem = {
     id: number;
     name: string;
-    folder: boolean;
-    children?: Directory[];
+    isDir: boolean;
+    parentDir: number | null;
+    children?: FilesystemItem[];
+    file_content?: string;
 }

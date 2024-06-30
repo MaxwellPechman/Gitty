@@ -6,9 +6,7 @@ import { requestId } from "../types/user";
 export async function fetchDirectories(db: PostgresClient, sql: SQLFileManager, pid: requestId) {
     try {
         const directories = await fetchDirectoriesFromDB(db, sql, pid["id"]);
-        const hierarchy = buildDirectoryHierarchy(directories);
-
-        return hierarchy;
+        return buildDirectoryHierarchy(directories);
     } catch (error) {
         console.error('Error fetching directories:', error);
         throw error;
@@ -21,24 +19,24 @@ async function fetchDirectoriesFromDB(db: PostgresClient, sql: SQLFileManager, p
         const filesQuery = await db.query(sql.getSQLStatement("selectFiles.sql"), [pid]);
 
         const directories: FilesystemItem[] = directoriesQuery.map((row: any) => ({
-            id: row.id,
-            name: row.name,
-            folder: true,
-            parent_id: row.parent_id !== undefined ? row.parent_id : null,
-            children: [],
-        }));
+                id: row.id,
+                name: row.name,
+                isDir: true,
+                parentDir: row.parentdir !== undefined ? row.parentdir : null,
+                children: [],
+            }));
 
         const files: FilesystemItem[] = filesQuery.map((row: any) => ({
             id: row.fid,
             name: row.file_name,
-            folder: false,
-            parent_id: row.file_parentdir,
+            isDir: false,
+            parentDir: row.file_parentdir,
             file_pid: row.file_pid,
             file_content: row.file_content
         }));
 
         directories.forEach(directory => {
-            directory.children = files.filter(file => file.parent_id === directory.id);
+            directory.children = files.filter(file => file.parentDir === directory.id);
         });
 
         return directories;
@@ -56,10 +54,10 @@ function buildDirectoryHierarchy(directories: FilesystemItem[]): FilesystemItem[
 
     // Baue die Hierarchie basierend auf der parent_id auf
     directoriesCopy.forEach(directory => {
-        if (directory.parent_id === null) {
+        if (directory.parentDir === null) {
             rootDirectories.push(directory); // Füge Wurzelverzeichnis hinzu
         } else {
-            const parentDirectory = directoriesCopy.find(d => d.id === directory.parent_id);
+            const parentDirectory = directoriesCopy.find(d => d.id === directory.parentDir);
             if (parentDirectory) {
                 if (!parentDirectory.children) {
                     parentDirectory.children = [];

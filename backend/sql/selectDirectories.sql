@@ -2,8 +2,8 @@ WITH RECURSIVE directory_hierarchy AS (
     SELECT
         dirid AS id,
         dir_name AS name,
-        true AS folder,
-        dir_parentdir AS parent_id,
+        true AS isDir,
+        dir_parentdir AS parentDir,
         dir_pid
     FROM directories
     WHERE dir_parentdir IS NULL
@@ -13,8 +13,8 @@ WITH RECURSIVE directory_hierarchy AS (
     SELECT
         d.dirid AS id,
         d.dir_name AS name,
-        true AS folder,
-        d.dir_parentdir AS parent_id,
+        true AS isDir,
+        d.dir_parentdir AS parentDir,
         d.dir_pid
     FROM directories d
     INNER JOIN directory_hierarchy dh ON d.dir_parentdir = dh.id
@@ -22,7 +22,7 @@ WITH RECURSIVE directory_hierarchy AS (
 SELECT
     id,
     name,
-    folder,
-    parent_id
+    isDir,
+    parentDir
 FROM directory_hierarchy
 WHERE dir_pid = $1;
