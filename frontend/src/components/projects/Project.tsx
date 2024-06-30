@@ -6,7 +6,7 @@ import iconOther from "../../assets/icons/projects/small/Other.png"
 import progressIcon from "../../assets/icons/projects/small/Progress.png"
 import cancelIcon from "../../assets/icons/projects/small/Cancel.png"
 import {useEffect, useState} from "react";
-import {getUserProjects} from "../../api/Api.ts";
+import {requestUserProjects} from "../../api/Api.ts";
 import {Project} from "../../types/project.ts";
 import {useNavigate} from "react-router-dom";
 
@@ -21,7 +21,7 @@ export function Projects() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUserProjects(userId).then((data) => {
+        requestUserProjects(userId).then((data) => {
             if (data != "") {
                 setProjects(data)
             }

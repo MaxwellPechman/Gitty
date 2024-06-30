@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "./ag-theme-TaskGrid.css";
-import {getUserTasks, updateTaskStatus} from "../../api/Api.ts";
+import {requestUserTasks, updateTaskStatus} from "../../api/Api.ts";
 
 export interface ITask {
     tid: number,
@@ -16,7 +16,7 @@ export function Tasks() {
     const [tasks, setTasks] = useState<ITask[]>([])
     const [userId] = useState<string>(localStorage.getItem("sessionID") || "")
     useEffect(() => {
-        getUserTasks(userId).then((data) => {
+        requestUserTasks(userId).then((data) => {
             setTasks(data)
         })
     }, [])

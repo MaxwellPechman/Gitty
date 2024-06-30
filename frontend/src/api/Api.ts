@@ -30,10 +30,10 @@ export async function requestUserLogin(userData: UserLogin): Promise<UserLoginRe
     return post<UserLogin, UserLoginResponse>(url, userData)
 }
 
-export async function getUserProjects(uid: string): Promise<any> {
+export async function requestUserProjects(uid: string): Promise<any> {
     const url = getBackendBaseUrl() + "/getUserProjects"
-    const data = {'sid': uid}
-    return post(url, data)
+
+    return post(url, {'sid': uid})
 }
 
 export async function getProjectById(pid: requestId): Promise<any> {
@@ -42,7 +42,7 @@ export async function getProjectById(pid: requestId): Promise<any> {
     return post(url, pid)
 }
 
-export async function getUserTasks(uid: string): Promise<any> {
+export async function requestUserTasks(uid: string): Promise<any> {
     const url = getBackendBaseUrl() + "/getUserTasks"
     const data = {'sid': uid}
     return post(url, data)

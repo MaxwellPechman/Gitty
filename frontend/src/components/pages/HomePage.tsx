@@ -2,7 +2,7 @@ import {Topnav} from "../topnav/Topnav.tsx";
 import {Projects} from "../projects/Project.tsx";
 import {Tasks} from "../projects/Task.tsx";
 import {useEffect, useState} from "react";
-import {createProject, createTask, getTypes, getUserProjects} from "../../api/Api.ts";
+import {createProject, createTask, getTypes, requestUserProjects} from "../../api/Api.ts";
 import {newProject, types, newTask} from "../../types/project.ts";
 
 export function HomePage() {
@@ -31,7 +31,7 @@ export function HomePage() {
     })
 
     useEffect(() => {
-        getUserProjects(userId || "").then((data) => {
+        requestUserProjects(userId || "").then((data) => {
             setOptionsTask(data)
             setTask({
                 tid: 0,
