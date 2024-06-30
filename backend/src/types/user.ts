@@ -1,5 +1,14 @@
 import {Session} from "./session";
 
+export type DatabaseUserColumns = [{
+    uid: number
+    mail: string
+    password: string
+    date_created: string
+    date_changed: string
+    active: boolean
+}]
+
 export type UserRegister = {
     name: string
     mail: string
