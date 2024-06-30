@@ -2,23 +2,54 @@ import logo from "../../assets/icons/Gitty_Logo@2.png"
 import lock_icon from "../../assets/icons/lock2.png";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {requestUserLogin} from "../../api/Api.ts";
+import {requestUserLogin, requestUserProjects, requestUserTasks} from "../../api/Api.ts";
 import {UserLogin} from "../../types/user.ts";
 import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
+import {useProjectsStore} from "../../stores/ProjectsStore.ts";
+import {Project} from "../../types/project.ts";
 
 export function LoginPage() {
     const [loginData, setLoginData] = useState({} as UserLogin)
     const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
+    const { projects, setProjects } = useProjectsStore();
     const navigate = useNavigate();
+
+    function fetchUserProjects(sessionId: string) {
+        requestUserProjects(sessionId)
+            .then((response: Project[]) => {
+                setProjects(response)
+
+                console.log(projects)
+
+            })
+            .catch((err) => {
+                console.log("Unable to fetch user projects:", err)
+            })
+    }
+
+    function fetchUserTasks(sessionId: string) {
+        requestUserTasks(sessionId)
+            .then((response) => {
+                console.log("sheesh", response)
+
+            })
+            .catch((err) => {
+                console.log("Unable to fetch user tasks:", err)
+            })
+    }
 
     function loginUser() {
         requestUserLogin(loginData)
             .then((response) => {
+                const session = response.session
+
                 console.log(response)
-                if(response.session === "") {
+                if(session === "") {
                     setDisplayErrorDialog("INVALID_CREDENTIALS")
                 } else {
-                    localStorage.setItem("sessionID", response.session)
+                    fetchUserProjects(session)
+                    fetchUserTasks(session)
+                    localStorage.setItem("sessionID", session)
                     navigate("/home")
                 }
         })
