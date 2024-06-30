@@ -1,11 +1,12 @@
 import {FilesystemItem} from "../../../types/filesystem.ts";
-import {useState} from "react";
+import {useState, useContext} from "react";
 import folder from "../../../assets/icons/folder/small/folder.png";
 import file from "../../../assets/icons/folder/small/file.png";
+import {focusedFolderContext} from "../ProjectDetails.tsx";
 
 export function FolderView({children}: FilesystemItem) {
     const [showChildren, setShowChildren] = useState(false);
-
+    const [setFocusedFolder] = useContext(focusedFolderContext);
     if (children === undefined) {
         return <></>;
     }
@@ -22,6 +23,7 @@ export function FolderView({children}: FilesystemItem) {
                                         <div className="flex flex-row p-1 hover:bg-code-grey-500 rounded-2xl"
                                              onClick={() => {
                                                  setShowChildren(!showChildren);
+                                                 setFocusedFolder(child.id);
                                              }}>
                                             <img src={folder} alt="Folder"/>
                                             <span>{child.name}</span>

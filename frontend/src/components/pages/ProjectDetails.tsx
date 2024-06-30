@@ -1,21 +1,23 @@
 import {Topnav} from "../topnav/Topnav.tsx";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, createContext} from "react";
 import {createFolder, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../api/Api.ts";
 import {projectDetails} from "../../types/project.ts";
-
 import {FilesystemItem} from "../../types/filesystem.ts";
 import {ITask} from "../projects/Task.tsx";
 import {AgGridReact} from "ag-grid-react";
 import {FolderView} from "./projects/Folderview.tsx";
 
+export const focusedFolderContext = createContext<number | undefined>(undefined);
+
 export function ProjectDetails() {
+
     const navigate = useNavigate();
     const { id } = useParams();
     const [ items, setItems] = useState<FilesystemItem[]>([]);
     const [ projectData, setProjectData] = useState<projectDetails>();
     const [ folderName, setFolderName] = useState("");
-    const [ focusedFolder] = useState<number | null>(null);
+    const [ focusedFolder, setFocusedFolder] = useState<number>();
     useEffect(() => {
         getProjectById({id: Number(id)}).then((data) => {
             setProjectData(data[0])
@@ -25,13 +27,11 @@ export function ProjectDetails() {
     }, [id])
 
     const [tasks, setTasks] = useState<ITask[]>([])
-
     const actionComponent = (props: any) => {
         return (
             <button onClick={() => console.log(props.data)}>...</button>
         )
     }
-
     const [colDefs] = useState<any>([
         {field: "Taskname", flex: 5},
         {field: "Project", flex: 4},
@@ -68,7 +68,7 @@ export function ProjectDetails() {
                             }}/>
                             <button className="bg-white text-black w-24 rounded-2xl justify-end ml-5"
                             onClick={() => {
-                                createFolder(Number(id), focusedFolder, folderName);
+                                createFolder(Number(id), focusedFolder === undefined ? null : focusedFolder, folderName);
                                 window.location.reload();
                             }}>Add Folder
                             </button>
@@ -81,7 +81,9 @@ export function ProjectDetails() {
                             }}
                                 className="p-2 rounded-2xl"></input>
                             <div className="w-full h-360 border border-code-border-projects rounded-2xl p-2 mt-2 overflow-y-scroll">
-                                <FolderView id={0} name={""} isDir={true} parentDir={null} children={items}/>
+                                <focusedFolderContext.Provider value={focusedFolder}>
+                                    <FolderView id={0} name={""} isDir={true} parentDir={null} children={items} />
+                                </focusedFolderContext.Provider>
                             </div>
                         </div>
                         <div className="w-1/3">
