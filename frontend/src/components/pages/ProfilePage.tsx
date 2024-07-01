@@ -48,7 +48,7 @@ export function ProfilePage() {
                                 {profileRequest.data?.projects.map((project) => {
                                     return (
                                         <div>
-                                            <div className="hover:bg-code-project-detail rounded-2xl p-2"
+                                            <div className="hover:bg-code-project-detail hover:cursor-pointer rounded-2xl p-2"
                                                  onClick={() => navigate(`/project/${project.pid}`)}>
                                                 <h1 className="text-2xl font-bold">{project.projectName}</h1>
                                                 <span className="text-[12px]">{project.projectType}</span>
