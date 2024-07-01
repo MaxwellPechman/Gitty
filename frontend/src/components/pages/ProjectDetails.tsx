@@ -48,7 +48,7 @@ export function ProjectDetails() {
         <div className="w-screen h-screen bg-code-grey-950">
             <Topnav/>
             <div className="m-4">
-                <button className="text-4xl text-code-grey-500" onClick={() => navigate("/home")}>&lt;</button>
+                <button className="text-4xl text-code-grey-500" onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
                     <div className="flex items-center justify-center w-full">
                         <h1>{projectData?.project_name}</h1>

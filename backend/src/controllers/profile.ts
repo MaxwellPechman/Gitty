@@ -12,10 +12,10 @@ export async function getProfileData(db: PostgresClient, sql: SQLFileManager, us
 
     } else {
         const userId = result[0].uid
-        const userData = await db.query(sql.getSQLStatement("selectUserByUserId.sql"), [userId])
-        const projectData = await db.query(sql.getSQLStatement("selectUserProjects.sql"), [userId])
-        const taskData = await db.query(sql.getSQLStatement("selectUserTasks.sql"), [userId])
-
-        console.log(userData, projectData, taskData)
+        const user = await db.query(sql.getSQLStatement("selectUserByUserId.sql"), [userId])
+        const projectData = await db.query(sql.getSQLStatement("selectUserOwnerProjects.sql"), [userData.session])
+        const taskData = await db.query(sql.getSQLStatement("selectUserTasksDetail.sql"), [userData.session])
+        console.log( user, projectData, taskData)
+        return new Promise(resolve => resolve({username: user[0].username, mail: user[0].mail, projects: projectData, tasks: taskData}));
     }
 }
