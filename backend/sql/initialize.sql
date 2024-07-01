@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(64) NOT NULL,
     date_created DATE NOT NULL,
     date_changed DATE NOT NULL,
-    active BOOLEAN NOT NULL
+    active BOOLEAN NOT NULL,
+    img TEXT
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
@@ -88,7 +89,7 @@ CREATE TABLE IF NOT EXISTS directories (
 CREATE TABLE IF NOT EXISTS files(
     fid SERIAL PRIMARY KEY,
     file_name VARCHAR(256),
-    file_content VARCHAR(256),
+    file_content TEXT,
     file_parentdir INTEGER,
     CONSTRAINT fk_dirid
         FOREIGN KEY (file_parentdir)

@@ -99,6 +99,12 @@ export async function uploadFile(pid: number, parent_dir: number | null, fileNam
     return post(url, data)
 }
 
+export async function uploadProfilePicture(sid: string, imgContent: unknown): Promise<any> {
+    const url = getBackendBaseUrl() + "/uploadProfilePicture"
+
+    return post(url, [sid, imgContent])
+}
+
 async function post<Request, Response>(
     url: string,
     data?: Request,

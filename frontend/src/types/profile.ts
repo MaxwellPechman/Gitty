@@ -1,8 +1,9 @@
 export type ProfileResponse = {
-    username: string
-    mail: string
-    projects: Projects[]
-    tasks: Tasks[]
+    username: string;
+    mail: string;
+    userPicture: null | string;
+    projects: Projects[];
+    tasks: Tasks[];
 }
 
 type Projects = {

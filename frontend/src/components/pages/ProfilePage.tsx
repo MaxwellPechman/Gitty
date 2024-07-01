@@ -1,7 +1,8 @@
 import {Topnav} from "../topnav/Topnav.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {requestUserProfile} from "../../api/Api.ts";
+import {requestUserProfile, uploadProfilePicture} from "../../api/Api.ts";
 import {useNavigate} from "react-router-dom";
+import blank from "../../assets/icons/profile/large/profile.png"
 
 export function ProfilePage() {
     const sessionID = localStorage.getItem("sessionID")
@@ -16,10 +17,6 @@ export function ProfilePage() {
         queryFn: () => requestUserProfile({session: sessionID})
     })
 
-    if(profileRequest.isLoading) {
-        return <div>Loading...</div>
-    }
-
     if(profileRequest.isError) {
         return <div>Error...</div>
     }
@@ -27,12 +24,31 @@ export function ProfilePage() {
     return (
         <div className="w-screen min-h-screen h-full bg-code-grey-950">
             <Topnav/>
+            {profileRequest.isLoading ? <div>Loading...</div> :
             <div className="mt-12 w-screen flex gap-x-12 justify-around">
                 <div className="flex flex-col gap-y-6">
-                    <img className="border-2 rounded border-code-grey-700" src={""} alt={"profile_image"}/>
+                    <label>
+                        <input className="hidden"
+                               type="file"
+                               accept="image/*"
+                               onChange={(event) => {
+                                   // @ts-ignore
+                                   convertFileToBase64(event.target.files[0]).then((data: string) => {
+                                       console.log(data.length/8/1000 + "mb")
+                                       uploadProfilePicture(sessionID, data).then(() => {
+                                           window.location.reload();
+                                       })
+                                   });
+                               }}/>
+                        <img className="mx-11 border-2 rounded-full border-code-grey-700 w-[100px] h-[100px] hover:cursor-pointer"
+                             src={profileRequest.data?.userPicture === null ? blank : profileRequest.data?.userPicture}
+                             alt={"profile_image"} />
+                    </label>
+
                     <ul className="flex flex-col gap-y-4">
                         <label className="font-roboto text-code-grey-500">Username</label>
-                        <input placeholder={profileRequest.data?.username} disabled={true} className="p-1 pl-2 rounded-2xl bg-transparent border-code-login-gray border-[1px]"/>
+                        <input placeholder={profileRequest.data?.username} disabled={true}
+                               className="p-1 pl-2 rounded-2xl bg-transparent border-code-login-gray border-[1px]"/>
                         <label className="font-roboto text-code-grey-500">E-Mail</label>
                         <input placeholder={profileRequest.data?.mail} disabled={true} className="p-1 pl-2 rounded-2xl bg-transparent border-code-login-gray border-[1px]"/>
                     </ul>
@@ -73,7 +89,6 @@ export function ProfilePage() {
                             :
                             <div className="w-full">
                                 {profileRequest.data?.tasks.map((task) => {
-                                    console.log(task)
                                     return (
                                         <div>
                                             <div className="hover:bg-code-project-detail rounded-2xl p-2">
@@ -90,6 +105,18 @@ export function ProfilePage() {
                     </div>
                 </div>
             </div>
+            }
         </div>
     )
+}
+
+async function convertFileToBase64(file: any) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            resolve(reader.result);
+        }
+        reader.onerror = reject;
+    })
 }
