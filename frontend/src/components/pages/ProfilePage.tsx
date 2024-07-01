@@ -40,7 +40,7 @@ export function ProfilePage() {
                 <div className="w-[70%] flex flex-col gap-y-6">
                     <h1 className="text-[30px] text-code-grey-500">Projects</h1>
                     <div
-                        className="min-h-[200px] p-2 flex bg-code-grey-800 border-2 border-code-border-projects rounded">
+                        className="min-h-[200px] p-2 flex bg-code-grey-800 border-2 border-code-border-projects rounded-2xl">
                         {profileRequest.data?.projects === undefined ?
                             <div>No Projects involved</div>
                             :
@@ -52,8 +52,12 @@ export function ProfilePage() {
                                                  onClick={() => navigate(`/project/${project.pid}`)}>
                                                 <h1 className="text-2xl font-bold">{project.projectName}</h1>
                                                 <span className="text-[12px]">{project.projectType}</span>
-                                                <span className="text-[12px] ml-10">Created: {project.created}</span>
-                                                <span className="text-[12px] ml-10">Updated: {project.lastUpdated}</span>
+                                                <div className="flex flex-row justify-end -mt-[19px]">
+                                                    <span
+                                                        className="text-[12px]">Created: {project.created}</span>
+                                                    <span
+                                                        className="text-[12px] mx-2">Updated: {project.lastUpdated}</span>
+                                                </div>
                                             </div>
                                             <hr className="my-2"/>
                                         </div>
@@ -63,7 +67,7 @@ export function ProfilePage() {
                     </div>
                     <h1 className="text-[30px] text-code-grey-500">Tasks</h1>
                     <div
-                        className="min-h-[230px] p-2 flex bg-code-grey-800 border-2 border-code-border-projects rounded">
+                        className="min-h-[230px] p-2 flex bg-code-grey-800 border-2 border-code-border-projects rounded-2xl">
                         {profileRequest.data?.tasks === undefined ?
                             <div>No Tasks involved</div>
                             :
