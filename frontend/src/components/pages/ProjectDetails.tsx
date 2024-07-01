@@ -17,7 +17,7 @@ export function ProjectDetails() {
     const [ items, setItems] = useState<FilesystemItem[]>([]);
     const [ projectData, setProjectData] = useState<projectDetails>();
     const [ folderName, setFolderName] = useState("");
-    const [ focusedFolder, setFocusedFolder] = useState<number>();
+    const [ focusedFolder] = useState<number>();
     useEffect(() => {
         getProjectById({id: Number(id)}).then((data) => {
             setProjectData(data[0])
