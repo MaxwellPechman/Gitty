@@ -32,14 +32,15 @@ export function ProfilePage() {
                                type="file"
                                accept="image/*"
                                onChange={(event) => {
-                                   // @ts-ignore
-                                   convertFileToBase64(event.target.files[0]).then((data: string) => {
-                                       console.log(data.length/8/1000 + "mb")
-                                       uploadProfilePicture(sessionID, data).then(() => {
-                                           window.location.reload();
+                                   if (event.target.files === null) {
+                                   } else {
+                                       convertFileToBase64(event.target.files[0]).then((data: any) => {
+                                           uploadProfilePicture(sessionID, data).then(() => {
+                                               window.location.reload();
+                                           })
                                        })
-                                   });
-                               }}/>
+                                   }}}
+                        />
                         <img className="mx-11 border-2 rounded-full border-code-grey-700 w-[100px] h-[100px] hover:cursor-pointer"
                              src={profileRequest.data?.userPicture === null ? blank : profileRequest.data?.userPicture}
                              alt={"profile_image"} />
@@ -63,7 +64,7 @@ export function ProfilePage() {
                             <div className="w-full">
                                 {profileRequest.data?.projects.map((project) => {
                                     return (
-                                        <div>
+                                        <div key={project.pid}>
                                             <div className="hover:bg-code-project-detail hover:cursor-pointer rounded-2xl p-2"
                                                  onClick={() => navigate(`/project/${project.pid}`)}>
                                                 <h1 className="text-2xl font-bold">{project.projectName}</h1>
@@ -90,7 +91,7 @@ export function ProfilePage() {
                             <div className="w-full">
                                 {profileRequest.data?.tasks.map((task) => {
                                     return (
-                                        <div>
+                                        <div key={task.tid}>
                                             <div className="hover:bg-code-project-detail rounded-2xl p-2">
                                                 <h1 className="text-2xl font-bold">{task.task_name}</h1>
                                                 <span className="text-[12px]">{task.project_name}</span>
