@@ -37,7 +37,7 @@ export class BackendConfig {
     }
 
     public loadPort(): number {
-        const port = process.env.SERVER_PORT
+        const port = process.env.SERVER_PORT || "3000"
 
         if(port === undefined) {
             throw Error("Undefined server port.")
