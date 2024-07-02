@@ -72,7 +72,7 @@ function LogoutSection() {
                 <img className="w-[22px h-[22px]" src={profile_icon} alt={"profile_icon"}/>
             </li>
             <li className="mx-4 px-2 py-1 text-white border border-code-grey-950 bg-code-grey-950 rounded cursor-pointer hover:bg-code-grey-700 transition duration-200 ease-in-out"
-                onClick={() => logoutUser}>Logout
+                onClick={() => logoutUser()}>Logout
             </li>
         </ul>
     )

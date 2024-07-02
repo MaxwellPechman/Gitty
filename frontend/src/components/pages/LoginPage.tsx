@@ -7,19 +7,20 @@ import {UserLogin} from "../../types/user.ts";
 import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
 import {useProjectsStore} from "../../stores/ProjectsStore.ts";
 import {Project} from "../../types/project.ts";
+import {useTasksStore} from "../../stores/TasksStore.ts";
+import {Task} from "../../types/task.ts";
 
 export function LoginPage() {
     const [loginData, setLoginData] = useState({} as UserLogin)
     const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
-    const { projects, setProjects } = useProjectsStore();
+    const { setProjects } = useProjectsStore();
+    const { setTasks } = useTasksStore();
     const navigate = useNavigate();
 
     function fetchUserProjects(sessionId: string) {
         requestUserProjects(sessionId)
             .then((response: Project[]) => {
                 setProjects(response)
-
-                console.log(projects)
 
             })
             .catch((err) => {
@@ -29,8 +30,8 @@ export function LoginPage() {
 
     function fetchUserTasks(sessionId: string) {
         requestUserTasks(sessionId)
-            .then((response) => {
-                console.log("sheesh", response)
+            .then((response: Task[]) => {
+                setTasks(response)
 
             })
             .catch((err) => {
@@ -50,7 +51,7 @@ export function LoginPage() {
                     fetchUserProjects(session)
                     fetchUserTasks(session)
                     localStorage.setItem("sessionID", session)
-                    navigate("/home")
+                    navigate("/projects")
                 }
         })
             .catch(() => {
