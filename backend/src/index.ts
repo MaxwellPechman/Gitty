@@ -13,15 +13,31 @@ async function runApp() {
     const sql = new SQLFileManager()
     const app = await createApp(pg, sql)
 
-    initializeDatabase(pg, sql).catch((err) => {
+    await initializeDatabase(pg, sql).catch((err) => {
         console.log("Unable to initialize database", err)
     })
 
-    app.listen(config.loadPort(), config.loadHost(),() => {
+    const server = app.listen(config.loadPort(), config.loadHost(),() => {
         console.log("Server is running.")
     })
+
+    /*
+    const shutdown = () => {
+        server.close(() => {
+            pg.dispose()
+                .then(() => {
+                    process.exit(0)
+                })
+        });
+    };
+
+    process.on('SIGTERM', shutdown);
+    process.on('SIGINT', shutdown);
+
+     */
 }
 
 runApp().catch((err) => {
     console.error("Error while starting Backend", err)
 })
+
