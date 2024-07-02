@@ -1,20 +1,13 @@
-import {Topnav} from "../topnav/Topnav.tsx";
-import {Projects} from "../projects/Project.tsx";
-import {Tasks} from "../projects/Task.tsx";
 import {useEffect, useState} from "react";
-import {createProject, createTask, getTypes, requestUserProjects} from "../../api/Api.ts";
-import {newProject, types, newTask} from "../../types/project.ts";
-import {useNavigate} from "react-router-dom";
+import {newProject, newTask, types} from "../../../types/project.ts";
+import {createProject, createTask, getTypes, requestUserProjects} from "../../../api/Api.ts";
+import {Topnav} from "../../topnav/Topnav.tsx";
+import {Projects} from "../../projects/Project.tsx";
+import {Tasks} from "../../projects/Task.tsx";
 
-export function HomePage() {
-    const navigator = useNavigate();
 
+export function ProjectsPage() {
     const [userId] = useState<string>(localStorage.getItem("sessionID") || "");
-
-    if (userId === "") {
-        navigator("/login")
-    }
-
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
     const [optionsProject, setOptionsProject] = useState<types[]>([])
@@ -32,7 +25,7 @@ export function HomePage() {
         taskName: "",
         taskStatus: 0,
         taskPid: "",
-        taskDescription: "ABC",
+        taskDescription: "",
         uid: userId
     })
 
@@ -71,8 +64,7 @@ export function HomePage() {
                     <span className="text-[30px] text-code-grey-500 ml-4">My projects</span>
                     <button
                         className="ml-[31px] border-code-border-gray border-[1px] text-[14px] p-1 rounded-xl text-white w-40 hover:bg-white hover:text-black"
-                        onClick={toggleViewProjects}>+
-                        Create project
+                        onClick={toggleViewProjects}>+ Create project
                     </button>
                     <div
                         className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll noScrollbar">

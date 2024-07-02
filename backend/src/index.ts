@@ -21,7 +21,6 @@ async function runApp() {
         console.log("Server is running.")
     })
 
-    /*
     const shutdown = () => {
         server.close(() => {
             pg.dispose()
@@ -33,8 +32,6 @@ async function runApp() {
 
     process.on('SIGTERM', shutdown);
     process.on('SIGINT', shutdown);
-
-     */
 }
 
 runApp().catch((err) => {

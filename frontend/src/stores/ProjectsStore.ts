@@ -20,6 +20,6 @@ export const useProjectsStore = create<ProjectsStore>((set) => ({
         // Sets the current projects as a basis
         set((state) => ({
             // Extends current projects with a new project
-            projects: [...state.projects, ...projects],
+            projects: [...state.projects, ...projects]
         })),
 }))
