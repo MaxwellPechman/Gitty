@@ -4,7 +4,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import {createFolder, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../../api/Api.ts";
 import {projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
-import {ITask} from "../../projects/Task.tsx";
+import {ITask} from "./Task.tsx";
 import {AgGridReact} from "ag-grid-react";
 import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";

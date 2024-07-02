@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "./ag-theme-TaskGrid.css";
-import {requestUserTasks, updateTaskStatus} from "../../api/Api.ts";
+import {requestUserTasks, updateTaskStatus} from "../../../api/Api.ts";
 
 export interface ITask {
     tid: number,

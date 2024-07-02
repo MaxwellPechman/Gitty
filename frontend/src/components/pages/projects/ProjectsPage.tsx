@@ -2,8 +2,8 @@ import {useEffect, useState} from "react";
 import {newProject, newTask, types} from "../../../types/project.ts";
 import {createProject, createTask, getTypes, requestUserProjects} from "../../../api/Api.ts";
 import {Topnav} from "../../topnav/Topnav.tsx";
-import {Projects} from "../../projects/Project.tsx";
-import {Tasks} from "../../projects/Task.tsx";
+import {Projects} from "./Project.tsx";
+import {Tasks} from "./Task.tsx";
 
 
 export function ProjectsPage() {
