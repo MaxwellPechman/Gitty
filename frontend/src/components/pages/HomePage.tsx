@@ -4,10 +4,16 @@ import {Tasks} from "../projects/Task.tsx";
 import {useEffect, useState} from "react";
 import {createProject, createTask, getTypes, requestUserProjects} from "../../api/Api.ts";
 import {newProject, types, newTask} from "../../types/project.ts";
+import {useNavigate} from "react-router-dom";
 
 export function HomePage() {
+    const navigator = useNavigate();
 
     const [userId] = useState<string>(localStorage.getItem("sessionID") || "");
+
+    if (userId === "") {
+        navigator("/login")
+    }
 
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
