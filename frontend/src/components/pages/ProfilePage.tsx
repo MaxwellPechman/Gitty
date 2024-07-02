@@ -26,7 +26,7 @@ export function ProfilePage() {
             <Topnav/>
             {profileRequest.isLoading ? <div>Loading...</div> :
             <div className="mt-12 w-screen flex gap-x-12 justify-around">
-                <div className="flex flex-col gap-y-6">
+                <div className="flex flex-col gap-y-6 top-32 left-16 fixed">
                     <label>
                         <input className="hidden"
                                type="file"
@@ -54,7 +54,7 @@ export function ProfilePage() {
                         <input placeholder={profileRequest.data?.mail} disabled={true} className="p-1 pl-2 rounded-2xl bg-transparent border-code-login-gray border-[1px]"/>
                     </ul>
                 </div>
-                <div className="w-[70%] flex flex-col gap-y-6">
+                <div className="w-[70%] flex flex-col gap-y-6 ml-52 mb-10">
                     <h1 className="text-[30px] text-code-grey-500">Projects</h1>
                     <div
                         className="min-h-[200px] p-2 flex bg-code-grey-800 border-2 border-code-border-projects rounded-2xl">
