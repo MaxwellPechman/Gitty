@@ -8,7 +8,8 @@
     "tsc": "tsc",
     "build": "cd src && tsc",
     "start": "cd build && node index.js",
-    "deploy": "npm run build && npm run start"
+    "deploy": "npm run build && npm run start",
+    "vercel-build": "echo building"
   },
   "repository": {
     "type": "git",
