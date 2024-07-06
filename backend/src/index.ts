@@ -17,7 +17,7 @@ async function runApp() {
         console.log("Unable to initialize database", err)
     })
 
-    const server = app.listen(config.loadPort(), config.loadHost(),() => {
+    const server = app.listen(config.loadPort(),() => {
         console.log("Server is running.")
     })
 
