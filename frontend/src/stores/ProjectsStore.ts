@@ -4,7 +4,7 @@ import {Project} from "../types/project.ts";
 interface ProjectsStore {
     projects: Project[]
     setProjects: (projects: Project[]) => void;
-    updateProjects: (projects: Project[]) => void;
+    updateProjects: (projects: Project) => void;
 }
 
 // Zustand "store-hook" to store all projects that the user is involved in
@@ -16,10 +16,10 @@ export const useProjectsStore = create<ProjectsStore>((set) => ({
     setProjects: (projects) => set({ projects }),
 
     // Function to update projects
-    updateProjects: (projects) =>
+    updateProjects: (project) =>
         // Sets the current projects as a basis
         set((state) => ({
             // Extends current projects with a new project
-            projects: [...state.projects, ...projects]
+            projects: [...state.projects, project]
         })),
 }))

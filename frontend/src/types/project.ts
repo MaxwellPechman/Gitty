@@ -10,8 +10,18 @@ export type requestId = {
 export type Project = {
     pid: number,
     projectName: string;
-    projectType?: number;
+    projectDescription: string;
     projectStatus: boolean;
+    projectType?: number;
+}
+
+export type CreateProjectRequest = {
+    sessionId: string;
+    project: Project
+}
+
+export type CreateProjectResponse = {
+    pid: number
 }
 
 export type projectDetails = {

@@ -12,6 +12,8 @@ export function Projects() {
     const navigate = useNavigate();
     const { projects } = useProjectsStore();
 
+    console.log(projects)
+
     return (
         <div className="flex flex-row">
             {projects.map((project) => {
@@ -49,8 +51,8 @@ function getIcon(projectType: number | undefined) {
     }
 }
 
-function getType(projectTpye: number | undefined) {
-    switch (projectTpye) {
+function getType(projectType: number | undefined) {
+    switch (projectType) {
         case 1:
             return "Code"
         case 2:
