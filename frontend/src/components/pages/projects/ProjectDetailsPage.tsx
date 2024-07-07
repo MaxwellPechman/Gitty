@@ -33,7 +33,7 @@ export function ProjectDetailsPage() {
         <div className="w-screen h-screen bg-code-grey-950">
             <Topnav/>
             <div className="m-4">
-                <button className="text-4xl text-code-grey-500" onClick={() => navigate("/projects")}>&lt;</button>
+                <button className="text-4xl text-code-grey-500" onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
                     <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description}/>
                     <div className="flex flex-row">
