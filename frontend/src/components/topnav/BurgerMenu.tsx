@@ -31,10 +31,10 @@ export function BurgerMenu() {
                     className={"w-[327px] h-screen absolute bg-code-grey-700 border-code-border-gray border-2 -ml-4 rounded-r-2xl"}>
                     <img src={gitty_icon} className="w-[30px] m-[22px]" alt="Logo"/>
                     <ul className="flex flex-col gap-y-4 text-code-grey-500 text-burger px-[22px]">
-                        <li className="flex hover:cursor-pointer hover:border-2 border-gray-500" onClick={() => navigate("/home")}><img src={home_icon} className="pr-[9px]" alt=""/>Home</li>
-                        <li className="flex hover:cursor-pointer hover:border-2 border-gray-500" onClick={() => navigate("/inbox")}><img src={inbox_icon} className="pr-[9px]" alt=""/>Inbox</li>
-                        <li className="flex hover:cursor-pointer hover:border-2 border-gray-500" onClick={() => navigate("/projects")}><img src={projects_icon} className="pr-[9px] mt-1 w-7 h-6" alt=""/>My projects</li>
-                        <li className="flex hover:cursor-pointer hover:border-2 border-gray-500" onClick={() => navigate("/tasks")}><img src={tasks_icon} className="pr-[9px]" alt=""/>My tasks</li>
+                        <li className="flex hover:cursor-pointer border-[1px] p-2 rounded-2xl hover:bg-gray-800 border-gray-500" onClick={() => navigate("/projects")}><img src={home_icon} className="pr-[9px]" alt=""/>Home</li>
+                        <li className="flex hover:cursor-pointer border-[1px] p-2 rounded-2xl hover:bg-gray-800 border-gray-500" onClick={() => navigate("/inbox")}><img src={inbox_icon} className="pr-[9px]" alt=""/>Inbox (ToDo)</li>
+                        <li className="flex hover:cursor-pointer border-[1px] p-2 rounded-2xl hover:bg-gray-800 border-gray-500" onClick={() => navigate("/myProjects")}><img src={projects_icon} className="pr-[9px] mt-1 w-7 h-6" alt=""/>My projects (ToDo)</li>
+                        <li className="flex hover:cursor-pointer border-[1px] p-2 rounded-2xl hover:bg-gray-800 border-gray-500" onClick={() => navigate("/myTasks")}><img src={tasks_icon} className="pr-[9px]" alt=""/>My tasks (ToDo)</li>
                     </ul>
                 </div>
             </div>
