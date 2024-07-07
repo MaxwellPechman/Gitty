@@ -25,3 +25,8 @@ export async function updateTaskStatus(db: PostgresClient, sql: SQLFileManager, 
 export async function getTaskById(db: PostgresClient, sql: SQLFileManager, tid: any) {
     return await db.query(sql.getSQLStatement("selectTaskById.sql"), [tid[0]])
 }
+
+export async function updateTaskDescription(db: PostgresClient, sql: SQLFileManager, taskId: number, taskDescription: string) {
+    const values = [taskDescription, taskId]
+    await db.execute(sql.getSQLStatement("updateTaskDescription.sql"), values)
+}

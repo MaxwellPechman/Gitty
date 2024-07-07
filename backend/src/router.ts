@@ -5,8 +5,8 @@ import {registerUser, getUserProjects, getUserTasks, loginUser} from "./controll
 import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
 import {newProject, newTask} from "./types/project";
-import {createProject, getProjectById, getProjectTasks} from "./controllers/projects";
-import {createTask, getTaskById, updateTaskStatus} from "./controllers/task";
+import {createProject, getProjectById, getProjectTasks, updateProjectDescription} from "./controllers/projects";
+import {createTask, getTaskById, updateTaskDescription, updateTaskStatus} from "./controllers/task";
 import {getProfileData, uploadProfilePicture} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
 import {createFolder, fetchDirectories, uploadFile} from "./controllers/filesystem";
@@ -81,6 +81,16 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     router.post("/api/uploadProfilePicture", async (ctx) => {
         const data = ctx.request.body as [string, string]
         ctx.body = await uploadProfilePicture(db, sql, data[0], data[1])
+    })
+
+    router.post("/api/updateProjectDescription", async (ctx) => {
+        const data = ctx.request.body as [number, string]
+        ctx.body = await updateProjectDescription(db, sql, data[0], data[1])
+    })
+
+    router.post("/api/updateTaskDescription", async (ctx) => {
+        const data = ctx.request.body as [number, string]
+        ctx.body = await updateTaskDescription(db, sql, data[0], data[1])
     })
 
     return router;

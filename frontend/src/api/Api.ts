@@ -116,6 +116,16 @@ export async function uploadProfilePicture(sid: string, imgContent: string): Pro
     return post(url, [sid, imgContent])
 }
 
+export async function updateProjectDescription(pid: number, projectDescription: string): Promise<any> {
+    const url = getBackendBaseUrl() + "/updateProjectDescription"
+    return post(url, [pid, projectDescription])
+}
+
+export async function updateTaskDescription(tid: number, taskDescription: string): Promise<any> {
+    const url = getBackendBaseUrl() + "/updateTaskDescription"
+    return post(url, [tid, taskDescription])
+}
+
 async function post<Request, Response>(
     url: string,
     data?: Request,
