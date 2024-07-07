@@ -27,7 +27,7 @@ export class BackendConfig {
     }
 
     public loadHost(): string {
-        const host = process.env.SERVER_HOST
+        const host = process.env.HOST
 
         if(host === undefined) {
             throw Error("Undefined server host.")
@@ -37,7 +37,7 @@ export class BackendConfig {
     }
 
     public loadPort(): number {
-        const port = process.env.SERVER_PORT || "3000"
+        const port = process.env.PORT || "3000"
 
         if(port === undefined) {
             throw Error("Undefined server port.")
