@@ -1,7 +1,14 @@
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useContext, useEffect, useRef, useState} from "react";
-import {createFile, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../../api/Api.ts";
+import {
+    createFile,
+    fetchFileSystem,
+    getProjectById,
+    getProjectTasks,
+    updateProjectDescription,
+    uploadFile
+} from "../../../api/Api.ts";
 import {projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
 import {ITask} from "./Task.tsx";
@@ -9,6 +16,7 @@ import {AgGridReact} from "ag-grid-react";
 import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
 import {FileArea} from "./FileArea.tsx";
+import {useDebounce} from "use-debounce";
 
 export function ProjectDetailsPage() {
     const navigate = useNavigate();
@@ -36,7 +44,7 @@ export function ProjectDetailsPage() {
                 <button className="text-4xl text-code-grey-500 hover:text-white transition duration-200 ease-in-out cursor-pointer"
                         onClick={() => navigate("/projects")}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
-                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description}/>
+                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description} pid={Number(projectData?.pid)}/>
                     <div className="flex flex-row gap-x-4">
                         <div className="w-2/3">
                             <FolderToolbar id={idRef.current}/>
@@ -138,13 +146,21 @@ function FolderToolbar({ id } : { id: number }) {
     )
 }
 
-function DescriptionArea({projectName, projectDescription}: {
+function DescriptionArea({projectName, projectDescription, pid}: {
     projectName: string | undefined,
-    projectDescription: string | undefined
+    projectDescription: string | undefined,
+    pid: number
 }) {
     if (projectName === undefined || projectDescription === undefined) {
         return <></>
     }
+
+    const [desc, setDesc] = useState(projectDescription)
+    const [value] = useDebounce(desc, 300)
+
+    useEffect(() => {
+        updateProjectDescription(pid, value)
+    }, [value]);
 
     return (
         <>
@@ -155,7 +171,10 @@ function DescriptionArea({projectName, projectDescription}: {
             <span className="text-code-grey-500">Description:</span>
             <textarea className="bg-transparent w-full border border-code-border-projects rounded-2xl p-2"
                       rows={4}
-                      value={projectDescription}/>
+                      value={desc}
+                      onChange={(event) => {
+                          setDesc(event.target.value);
+                      }}/>
             <hr className="my-5"/>
         </>
     )
