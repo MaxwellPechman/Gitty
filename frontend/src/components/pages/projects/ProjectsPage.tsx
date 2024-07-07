@@ -145,7 +145,6 @@ export function ProjectsPage() {
                                         projectDescription: "",
                                         uid: project.uid,
                                     })
-                                    window.location.reload()
                                 })}>Create project
                         </button>
                     </div>
@@ -237,7 +236,6 @@ export function ProjectsPage() {
                                         taskDescription: "",
                                         uid: userId
                                     })
-                                    window.location.reload()
                                 })}>Create Task
                         </button>
                     </div>
