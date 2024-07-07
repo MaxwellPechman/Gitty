@@ -8,7 +8,7 @@ import {ProjectDetailsPage} from "./pages/projects/ProjectDetailsPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ProjectsPage} from "./pages/projects/ProjectsPage.tsx";
 import {FolderFocusProvider} from "./providers/FolderFocusProvider.tsx";
-import {TaskDetails} from "./pages/projects/TaskDetails..tsx";
+import {TaskDetails} from "./pages/projects/TaskDetails.tsx";
 
 const queryClient = new QueryClient();
 
