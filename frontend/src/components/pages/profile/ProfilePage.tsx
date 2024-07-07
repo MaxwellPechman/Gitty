@@ -92,7 +92,8 @@ export function ProfilePage() {
                                 {profileRequest.data?.tasks.map((task) => {
                                     return (
                                         <div key={task.tid}>
-                                            <div className="hover:bg-code-project-detail rounded-2xl p-2">
+                                            <div className="hover:bg-code-project-detail rounded-2xl p-2"
+                                                 onClick={() => navigate(`/task/${task.tid}`)}>
                                                 <h1 className="text-2xl font-bold">{task.task_name}</h1>
                                                 <span className="text-[12px]">{task.project_name}</span>
                                                 <span className="text-[12px] ml-10">Status: {task.task_status}</span>
