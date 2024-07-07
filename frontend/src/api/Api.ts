@@ -14,7 +14,7 @@ function getBackendBaseUrl() {
 
      */
 
-    return "/api"
+    return import.meta.env.VITE_BACKEND_HOST + "/api";
 }
 
 export async function requestUserRegister(userData: UserRegister): Promise<UserRegisterResponse> {
