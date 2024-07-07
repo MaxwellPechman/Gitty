@@ -21,6 +21,8 @@ export async function requestUserProfile(sessionId: SessionRequest): Promise<Pro
 export async function requestUserRegister(userData: UserRegister): Promise<UserRegisterResponse> {
     const url = getBackendBaseUrl() + "/register"
 
+    console.log(url)
+
     return post<UserRegister, UserRegisterResponse>(url, userData)
 }
 
