@@ -15,6 +15,8 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
 
     router.post("/api/register", async (ctx) => {
+        console.log("registering...")
+
         ctx.body = await registerUser(db, sql, ctx.request.body as UserRegister)
     })
 
