@@ -8,6 +8,7 @@ import {ProjectDetailsPage} from "./pages/projects/ProjectDetailsPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ProjectsPage} from "./pages/projects/ProjectsPage.tsx";
 import {FolderFocusProvider} from "./providers/FolderFocusProvider.tsx";
+import {TaskDetails} from "./pages/projects/TaskDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ export function Application() {
                         <Route path="/" element={<LandingPage/>}/>
                         <Route path="/projects" element={<ProjectsPage/>}/>
                         <Route path="/project/:id" element={<ProjectDetailsPage/>}/>
+                        <Route path="/task/:id" element={<TaskDetails />}/>
                         <Route path="/tasks" element={<TasksPage/>}/>
                         <Route path="/register" element={<RegisterPage/>}/>
                         <Route path="/login" element={<LoginPage/>}/>

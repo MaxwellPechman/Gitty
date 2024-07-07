@@ -50,6 +50,8 @@ export function ProjectDetailsPage() {
     )
 }
 
+
+
 function TasksArea({ id }: { id: number }) {
     const [tasks, setTasks] = useState<ITask[]>([])
 
