@@ -21,8 +21,6 @@ async function runApp() {
         console.log("Server is running.")
     })
 
-    console.log(server.address())
-
     const shutdown = () => {
         server.close(() => {
             pg.dispose()
