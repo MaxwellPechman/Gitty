@@ -1,12 +1,12 @@
+import {useEffect, useState} from "react";
+import {newProject, newTask, types} from "../../../types/project.ts";
+import {createProject, createTask, getTypes, requestUserProjects} from "../../../api/Api.ts";
+import {Topnav} from "../../topnav/Topnav.tsx";
+import {Projects} from "./Project.tsx";
+import {Tasks} from "./Task.tsx";
+
+
 export function ProjectsPage() {
-
-    return (
-        <div>
-            Hello, the issues arises due to fetching errors
-        </div>
-    )
-
-    /*
     const [userId] = useState<string>(localStorage.getItem("sessionID") || "");
     const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
@@ -245,6 +245,4 @@ export function ProjectsPage() {
             </div>
         </div>
     )
-
-     */
 }
