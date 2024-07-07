@@ -17,7 +17,7 @@ export function Projects() {
             {projects.map((project) => {
                 return (
                     <div key={project.pid}
-                         className="mt-[38px] mb-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-code-grey-500 hover:text-black"
+                         className="mt-[38px] mb-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-white hover:text-black cursor-pointer"
                          onClick={() => navigate(`/project/${project.pid}`)}>
                         <img src={getIcon(project.projectType)} className="pl-[18px] pt-[18px] h-[51px]" alt=""/>
                         <div className="mt-[20px]">

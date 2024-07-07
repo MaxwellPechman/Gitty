@@ -1,7 +1,7 @@
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {useContext, useEffect, useRef, useState} from "react";
-import {createFolder, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../../api/Api.ts";
+import {createFile, fetchFileSystem, getProjectById, getProjectTasks, uploadFile} from "../../../api/Api.ts";
 import {projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
 import {ITask} from "./Task.tsx";
@@ -33,10 +33,11 @@ export function ProjectDetailsPage() {
         <div className="w-screen h-screen bg-code-grey-950">
             <Topnav/>
             <div className="m-4">
-                <button className="text-4xl text-code-grey-500" onClick={() => navigate("/projects")}>&lt;</button>
+                <button className="text-4xl text-code-grey-500 hover:text-white transition duration-200 ease-in-out cursor-pointer"
+                        onClick={() => navigate("/projects")}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
                     <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description}/>
-                    <div className="flex flex-row">
+                    <div className="flex flex-row gap-x-4">
                         <div className="w-2/3">
                             <FolderToolbar id={idRef.current}/>
                             <FileArea files={items}/>
@@ -48,8 +49,6 @@ export function ProjectDetailsPage() {
         </div>
     )
 }
-
-
 
 function TasksArea({ id }: { id: number }) {
     const [tasks, setTasks] = useState<ITask[]>([])
@@ -89,20 +88,24 @@ function FolderToolbar({ id } : { id: number }) {
     const [folderName, setFolderName] = useState("")
     const folderFocusContext = useContext(FolderFocusContext);
 
-    function handleButtonClick() {
-        createFolder(id, folderFocusContext.id, folderName).then(() => {
+    function fileAddEvent() {
+        createFile(id, folderFocusContext.id, folderName).then(() => {
             window.location.reload();
         });
     }
 
-    function fileUpload(event: any) {
+    function fileRemoveEvent() {
+        window.location.reload();
+    }
+
+    function fileUploadEvent(event: any) {
         convertFileToBase64(event.target.files[0]).then((file) => {
-            uploadFile(id, null, event.target.files[0].name, file)
+            uploadFile(id, folderFocusContext.id, event.target.files[0].name, file)
         });
     }
 
     return (
-        <>
+        <div className="flex gap-x-1 items-center">
             <span className="text-code-grey-500">Folder:</span>
             <input type="text"
                    className="pl-3 bg-transparent ml-2 rounded-2xl border-white border-[1px]"
@@ -110,15 +113,26 @@ function FolderToolbar({ id } : { id: number }) {
                    onChange={(event) => {
                        setFolderName(event.target.value);
                    }}/>
-            <button className="p-1 bg-white text-black w-24 rounded-sm justify-end ml-5"
-                    onClick={() => {handleButtonClick()}}>Add Folder
-            </button>
+            <div className="mx-2">
+                <button className="mx-1 p-1 bg-white text-black w-24 rounded-sm justify-end"
+                        onClick={() => {
+                            fileAddEvent()
+                        }}>Add File
+                </button>
+                <button className="mx-1 p-1 bg-white text-black w-24 rounded-sm justify-end"
+                        onClick={() => {
+                            fileRemoveEvent()
+                        }}>Remove File
+                </button>
+            </div>
             <input type="file"
                    name="file"
                    className="p-2 rounded-2xl"
-                   onChange={(event) => {fileUpload(event)}}
+                   onChange={(event) => {
+                       fileUploadEvent(event)
+                   }}
             />
-        </>
+        </div>
     )
 }
 

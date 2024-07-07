@@ -1,8 +1,8 @@
-import {Topnav} from "../topnav/Topnav.tsx";
+import {Topnav} from "../../topnav/Topnav.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {requestUserProfile, uploadProfilePicture} from "../../api/Api.ts";
+import {requestUserProfile, uploadProfilePicture} from "../../../api/Api.ts";
 import {useNavigate} from "react-router-dom";
-import blank from "../../assets/icons/profile/large/profile.png"
+import blank from "../../../assets/icons/profile/large/profile.png"
 
 export function ProfilePage() {
     const sessionID = localStorage.getItem("sessionID")
