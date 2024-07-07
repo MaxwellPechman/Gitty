@@ -6,16 +6,15 @@ import {ProfileResponse} from "../types/profile.ts";
 
 // Probably needs to be changed
 function getBackendBaseUrl() {
+    /*
     const host = import.meta.env.VITE_BACKEND_HOST
     const port = import.meta.env.VITE_BACKEND_PORT
 
     return "http://" + host + ":" + port + "/api"
-}
 
-export async function requestUserProfile(sessionId: SessionRequest): Promise<ProfileResponse> {
-    const url = getBackendBaseUrl() + "/getUserProfile"
+     */
 
-    return post<SessionRequest, ProfileResponse>(url, sessionId)
+    return "/api"
 }
 
 export async function requestUserRegister(userData: UserRegister): Promise<UserRegisterResponse> {
@@ -24,6 +23,12 @@ export async function requestUserRegister(userData: UserRegister): Promise<UserR
     console.log(url)
 
     return post<UserRegister, UserRegisterResponse>(url, userData)
+}
+
+export async function requestUserProfile(sessionId: SessionRequest): Promise<ProfileResponse> {
+    const url = getBackendBaseUrl() + "/getUserProfile"
+
+    return post<SessionRequest, ProfileResponse>(url, sessionId)
 }
 
 export async function requestUserLogin(userData: UserLogin): Promise<UserLoginResponse> {
