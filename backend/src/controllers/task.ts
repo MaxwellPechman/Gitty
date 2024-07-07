@@ -3,6 +3,8 @@ import {SQLFileManager} from "../db/sql";
 import {newTask} from "../types/project";
 
 export async function createTask(db: PostgresClient, sql: SQLFileManager, taskData: newTask) {
+    console.log(taskData);
+
     const uid = await db.query(sql.getSQLStatement("selectUserIdBySessionId.sql"), [taskData.uid]);
     const typeId = await db.query(sql.getSQLStatement("selectSingleProject.sql"), [taskData.taskPid, uid[0].uid]);
     const dataNewTask = [taskData.taskName, taskData.taskStatus, taskData.taskDescription, typeId[0].pid]
