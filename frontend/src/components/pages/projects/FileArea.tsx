@@ -1,7 +1,7 @@
 import file_img from "../../../assets/icons/folder/small/file.png"
 import folder_img from "../../../assets/icons/folder/small/folder.png"
 import {FileElement} from "../../../types/filesystem.ts";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
 import clsx from "clsx";
 
@@ -29,19 +29,30 @@ export function FileArea({ files } : { files: FileElement[] } ) {
 }
 
 function FolderView({ folder } : { folder: FileElement }) {
+    const [ extended, setExtended ] = useState(false)
     const folderFocusContext = useContext(FolderFocusContext)
+
+    function folderClick() {
+        folderFocusContext.setId(folder.id)
+        setExtended(!extended)
+    }
 
     return (
         <div className="pl-3">
             <div className={clsx(folderFocusContext.id === folder.id ?
-                "flex flex-row p-1 bg-code-grey-500 rounded-2xl cursor-pointer" :
-                "flex flex-row p-1 hover:bg-code-grey-500 rounded-2xl cursor-pointer")}
-                 onClick={() => folderFocusContext.setId(folder.id)}>
+                "flex p-1 bg-code-grey-500 rounded-2xl cursor-pointer" :
+                "flex p-1 hover:bg-code-grey-500 rounded-2xl cursor-pointer")}
+                 onClick={() => folderClick()}>
+                <div className="mr-2">
+                    {
+                        extended ? "v" : ">"
+                    }
+                </div>
                 <img src={folder_img} alt="folder_img"/>
-                <span>{folder.name}</span>
+                <div className="mx-1">{folder.name}</div>
             </div>
             {
-                folder.children === undefined ?  <></>
+                folder.children === undefined || !extended ? <></>
                     :
                 folder.children.map((folderChildren) => {
                     return (

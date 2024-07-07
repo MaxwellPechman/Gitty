@@ -7,6 +7,7 @@ export async function fetchDirectories(db: PostgresClient, sql: SQLFileManager, 
     try {
         const directories = await fetchDirectoriesFromDB(db, sql, pid["id"]);
         return buildDirectoryHierarchy(directories);
+
     } catch (error) {
         console.error('Error fetching directories:', error);
         throw error;
@@ -17,7 +18,6 @@ async function fetchDirectoriesFromDB(db: PostgresClient, sql: SQLFileManager, p
     try {
         const directoriesQuery = await db.query(sql.getSQLStatement("selectDirectories.sql"), [pid]);
         const filesQuery = await db.query(sql.getSQLStatement("selectFiles.sql"), [pid]);
-
         const directories: FilesystemItem[] = directoriesQuery.map((row: any) => ({
                 id: row.id,
                 name: row.name,
@@ -25,7 +25,6 @@ async function fetchDirectoriesFromDB(db: PostgresClient, sql: SQLFileManager, p
                 parentDir: row.parentdir !== undefined ? row.parentdir : null,
                 children: [],
             }));
-
         const files: FilesystemItem[] = filesQuery.map((row: any) => ({
             id: row.fid,
             name: row.file_name,
@@ -40,34 +39,39 @@ async function fetchDirectoriesFromDB(db: PostgresClient, sql: SQLFileManager, p
         });
 
         return directories;
+
     } catch (error) {
-        console.error('Error fetching directories and files from DB:', error);
+        console.error('Error fetching directories and files from DB:', error); // TODO logging
         throw error;
     }
 }
 
 function buildDirectoryHierarchy(directories: FilesystemItem[]): FilesystemItem[] {
     const rootDirectories: FilesystemItem[] = [];
-
-    // Erstelle eine Kopie der Verzeichnisse
     const directoriesCopy = [...directories];
 
-    // Baue die Hierarchie basierend auf der parent_id auf
     directoriesCopy.forEach(directory => {
         if (directory.parentDir === null) {
-            rootDirectories.push(directory); // Füge Wurzelverzeichnis hinzu
+            rootDirectories.push(directory);
+
         } else {
             const parentDirectory = directoriesCopy.find(d => d.id === directory.parentDir);
+
             if (parentDirectory) {
                 if (!parentDirectory.children) {
                     parentDirectory.children = [];
                 }
-                parentDirectory.children.push(directory); // Füge das Verzeichnis als Kind hinzu
+
+                parentDirectory.children.push(directory);
             }
         }
     });
 
     return rootDirectories;
+}
+
+export async function deleteFile(db: PostgresClient, sql: SQLFileManager, pid: requestId) {
+
 }
 
 export async function createFolder(db: PostgresClient, sql: SQLFileManager, pid: number, parentDir: number, dirName: string) {

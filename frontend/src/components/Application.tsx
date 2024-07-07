@@ -2,7 +2,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {LandingPage} from "./pages/LandingPage.tsx";
 import {RegisterPage} from "./pages/RegisterPage.tsx";
 import {LoginPage} from "./pages/LoginPage.tsx";
-import {ProfilePage} from "./pages/ProfilePage.tsx";
+import {ProfilePage} from "./pages/profile/ProfilePage.tsx";
 import {TasksPage} from "./pages/TasksPage.tsx";
 import {ProjectDetailsPage} from "./pages/projects/ProjectDetailsPage.tsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
