@@ -65,6 +65,11 @@ export async function createTask(taskData: newTask): Promise<any> {
     return post(url, taskData)
 }
 
+export async function getTaskById(tid: number): Promise<any> {
+    const url = getBackendBaseUrl() + "/getTaskById"
+    return post(url, [tid])
+}
+
 export async function fetchFileSystem(pid: requestId): Promise<any> {
     const url = getBackendBaseUrl() + "/getFileSystem"
 

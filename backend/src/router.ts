@@ -6,7 +6,7 @@ import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
 import {newProject, newTask} from "./types/project";
 import {createProject, getProjectById, getProjectTasks} from "./controllers/projects";
-import {createTask, updateTaskStatus} from "./controllers/task";
+import {createTask, getTaskById, updateTaskStatus} from "./controllers/task";
 import {getProfileData, uploadProfilePicture} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
 import {createFolder, fetchDirectories, uploadFile} from "./controllers/filesystem";
@@ -48,6 +48,10 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
 
     router.post("/api/getProjectById", async (ctx) => {
         ctx.body = await getProjectById(db, sql, ctx.request.body as requestId)
+    })
+
+    router.post("/api/gettaskById", async (ctx) => {
+        ctx.body = await getTaskById(db, sql, ctx.request.body as number)
     })
 
     router.post("/api/getFileSystem", async (ctx) => {

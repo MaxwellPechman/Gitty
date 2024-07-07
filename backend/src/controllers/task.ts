@@ -21,3 +21,7 @@ export async function createUserLink(db: PostgresClient, sql: SQLFileManager, da
 export async function updateTaskStatus(db: PostgresClient, sql: SQLFileManager, status: number, tid: number) {
     await db.execute(sql.getSQLStatement("updateTaskStatus.sql"), [status, tid])
 }
+
+export async function getTaskById(db: PostgresClient, sql: SQLFileManager, tid: any) {
+    return await db.query(sql.getSQLStatement("selectTaskById.sql"), [tid[0]])
+}
