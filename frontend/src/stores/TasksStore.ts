@@ -1,19 +1,26 @@
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import {Task} from "../types/task.ts";
-import {create} from "zustand";
 
 interface TasksStore {
     tasks: Task[];
     setTasks: (tasks: Task[]) => void;
-    updateTasks: (tasks: Task[]) => void;
+    updateTasks: (task: Task) => void;
 }
 
-export const useTasksStore = create<TasksStore>((set) => ({
-    tasks: [],
-
-    setTasks: (tasks) => set({ tasks }),
-
-    updateTasks: (tasks) =>
-        set((state) => ({
-            tasks: [...state.tasks, ...tasks],
-    }))
-}))
+export const useTasksStore = create<TasksStore>()(
+    persist(
+        (set) => ({
+            tasks: [],
+            setTasks: (tasks: Task[]) => set({ tasks }),
+            updateTasks: (task: Task) =>
+                set((state) => ({
+                    tasks: [...state.tasks, task]
+                })),
+        }),
+        {
+            name: 'tasks-storage',
+            storage: createJSONStorage(() => sessionStorage)
+        }
+    )
+);
