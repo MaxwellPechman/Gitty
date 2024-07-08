@@ -11,7 +11,6 @@ import logo from "../../assets/icons/Gitty_Logo@2.png";
 /**
  *
  * TODO: 1. Write input fields into separate React-Components, so that the code is more dynamic
- *       2. Check if "password" and "confirm-password" are the same.
  *       3. Check if E-Mail actually exists
  *       4. (Optional) check if the password is good (e.g. at least 8 characters, has numbers, symbols, etc.)
  */
@@ -46,7 +45,7 @@ export function RegisterPage() {
 
                         } else {
                             localStorage.setItem("sessionID", response.session)
-                            navigate("/home")
+                            navigate("/projects")
                         }
                     })
                     .catch(() => {
