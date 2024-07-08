@@ -100,11 +100,11 @@ CREATE TABLE IF NOT EXISTS files(
             REFERENCES projects (pid) ON DELETE CASCADE
 );
 
-CREATE INDEX files_idx_file_pid ON "files" ("file_pid");
-CREATE INDEX users_idx_username ON "users" ("username");
-CREATE INDEX users_idx_date_changed ON "public"."users" ("date_changed");
-CREATE INDEX projectsusers_idx_uid ON "projectsusers" ("uid");
-CREATE INDEX directories_idx_dir_parentdir ON "directories" ("dir_parentdir");
-CREATE INDEX taskuser_idx_uid ON "taskuser" ("uid");
-CREATE INDEX projectsusers_idx_owner ON "projectsusers" ("owner");
-CREATE INDEX sessions_idx_sid_uid ON "sessions" ("sid","uid");
+CREATE INDEX IF NOT EXISTS files_idx_file_pid ON "files" ("file_pid");
+CREATE INDEX IF NOT EXISTS users_idx_username ON "users" ("username");
+CREATE INDEX IF NOT EXISTS users_idx_date_changed ON "public"."users" ("date_changed");
+CREATE INDEX IF NOT EXISTS projectsusers_idx_uid ON "projectsusers" ("uid");
+CREATE INDEX IF NOT EXISTS directories_idx_dir_parentdir ON "directories" ("dir_parentdir");
+CREATE INDEX IF NOT EXISTS taskuser_idx_uid ON "taskuser" ("uid");
+CREATE INDEX IF NOT EXISTS projectsusers_idx_owner ON "projectsusers" ("owner");
+CREATE INDEX IF NOT EXISTS sessions_idx_sid_uid ON "sessions" ("sid","uid");
