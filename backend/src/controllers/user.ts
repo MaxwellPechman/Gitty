@@ -7,26 +7,41 @@ import {SessionUserId} from "../types/session";
 
 export async function registerUser(db: PostgresClient, sql: SQLFileManager, userData: UserRegister): Promise<UserRegisterResponse | void> {
     const data = [userData.name, userData.mail, sha256(userData.password)]
+    const userExists = await db.query(sql.getSQLStatement("selectUserByUsername.sql"), [userData.name])
+    const mailExists = await db.query(sql.getSQLStatement("selectUserByEmail.sql"), [userData.mail])
 
-    return createUniqueSessionsID(db, sql)
-        .then((sessionId) => {
-            return db.query(sql.getSQLStatement("registerUser.sql"), data)
-                .then((result: SessionUserId) => {
-                    return db.execute(sql.getSQLStatement("createSession.sql"), [sessionId, result[0].uid])
-                        .then(() => {
-                            return {
-                                session: sessionId,
-                            }
-                        }).catch((err) => {
-                            console.log("Error when creating session:", err) // TODO logging
-                       })
-                }).catch((err) => {
-                    console.log("Error when registering user:", err) // TODO logging
-                })
-        })
-        .catch((err) => {
-            console.log("Error when creating session ID:", err) // TODO logging
-        })
+    if(userExists.length >= 1) {
+        return {
+            session: "",
+            error: "REGISTER_USERNAME_USED"
+        }
+    } else if(mailExists.length >= 1) {
+        return {
+            session: "",
+            error: "REGISTER_EMAIL_USED"
+        }
+    } else {
+        return createUniqueSessionsID(db, sql)
+            .then((sessionId) => {
+                return db.query(sql.getSQLStatement("registerUser.sql"), data)
+                    .then((result: SessionUserId) => {
+                        return db.execute(sql.getSQLStatement("createSession.sql"), [sessionId, result[0].uid])
+                            .then(() => {
+                                return {
+                                    session: sessionId,
+                                    error: ""
+                                }
+                            }).catch((err) => {
+                                console.log("Error when creating session:", err) // TODO logging
+                            })
+                    }).catch((err) => {
+                        console.log("Error when registering user:", err) // TODO logging
+                    })
+            })
+            .catch((err) => {
+                console.log("Error when creating session ID:", err) // TODO logging
+            })
+    }
 }
 
 // TODO needs some error checking

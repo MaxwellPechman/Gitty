@@ -12,7 +12,6 @@ import * as EmailValidator from "email-validator"
 /**
  *
  * TODO: 1. Write input fields into separate React-Components, so that the code is more dynamic
- *       3. Check if E-Mail actually exists
  *       4. (Optional) check if the password is good (e.g. at least 8 characters, has numbers, symbols, etc.)
  */
 export function RegisterPage() {
@@ -44,8 +43,14 @@ export function RegisterPage() {
                 } else {
                     requestUserRegister(registerData)
                         .then((response) => {
-                            if(response.session === "") {
+                            if(response.session === "" && response.error === "") {
                                 setDisplayErrorDialog("INVALID_CREDENTIALS")
+
+                            } else if(response.session === "" && response.error === "REGISTER_USERNAME_USED") {
+                                setDisplayErrorDialog("REGISTER_USERNAME_USED")
+
+                            } else if(response.session === "" && response.error === "REGISTER_EMAIL_USED") {
+                                setDisplayErrorDialog("REGISTER_EMAIL_USED")
 
                             } else {
                                 localStorage.setItem("sessionID", response.session)

@@ -16,7 +16,8 @@ export type UserRegister = {
 }
 
 export type UserRegisterResponse = {
-    session: Session
+    session: Session,
+    error: string
 }
 
 export type UserLogin = {
