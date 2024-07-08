@@ -1,7 +1,17 @@
 export type Task = {
     tid: number,
-    task_name: string,
-    project_name: string,
+    taskName: string
+    projectName: string
+    taskDescription: string
     status: number
-    action: string
+    action?: string
+}
+
+export type CreateTaskRequest = {
+    sessionId: string;
+    task: Task
+}
+
+export type CreateTaskResponse = {
+    tid: number
 }
