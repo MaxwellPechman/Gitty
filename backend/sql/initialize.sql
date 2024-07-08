@@ -99,3 +99,11 @@ CREATE TABLE IF NOT EXISTS files(
         FOREIGN KEY (file_pid)
             REFERENCES projects (pid) ON DELETE CASCADE
 );
+
+CREATE INDEX files_idx_file_pid ON "files" ("file_pid");
+CREATE INDEX users_idx_username ON "users" ("username");
+CREATE INDEX users_idx_date_changed ON "public"."users" ("date_changed");
+CREATE INDEX projectsusers_idx_uid ON "projectsusers" ("uid");
+CREATE INDEX directories_idx_dir_parentdir ON "directories" ("dir_parentdir");
+CREATE INDEX directory_hierarch_idx_id ON "directory_hierarchy" ("id");
+CREATE INDEX taskuser_idx_uid ON "taskUser" ("uid");
