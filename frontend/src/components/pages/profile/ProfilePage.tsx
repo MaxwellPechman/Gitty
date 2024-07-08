@@ -3,18 +3,16 @@ import {useQuery} from "@tanstack/react-query";
 import {requestUserProfile, uploadProfilePicture} from "../../../api/Api.ts";
 import {useNavigate} from "react-router-dom";
 import blank from "../../../assets/icons/profile/large/profile.png"
+import {useSessionStore} from "../../../stores/SessionStore.ts";
+import {convertFileToBase64} from "../../../utils/files.ts";
 
 export function ProfilePage() {
-    const sessionID = localStorage.getItem("sessionID")
+    const { sessionId } = useSessionStore()
     const navigate = useNavigate();
 
-    if(sessionID == null) {
-        return
-    }
-
     const profileRequest = useQuery({
-        queryKey: [sessionID],
-        queryFn: () => requestUserProfile({session: sessionID})
+        queryKey: [sessionId],
+        queryFn: () => requestUserProfile({session: sessionId})
     })
 
     if(profileRequest.isError) {
@@ -35,7 +33,7 @@ export function ProfilePage() {
                                    if (event.target.files === null) {
                                    } else {
                                        convertFileToBase64(event.target.files[0]).then((data: any) => {
-                                           uploadProfilePicture(sessionID, data).then(() => {
+                                           uploadProfilePicture(sessionId, data).then(() => {
                                                window.location.reload();
                                            })
                                        })
@@ -110,15 +108,4 @@ export function ProfilePage() {
             }
         </div>
     )
-}
-
-async function convertFileToBase64(file: any) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            resolve(reader.result);
-        }
-        reader.onerror = reject;
-    })
 }
