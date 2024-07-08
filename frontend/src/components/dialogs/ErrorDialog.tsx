@@ -3,6 +3,7 @@ export type ErrorType = "NETWORK_ERROR" |
                         "REGISTER_EMAIL_USED" |
                         "REGISTER_USERNAME_USED" |
                         "REGISTER_INVALID_USERNAME" |
+                        "REGISTER_INVALID_EMAIL" |
                         "REGISTER_PASSWORD_MATCH" |
                         "EMPTY_USERNAME" |
                         "EMPTY_EMAIL" |
@@ -30,6 +31,9 @@ export function ErrorDialog({ errorType }: { errorType: ErrorType }) {
 
             case "REGISTER_INVALID_USERNAME":
                 return "Invalid username. Please try a different name."
+
+            case "REGISTER_INVALID_EMAIL":
+                return "Invalid email. Please try a different email."
 
             case "EMPTY_USERNAME":
                 return "Please choose a valid username."
