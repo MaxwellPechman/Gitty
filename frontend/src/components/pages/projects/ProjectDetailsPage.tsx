@@ -6,7 +6,7 @@ import {
     fetchFileSystem,
     getProjectById,
     getProjectTasks,
-    updateProjectDescription,
+    updateProjectDescription, updateProjectStatus,
     uploadFile
 } from "../../../api/Api.ts";
 import {projectDetails} from "../../../types/project.ts";
@@ -37,6 +37,8 @@ export function ProjectDetailsPage() {
         fetchFileSystem({id: Number(id)}).then((data) => setItems(data))
     }, [id])
 
+    console.log(projectData)
+
     return (
         <div className="w-screen h-screen bg-code-grey-950">
             <Topnav/>
@@ -44,7 +46,10 @@ export function ProjectDetailsPage() {
                 <button className="text-4xl text-code-grey-500 hover:text-white transition duration-200 ease-in-out cursor-pointer"
                         onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
-                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description} pid={Number(projectData?.pid)} projectStatus={projectData?.project_status || false}/>
+                    <DescriptionArea projectName={projectData?.project_name}
+                                     projectDescription={projectData?.project_description}
+                                     pid={Number(projectData?.pid)}
+                                     projectStatus={projectData?.active ? "true" : "false"}/>
                     <div className="flex flex-row gap-x-4">
                         <div className="w-2/3">
                             <FolderToolbar id={idRef.current}/>
@@ -65,7 +70,6 @@ function TasksArea({ id }: { id: number }) {
     const navigate = useNavigate();
     useEffect(() => {
         getProjectTasks(id).then((data) => {
-            console.log(data)
             setTasks(data)
         })
     }, [])
@@ -174,7 +178,7 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
     projectName: string | undefined,
     projectDescription: string | undefined,
     pid: number,
-    projectStatus: boolean
+    projectStatus: string
 }) {
     if (projectName === undefined || projectDescription === undefined) {
         return <></>
@@ -195,16 +199,18 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
         return <div>Loading...</div>
     }
 
+    console.log(projectStatus)
+
     return (
         <>
             <div className="flex flex-col items-center justify-center w-full gap-x-4">
                 <h1>{projectName}</h1>
                 <select className="bg-code-grey-950" onChange={(event) => {
-                    console.log(event.target.value)
+                    updateProjectStatus(event.target.value === "true", pid)
                 }}
-                        defaultValue={String(projectStatus)}>
-                    <option value="true">Active</option>
-                    <option value="false">Done</option>
+                    defaultValue={projectStatus}>
+                    <option key="true" value="true">Active</option>
+                    <option key="false" value="false">Done</option>
                 </select>
             </div>
             <hr className="my-5"/>
