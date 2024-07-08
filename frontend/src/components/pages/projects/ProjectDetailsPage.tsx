@@ -12,7 +12,6 @@ import {
 import {projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
 import {ITask} from "./Task.tsx";
-import {AgGridReact} from "ag-grid-react";
 import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
 import {FileArea} from "./FileArea.tsx";
@@ -62,22 +61,10 @@ export function ProjectDetailsPage() {
 
 function TasksArea({ id }: { id: number }) {
     const [tasks, setTasks] = useState<ITask[]>([])
-
-    const actionComponent = (props: any) => {
-        return (
-            <button onClick={() => console.log(props.data)}>...</button>
-        )
-    }
-
-    const [colDefs] = useState<any>([
-        {field: "Taskname", flex: 5},
-        {field: "Project", flex: 4},
-        {field: "Status", flex: 2},
-        {field: "Action", flex: 2, cellRenderer: actionComponent}
-    ])
-
+    const navigate = useNavigate();
     useEffect(() => {
         getProjectTasks(id).then((data) => {
+            console.log(data)
             setTasks(data)
         })
     }, [])
@@ -86,15 +73,51 @@ function TasksArea({ id }: { id: number }) {
         <div className="w-1/3">
             <span className="text-code-grey-500">Tasks:</span>
             <div className="w-full border border-code-border-projects rounded-2xl p-2">
-                <div className="ag-theme-TaskGrid" style={{height: 350}}>
-                    <AgGridReact rowData={tasks} columnDefs={colDefs}/>
+                <div className="flex flex-row my-2">
+                    <span className="w-[50%]">Task name</span>
+                    <span className="w-[25%]">Project</span>
+                    <span className="w-[15%]">Status</span>
+                    <span className="w-[15%]">Action</span>
                 </div>
+                <hr/>
+                {tasks.map((task: ITask) => {
+                    let status: string
+                    switch (task.Status) {
+                        case 0:
+                            status = "new"
+                            break
+                        case 1:
+                            status = "active"
+                            break
+                        case 2:
+                            status = "done"
+                            break
+                        default:
+                            status = "canceled"
+                            break
+                    }
+
+                    return (
+                        <div key={task.tid}>
+                            <div className="flex flex-row py-3 hover:bg-code-grey-500"
+                                 onClick={() => {
+                                     navigate("/task/" + task.tid)
+                                 }}>
+                                <span className="w-[50%]">{task.Taskname}</span>
+                                <span className="w-[25%]">{task.Project}</span>
+                                <span className="w-[15%]">{status}</span>
+                                <button className="w-[15%] text-start h-full">...</button>
+                            </div>
+                            <hr/>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
 }
 
-function FolderToolbar({ id } : { id: number }) {
+function FolderToolbar({id}: { id: number }) {
     const [folderName, setFolderName] = useState("")
     const folderFocusContext = useContext(FolderFocusContext);
 
