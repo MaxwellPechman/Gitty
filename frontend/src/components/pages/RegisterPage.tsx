@@ -12,6 +12,7 @@ import {useSessionStore} from "../../stores/SessionStore.ts";
 
 export function RegisterPage() {
     const [passwordBorder, setPasswordBorder] = useState(false)
+    const [passwordSecureBorder, setPasswordSecureBorder] = useState(true)
     const [confPasswordBorder, setConfPasswordBorder] = useState(false)
     const [confPassword, setConfPassword] = useState("")
     const [registerData, setRegisterData] = useState<UserRegister>({
@@ -22,6 +23,16 @@ export function RegisterPage() {
     const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
     const { setSessionId } = useSessionStore()
     const navigate = useNavigate();
+
+    function validatePassword(password: string) {
+        const chars = Array.from(password)
+        var uppercase = chars.some(char => /[A-Z]/.test(char))
+        var lowercase = chars.some(char => /[a-z]/.test(char))
+        var numeric = chars.some(char => /[0-9]/.test(char))
+        var special = chars.some(char => /[!@#$%^&*(),.?":{}|<>]/.test(char))
+
+        return (uppercase && lowercase && numeric && special)
+    }
 
     function registerUser() {
         if(registerData.name === "") {
@@ -112,7 +123,8 @@ export function RegisterPage() {
                         </div>
                         <div
                             className={clsx("bg-code-grey-950 flex gap-x-2 items-center rounded-xl border border-code-grey-600 cursor-text hover:border-code-grey-300 transition duration-200 ease-in-out",
-                                passwordBorder ? "border-code-grey-300" : "")}>
+                                passwordBorder ? "border-code-grey-300" : "",
+                                passwordSecureBorder ? "" : "border-code-red hover:border-code-red")}>
                             <img className="mx-3 w-[25px] h-[25px]" src={lock_icon} alt="lock_icon"/>
                             <input
                                 className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300"
@@ -121,12 +133,16 @@ export function RegisterPage() {
                                 placeholder="Enter your password"
                                 onFocus={() => setPasswordBorder(true)}
                                 onBlur={() => setPasswordBorder(false)}
-                                onChange={(event) => setRegisterData({
-                                    name: registerData.name,
-                                    mail: registerData.mail,
-                                    password: event.target.value,
-                                })}/>
+                                onChange={(event) => {
+                                    setRegisterData({
+                                        name: registerData.name,
+                                        mail: registerData.mail,
+                                        password: event.target.value,
+                                    })
+                                    setPasswordSecureBorder(validatePassword(event.target.value))
+                            }}/>
                         </div>
+                        <p className="-mt-2 ml-2 text-[11px] text-code-grey-500">Password must include uppercase, lowercase, numbers, and special characters</p>
                     </div>
                     <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2">

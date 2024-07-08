@@ -12,11 +12,11 @@ import {
 import {projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
 import {ITask} from "./Task.tsx";
-import {AgGridReact} from "ag-grid-react";
 import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
 import {FileArea} from "./FileArea.tsx";
 import {useDebounce} from "use-debounce";
+import {useQuery} from "@tanstack/react-query";
 
 export function ProjectDetailsPage() {
     const navigate = useNavigate();
@@ -42,9 +42,9 @@ export function ProjectDetailsPage() {
             <Topnav/>
             <div className="m-4">
                 <button className="text-4xl text-code-grey-500 hover:text-white transition duration-200 ease-in-out cursor-pointer"
-                        onClick={() => navigate("/projects")}>&lt;</button>
+                        onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
-                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description} pid={Number(projectData?.pid)}/>
+                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description} pid={Number(projectData?.pid)} projectStatus={projectData?.project_status || false}/>
                     <div className="flex flex-row gap-x-4">
                         <div className="w-2/3">
                             <FolderToolbar id={idRef.current}/>
@@ -62,22 +62,10 @@ export function ProjectDetailsPage() {
 
 function TasksArea({ id }: { id: number }) {
     const [tasks, setTasks] = useState<ITask[]>([])
-
-    const actionComponent = (props: any) => {
-        return (
-            <button onClick={() => console.log(props.data)}>...</button>
-        )
-    }
-
-    const [colDefs] = useState<any>([
-        {field: "Taskname", flex: 5},
-        {field: "Project", flex: 4},
-        {field: "Status", flex: 2},
-        {field: "Action", flex: 2, cellRenderer: actionComponent}
-    ])
-
+    const navigate = useNavigate();
     useEffect(() => {
         getProjectTasks(id).then((data) => {
+            console.log(data)
             setTasks(data)
         })
     }, [])
@@ -85,16 +73,52 @@ function TasksArea({ id }: { id: number }) {
     return (
         <div className="w-1/3">
             <span className="text-code-grey-500">Tasks:</span>
-            <div className="w-full border border-code-border-projects rounded-2xl p-2">
-                <div className="ag-theme-TaskGrid" style={{height: 350}}>
-                    <AgGridReact rowData={tasks} columnDefs={colDefs}/>
+            <div className="w-full border border-code-border-projects rounded-2xl p-2 mx-2">
+                <div className="flex flex-row m-2">
+                    <span className="w-[50%]">Task name</span>
+                    <span className="w-[25%]">Project</span>
+                    <span className="w-[15%]">Status</span>
+                    <span className="w-[15%]">Action</span>
                 </div>
+                <hr/>
+                {tasks.map((task: ITask) => {
+                    let status: string
+                    switch (task.Status) {
+                        case 0:
+                            status = "new"
+                            break
+                        case 1:
+                            status = "active"
+                            break
+                        case 2:
+                            status = "done"
+                            break
+                        default:
+                            status = "canceled"
+                            break
+                    }
+
+                    return (
+                        <div key={task.tid}>
+                            <div className="flex flex-row py-3 hover:bg-code-grey-500"
+                                 onClick={() => {
+                                     navigate("/task/" + task.tid)
+                                 }}>
+                                <span className="w-[50%]">{task.Taskname}</span>
+                                <span className="w-[25%]">{task.Project}</span>
+                                <span className="w-[15%]">{status}</span>
+                                <button className="w-[15%] text-start h-full">...</button>
+                            </div>
+                            <hr/>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
 }
 
-function FolderToolbar({ id } : { id: number }) {
+function FolderToolbar({id}: { id: number }) {
     const [folderName, setFolderName] = useState("")
     const folderFocusContext = useContext(FolderFocusContext);
 
@@ -146,10 +170,11 @@ function FolderToolbar({ id } : { id: number }) {
     )
 }
 
-function DescriptionArea({projectName, projectDescription, pid}: {
+function DescriptionArea({projectName, projectDescription, pid, projectStatus}: {
     projectName: string | undefined,
     projectDescription: string | undefined,
-    pid: number
+    pid: number,
+    projectStatus: boolean
 }) {
     if (projectName === undefined || projectDescription === undefined) {
         return <></>
@@ -158,14 +183,29 @@ function DescriptionArea({projectName, projectDescription, pid}: {
     const [desc, setDesc] = useState(projectDescription)
     const [value] = useDebounce(desc, 300)
 
-    useEffect(() => {
-        updateProjectDescription(pid, value)
-    }, [value]);
+    const descRequest = useQuery({
+        queryKey: [pid, value],
+        queryFn: () => updateProjectDescription(pid, value)
+    })
+
+    if(descRequest.isError) {
+        return <div>Error...</div>
+    }
+    if(descRequest.isLoading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <>
-            <div className="flex items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full gap-x-4">
                 <h1>{projectName}</h1>
+                <select className="bg-code-grey-950" onChange={(event) => {
+                    console.log(event.target.value)
+                }}
+                        defaultValue={String(projectStatus)}>
+                    <option value="true">Active</option>
+                    <option value="false">Done</option>
+                </select>
             </div>
             <hr className="my-5"/>
             <span className="text-code-grey-500">Description:</span>
