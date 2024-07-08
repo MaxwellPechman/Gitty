@@ -18,7 +18,8 @@ export type projectDetails = {
     pid: number,
     project_name: string,
     project_type?: number,
-    project_description?: string
+    project_description?: string,
+    project_status: boolean
 }
 
 export type newProject = {

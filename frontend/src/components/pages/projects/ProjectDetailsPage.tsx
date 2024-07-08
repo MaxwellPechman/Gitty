@@ -41,9 +41,9 @@ export function ProjectDetailsPage() {
             <Topnav/>
             <div className="m-4">
                 <button className="text-4xl text-code-grey-500 hover:text-white transition duration-200 ease-in-out cursor-pointer"
-                        onClick={() => navigate("/projects")}>&lt;</button>
+                        onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
-                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description} pid={Number(projectData?.pid)}/>
+                    <DescriptionArea projectName={projectData?.project_name} projectDescription={projectData?.project_description} pid={Number(projectData?.pid)} projectStatus={projectData?.project_status || false}/>
                     <div className="flex flex-row gap-x-4">
                         <div className="w-2/3">
                             <FolderToolbar id={idRef.current}/>
@@ -72,8 +72,8 @@ function TasksArea({ id }: { id: number }) {
     return (
         <div className="w-1/3">
             <span className="text-code-grey-500">Tasks:</span>
-            <div className="w-full border border-code-border-projects rounded-2xl p-2">
-                <div className="flex flex-row my-2">
+            <div className="w-full border border-code-border-projects rounded-2xl p-2 mx-2">
+                <div className="flex flex-row m-2">
                     <span className="w-[50%]">Task name</span>
                     <span className="w-[25%]">Project</span>
                     <span className="w-[15%]">Status</span>
@@ -169,10 +169,11 @@ function FolderToolbar({id}: { id: number }) {
     )
 }
 
-function DescriptionArea({projectName, projectDescription, pid}: {
+function DescriptionArea({projectName, projectDescription, pid, projectStatus}: {
     projectName: string | undefined,
     projectDescription: string | undefined,
-    pid: number
+    pid: number,
+    projectStatus: boolean
 }) {
     if (projectName === undefined || projectDescription === undefined) {
         return <></>
@@ -187,8 +188,15 @@ function DescriptionArea({projectName, projectDescription, pid}: {
 
     return (
         <>
-            <div className="flex items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full gap-x-4">
                 <h1>{projectName}</h1>
+                <select className="bg-code-grey-950" onChange={(event) => {
+                    console.log(event.target.value)
+                }}
+                        defaultValue={String(projectStatus)}>
+                    <option value="true">Active</option>
+                    <option value="false">Done</option>
+                </select>
             </div>
             <hr className="my-5"/>
             <span className="text-code-grey-500">Description:</span>
