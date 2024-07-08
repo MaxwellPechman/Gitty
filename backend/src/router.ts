@@ -4,7 +4,7 @@ import {SQLFileManager} from "./db/sql";
 import {registerUser, getUserProjects, getUserTasks, loginUser} from "./controllers/user";
 import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
-import {CreateProjectRequest, newProject, newTask} from "./types/project";
+import {CreateProjectRequest, newTask} from "./types/project";
 import {createProject, getProjectById, getProjectTasks, updateProjectDescription} from "./controllers/projects";
 import {createTask, getTaskById, updateTaskDescription, updateTaskStatus} from "./controllers/task";
 import {getProfileData, uploadProfilePicture} from "./controllers/profile";
