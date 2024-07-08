@@ -5,18 +5,19 @@ import {
     createFile,
     fetchFileSystem,
     getProjectById,
-    getProjectTasks,
     updateProjectDescription, updateProjectStatus,
     uploadFile
 } from "../../../api/Api.ts";
 import {projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
-import {ITask} from "./Task.tsx";
 import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
 import {FileArea} from "./FileArea.tsx";
 import {useDebounce} from "use-debounce";
 import {useQuery} from "@tanstack/react-query";
+import {useTasksStore} from "../../../stores/TasksStore.ts";
+import {getTaskStatus} from "../../../utils/tasks.ts";
+import {useProjectsStore} from "../../../stores/ProjectsStore.ts";
 
 export function ProjectDetailsPage() {
     const navigate = useNavigate();
@@ -36,8 +37,6 @@ export function ProjectDetailsPage() {
 
         fetchFileSystem({id: Number(id)}).then((data) => setItems(data))
     }, [id])
-
-    console.log(projectData)
 
     return (
         <div className="w-screen h-screen bg-code-grey-950">
@@ -63,16 +62,20 @@ export function ProjectDetailsPage() {
     )
 }
 
-
-
 function TasksArea({ id }: { id: number }) {
-    const [tasks, setTasks] = useState<ITask[]>([])
+    const { tasks } = useTasksStore()
+    const { projects } = useProjectsStore()
     const navigate = useNavigate();
-    useEffect(() => {
-        getProjectTasks(id).then((data) => {
-            setTasks(data)
-        })
-    }, [])
+
+    function getProjectTasks(projectId: number) {
+        const taskProject = projects.find((project) => project.pid === projectId)
+
+        if(taskProject === undefined) {
+            return []
+        }
+
+        return tasks.filter((task) => task.projectName === taskProject.projectName)
+    }
 
     return (
         <div className="w-1/3">
@@ -85,32 +88,16 @@ function TasksArea({ id }: { id: number }) {
                     <span className="w-[15%]">Action</span>
                 </div>
                 <hr/>
-                {tasks.map((task: ITask) => {
-                    let status: string
-                    switch (task.Status) {
-                        case 0:
-                            status = "new"
-                            break
-                        case 1:
-                            status = "active"
-                            break
-                        case 2:
-                            status = "done"
-                            break
-                        default:
-                            status = "canceled"
-                            break
-                    }
-
+                {getProjectTasks(id).map((task) => {
                     return (
                         <div key={task.tid}>
                             <div className="flex flex-row py-3 hover:bg-code-grey-500"
                                  onClick={() => {
                                      navigate("/task/" + task.tid)
                                  }}>
-                                <span className="w-[50%]">{task.Taskname}</span>
-                                <span className="w-[25%]">{task.Project}</span>
-                                <span className="w-[15%]">{status}</span>
+                                <span className="w-[50%]">{task.taskName}</span>
+                                <span className="w-[25%]">{task.projectName}</span>
+                                <span className="w-[15%]">{getTaskStatus(task.status)}</span>
                                 <button className="w-[15%] text-start h-full">...</button>
                             </div>
                             <hr/>
@@ -186,7 +173,6 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
 
     const [desc, setDesc] = useState(projectDescription)
     const [value] = useDebounce(desc, 300)
-
     const descRequest = useQuery({
         queryKey: [pid, value],
         queryFn: () => updateProjectDescription(pid, value)
@@ -198,8 +184,6 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
     if(descRequest.isLoading) {
         return <div>Loading...</div>
     }
-
-    console.log(projectStatus)
 
     return (
         <>
