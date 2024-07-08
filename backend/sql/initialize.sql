@@ -107,3 +107,5 @@ CREATE INDEX projectsusers_idx_uid ON "projectsusers" ("uid");
 CREATE INDEX directories_idx_dir_parentdir ON "directories" ("dir_parentdir");
 CREATE INDEX directory_hierarch_idx_id ON "directory_hierarchy" ("id");
 CREATE INDEX taskuser_idx_uid ON "taskUser" ("uid");
+CREATE INDEX projectsusers_idx_owner ON "projectsusers" ("owner");
+CREATE INDEX sessions_idx_sid_uid ON "sessions" ("sid","uid");
