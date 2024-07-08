@@ -1,24 +1,26 @@
 import {useEffect, useState} from "react";
-import {newProject, newTask, types} from "../../../types/project.ts";
-import {createProject, createTask, getTypes, requestUserProjects} from "../../../api/Api.ts";
+import {newProject, newTask, Project} from "../../../types/project.ts";
+import {createProject, createTask, requestUserProjects} from "../../../api/Api.ts";
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {Projects} from "./Project.tsx";
 import {Tasks} from "./Task.tsx";
+import {projectTypes, projectTypeToCode} from "../../../utils/projects.ts";
+import {useSessionStore} from "../../../stores/SessionStore.ts";
+import {useProjectsStore} from "../../../stores/ProjectsStore.ts";
 
 
 export function ProjectsPage() {
-    const [userId] = useState<string>(localStorage.getItem("sessionID") || "");
-    const [showPrjoectsTab, setShowPrjoectsTab] = useState(false);
+    const { sessionId} = useSessionStore()
+    const { updateProjects } = useProjectsStore();
+    const [showProjectsTab, setShowProjectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
-    const [optionsProject, setOptionsProject] = useState<types[]>([])
     const [optionsTask, setOptionsTask] = useState<newProject[]>([])
-    const [project, setProject] = useState<newProject>({
+    const [project, setProject] = useState<Project>({
         pid: 0,
         projectName: "Introduction",
         projectStatus: true,
-        projectType: "Other",
-        projectDescription: "",
-        uid: userId
+        projectType: 0,
+        projectDescription: ""
     })
     const [task, setTask] = useState<newTask>({
         tid: 0,
@@ -26,11 +28,11 @@ export function ProjectsPage() {
         taskStatus: 0,
         taskPid: "",
         taskDescription: "",
-        uid: userId
+        uid: sessionId
     })
 
     useEffect(() => {
-        requestUserProjects(userId || "").then((data) => {
+        requestUserProjects(sessionId).then((data) => {
             setOptionsTask(data)
             setTask({
                 tid: 0,
@@ -38,22 +40,47 @@ export function ProjectsPage() {
                 taskStatus: task.taskStatus,
                 taskPid: data[0].projectName,
                 taskDescription: task.taskDescription,
-                uid: userId
+                uid: sessionId
             })
         });
-
-        getTypes().then((data) => {
-            setOptionsProject(data.data)
-        });
-
     }, []);
 
     function toggleViewProjects() {
-        setShowPrjoectsTab((prev) => !prev)
+        setProject({
+            pid: 0,
+            projectName: "",
+            projectStatus: project.projectStatus,
+            projectType: 0,
+            projectDescription: ""
+        })
+        setShowProjectsTab((prev) => !prev)
     }
 
     function toggleViewTasks() {
         setShowTaskTab((prev) => !prev)
+    }
+
+    function createProjectEvent() {
+        createProject({
+            sessionId: sessionId,
+            project: project
+        }).then((pid) => {
+            toggleViewProjects()
+            updateProjects({
+                pid: pid.pid,
+                projectName: project.projectName,
+                projectDescription: project.projectDescription,
+                projectStatus: project.projectStatus,
+                projectType: project.projectType
+            })
+            setProject({
+                pid: 0,
+                projectName: "",
+                projectStatus: project.projectStatus,
+                projectType: 0,
+                projectDescription: ""
+            })
+        })
     }
 
     return (
@@ -67,12 +94,12 @@ export function ProjectsPage() {
                         onClick={toggleViewProjects}>+ Create project
                     </button>
                     <div
-                        className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll noScrollbar">
+                        className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll">
                         <Projects/>
                     </div>
                 </div>
             </div>
-            <div className={showPrjoectsTab ? "float-right" : "hidden"}>
+            <div className={showProjectsTab ? "float-right" : "hidden"}>
                 <div
                     className="top-[233px] h-[627px] w-[544px] bg-code-project-detail absolute z-50 right-0 rounded-2xl">
                     <div className="ml-7 mt-7">
@@ -90,28 +117,31 @@ export function ProjectsPage() {
                         <p className="text-[16px] mt-6 text-code-grey-500">Title</p>
                         <input type="text"
                                className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
+                               value={project.projectName}
                                onChange={(event) => setProject({
                                    projectName: event.target.value,
                                    projectType: project.projectType,
                                    pid: project.pid,
                                    projectStatus: project?.projectStatus,
-                                   projectDescription: project.projectDescription,
-                                   uid: project.uid,
+                                   projectDescription: project.projectDescription
                                })}/>
                         <div className="flex justify-between flex-row">
                             <div>
                                 <p className="text-[16px] mt-2 text-code-grey-500">Project type</p>
                                 <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
-                                        onChange={(event) => setProject({
-                                            pid: project.pid,
-                                            projectName: project.projectName,
-                                            projectType: event.target.value,
-                                            projectStatus: project.projectStatus,
-                                            projectDescription: project.projectDescription,
-                                            uid: project.uid,
-                                        })}>
-                                    {optionsProject.map((option) => (
-                                        <option value={option.type_name} key={option.typeId}>{option.type_name}</option>
+                                        onChange={(event) =>
+                                        {
+                                            console.log(event.target.value)
+                                            setProject({
+                                                pid: project.pid,
+                                                projectName: project.projectName,
+                                                projectType: projectTypeToCode(event.target.value),
+                                                projectStatus: project.projectStatus,
+                                                projectDescription: project.projectDescription
+                                            })
+                                        }}>
+                                    {projectTypes.map((types, index) => (
+                                        <option value={types.code} key={index}>{types.type}</option>
                                     ))}
                                 </select>
                             </div>
@@ -126,27 +156,16 @@ export function ProjectsPage() {
                         <textarea
                             className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
                             placeholder="What is your project about..."
+                            value={project.projectDescription}
                             onChange={(event) => setProject({
                                 pid: project.pid,
                                 projectName: project.projectName,
                                 projectType: project.projectType,
                                 projectStatus: project.projectStatus,
-                                projectDescription: event.target.value,
-                                uid: project.uid,
+                                projectDescription: event.target.value
                             })}></textarea>
                         <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
-                                onClick={() => createProject(project).then(() => {
-                                    toggleViewProjects()
-                                    setProject({
-                                        pid: 0,
-                                        projectName: "",
-                                        projectStatus: project.projectStatus,
-                                        projectType: "Code",
-                                        projectDescription: "",
-                                        uid: project.uid,
-                                    })
-                                    window.location.reload()
-                                })}>Create project
+                                onClick={() => createProjectEvent()}>Create project
                         </button>
                     </div>
                 </div>
@@ -202,8 +221,8 @@ export function ProjectsPage() {
                                             taskStatus: task.taskStatus,
                                             uid: task.uid
                                         })}>
-                                    {optionsTask.map((taskOption) => (
-                                        <option value={taskOption.projectName} key={taskOption.pid}>{taskOption.projectName}</option>
+                                    {optionsTask.map((taskOption, index) => (
+                                        <option value={taskOption.projectName} key={index}>{taskOption.projectName}</option>
                                     ))}
                                 </select>
                             </div>
@@ -235,9 +254,8 @@ export function ProjectsPage() {
                                         taskStatus: 0,
                                         taskPid: "",
                                         taskDescription: "",
-                                        uid: userId
+                                        uid: sessionId
                                     })
-                                    window.location.reload()
                                 })}>Create Task
                         </button>
                     </div>
