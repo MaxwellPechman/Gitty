@@ -1,20 +1,26 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {useEffect, useState} from "react";
-import {ITask} from "./Task.tsx";
-import {getTaskById, updateTaskDescription, updateTaskStatus} from "../../../api/Api.ts";
+import {updateTaskDescription, updateTaskStatus} from "../../../api/Api.ts";
 import {useDebounce} from "use-debounce";
+import {useTasksStore} from "../../../stores/TasksStore.ts";
+import {emptyTask} from "../../../utils/tasks.ts";
 
 export function TaskDetails() {
+    const { tasks } = useTasksStore()
     const navigate = useNavigate();
     const { id } = useParams();
-    const [task, setTask] = useState<ITask>();
+    const task = filterTask()
 
-    useEffect(() => {
-        getTaskById(Number(id)).then((data) => {
-            setTask(data[0])
-        })
-    }, [id]);
+    function filterTask() {
+        if(id === undefined) {
+            return emptyTask
+        }
+
+        const task = tasks.find((task) => task.tid === parseInt(id))
+
+        return task === undefined ? emptyTask : task
+    }
 
     return (
         <div className="h-screen bg-code-grey-950">
@@ -22,10 +28,10 @@ export function TaskDetails() {
             <div className="m-4">
                 <button className="text-4xl text-code-grey-500" onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
-                    <DescriptionArea Name={task?.Taskname}
-                                     Description={task?.Description}
-                                     Id={Number(task?.tid)}
-                                     Status={Number(task?.Status)}/>
+                    <DescriptionArea Name={task.taskName}
+                                     Description={task.taskDescription}
+                                     Id={task.tid}
+                                     Status={task.status}/>
                 </div>
             </div>
         </div>
