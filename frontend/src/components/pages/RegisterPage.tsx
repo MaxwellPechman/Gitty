@@ -7,12 +7,11 @@ import {UserRegister} from "../../types/user.ts";
 import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
 import clsx from "clsx";
 import logo from "../../assets/icons/Gitty_Logo@2.png";
+import * as EmailValidator from "email-validator"
 
 /**
  *
  * TODO: 1. Write input fields into separate React-Components, so that the code is more dynamic
- *       2. Check if "password" and "confirm-password" are the same.
- *       3. Check if E-Mail actually exists
  *       4. (Optional) check if the password is good (e.g. at least 8 characters, has numbers, symbols, etc.)
  */
 export function RegisterPage() {
@@ -39,20 +38,29 @@ export function RegisterPage() {
 
         } else {
             if(confPassword === registerData.password) {
-                requestUserRegister(registerData)
-                    .then((response) => {
-                        if(response.session === "") {
-                            setDisplayErrorDialog("INVALID_CREDENTIALS")
+                if (!EmailValidator.validate(registerData.mail)) {
+                    setDisplayErrorDialog("REGISTER_INVALID_EMAIL")
+                } else {
+                    requestUserRegister(registerData)
+                        .then((response) => {
+                            if(response.session === "" && response.error === "") {
+                                setDisplayErrorDialog("INVALID_CREDENTIALS")
 
-                        } else {
-                            localStorage.setItem("sessionID", response.session)
-                            navigate("/home")
-                        }
-                    })
-                    .catch(() => {
-                        setDisplayErrorDialog("NETWORK_ERROR")
-                    })
+                            } else if(response.session === "" && response.error === "REGISTER_USERNAME_USED") {
+                                setDisplayErrorDialog("REGISTER_USERNAME_USED")
 
+                            } else if(response.session === "" && response.error === "REGISTER_EMAIL_USED") {
+                                setDisplayErrorDialog("REGISTER_EMAIL_USED")
+
+                            } else {
+                                localStorage.setItem("sessionID", response.session)
+                                navigate("/projects")
+                            }
+                        })
+                        .catch(() => {
+                            setDisplayErrorDialog("NETWORK_ERROR")
+                        })
+                }
             } else {
                 setDisplayErrorDialog("REGISTER_PASSWORD_MATCH")
             }
