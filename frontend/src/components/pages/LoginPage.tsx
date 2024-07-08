@@ -7,9 +7,9 @@ import {UserLogin} from "../../types/user.ts";
 import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
 import {useProjectsStore} from "../../stores/ProjectsStore.ts";
 import {Project} from "../../types/project.ts";
-import {useTasksStore} from "../../stores/TasksStore.ts";
 import {Task} from "../../types/task.ts";
 import {useSessionStore} from "../../stores/SessionStore.ts";
+import {useTasksStore} from "../../stores/TasksStore.ts";
 
 export function LoginPage() {
     const [loginData, setLoginData] = useState({} as UserLogin)
