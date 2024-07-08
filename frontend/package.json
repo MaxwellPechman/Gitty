@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.45.1",
-    "ag-grid-react": "^31.3.2",
+    "ag-grid-react": "^32.0.0",
     "axios": "^1.6.8",
     "clsx": "^2.1.0",
     "email-validator": "^2.0.4",
