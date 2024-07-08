@@ -1,9 +1,9 @@
 SELECT
     tasks.tid AS "tid",
-    tasks.task_name AS "Taskname",
-    projects.project_name AS "Project",
-    tasks.task_status as "Status",
-    '...' AS "Action"
+    tasks.task_name AS "taskName",
+    projects.project_name AS "projectName",
+    tasks.task_status as "status",
+    '...' AS "action"
 FROM tasks
 JOIN projects ON tasks.pid = projects.pid
 JOIN taskUser ON tasks.tid = taskUser.tid

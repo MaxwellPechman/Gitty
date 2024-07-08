@@ -32,19 +32,18 @@ export async function registerUser(db: PostgresClient, sql: SQLFileManager, user
                                     error: ""
                                 }
                             }).catch((err) => {
-                                console.log("Error when creating session:", err) // TODO logging
+                                console.log("Error when creating session:", err)
                             })
                     }).catch((err) => {
-                        console.log("Error when registering user:", err) // TODO logging
+                        console.log("Error when registering user:", err)
                     })
             })
             .catch((err) => {
-                console.log("Error when creating session ID:", err) // TODO logging
+                console.log("Error when creating session ID:", err)
             })
     }
 }
 
-// TODO needs some error checking
 export async function loginUser(db: PostgresClient, sql: SQLFileManager, userData: UserLogin): Promise<UserLoginResponse | null> {
     const sessionID = await createUniqueSessionsID(db, sql)
     const userDbData: DatabaseUserColumns = await db.query(sql.getSQLStatement("selectUserByUsername.sql"), [userData.username])
