@@ -1,11 +1,3 @@
-export type TaskOld = {
-    tid: number,
-    task_name: string,
-    project_name: string,
-    status: number
-    action: string
-}
-
 export type Task = {
     tid: number,
     taskName: string
@@ -18,4 +10,8 @@ export type Task = {
 export type CreateTaskRequest = {
     sessionId: string;
     task: Task
+}
+
+export type CreateTaskResponse = {
+    tid: number
 }
