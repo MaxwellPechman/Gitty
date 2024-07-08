@@ -4,6 +4,7 @@ import {CreateTaskRequest, CreateTaskResponse} from "../types/task";
 
 export async function createTask(db: PostgresClient, sql: SQLFileManager, taskRequest: CreateTaskRequest): Promise<CreateTaskResponse> {
     const taskData = taskRequest.task
+    console.log(taskRequest)
     const uid = await db.query(sql.getSQLStatement("selectUserIdBySessionId.sql"), [taskRequest.sessionId]);
     const pid = await db.query(sql.getSQLStatement("selectSingleProject.sql"), [taskData.projectName, uid[0].uid]);
     const dataNewTask = [taskData.taskName, taskData.status, taskData.taskDescription, pid[0].pid]
