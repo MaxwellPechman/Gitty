@@ -7,10 +7,7 @@ import {CreateTaskRequest, CreateTaskResponse} from "../types/task.ts";
 
 // Probably needs to be changed
 function getBackendBaseUrl() {
-    const host = import.meta.env.VITE_BACKEND_HOST
-    const port = import.meta.env.VITE_BACKEND_PORT
-
-    return "http://" + host + ":" + port + "/api"
+    return import.meta.env.VITE_BACKEND_HOST + "/api"
 }
 
 export async function requestUserProfile(sessionId: SessionRequest): Promise<ProfileResponse> {
