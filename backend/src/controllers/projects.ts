@@ -1,19 +1,17 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
-import {newProject} from "../types/project";
+import {CreateProjectRequest} from "../types/project";
 import {requestId} from "../types/user";
 
-export async function createProject(db: PostgresClient, sql: SQLFileManager, projectData: newProject) {
-    const typeId = await db.query(sql.getSQLStatement("selectSingleType.sql"), [projectData.projectType]);
+export async function createProject(db: PostgresClient, sql: SQLFileManager, requestData: CreateProjectRequest) {
+    const project = requestData.project
+    const uid = await db.query(sql.getSQLStatement("selectUserIdBySessionId.sql"), [requestData.sessionId])
+    const pid = await db.query(sql.getSQLStatement("createProject.sql"),
+        [project.projectName, project.projectType, project.projectDescription]);
 
-    const dataNewProject = [projectData.projectName, typeId[0].typeid, projectData.projectDescription]
+    await createUserLink(db, sql, [pid[0].pid, uid])
 
-    const pid = await db.query(sql.getSQLStatement("createProject.sql"), dataNewProject);
-    const dataLink = [pid[0].pid, projectData.uid]
-
-    await createUserLink(db, sql, dataLink)
-
-    return true
+    return pid[0].pid;
 }
 
 export async function createUserLink(db: PostgresClient, sql: SQLFileManager, data: any[]) {

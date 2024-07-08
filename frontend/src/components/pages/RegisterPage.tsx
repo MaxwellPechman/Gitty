@@ -8,12 +8,8 @@ import {ErrorDialog, ErrorType} from "../dialogs/ErrorDialog.tsx";
 import clsx from "clsx";
 import logo from "../../assets/icons/Gitty_Logo@2.png";
 import * as EmailValidator from "email-validator"
+import {useSessionStore} from "../../stores/SessionStore.ts";
 
-/**
- *
- * TODO: 1. Write input fields into separate React-Components, so that the code is more dynamic
- *       4. (Optional) check if the password is good (e.g. at least 8 characters, has numbers, symbols, etc.)
- */
 export function RegisterPage() {
     const [passwordBorder, setPasswordBorder] = useState(false)
     const [passwordSecureBorder, setPasswordSecureBorder] = useState(true)
@@ -25,6 +21,7 @@ export function RegisterPage() {
         password: ""
     })
     const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
+    const { setSessionId } = useSessionStore()
     const navigate = useNavigate();
 
     function validatePassword(password: string) {
@@ -64,7 +61,7 @@ export function RegisterPage() {
                                 setDisplayErrorDialog("REGISTER_EMAIL_USED")
 
                             } else {
-                                localStorage.setItem("sessionID", response.session)
+                                setSessionId(response.session)
                                 navigate("/projects")
                             }
                         })

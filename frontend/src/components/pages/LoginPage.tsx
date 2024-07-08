@@ -9,12 +9,14 @@ import {useProjectsStore} from "../../stores/ProjectsStore.ts";
 import {Project} from "../../types/project.ts";
 import {useTasksStore} from "../../stores/TasksStore.ts";
 import {Task} from "../../types/task.ts";
+import {useSessionStore} from "../../stores/SessionStore.ts";
 
 export function LoginPage() {
     const [loginData, setLoginData] = useState({} as UserLogin)
     const [displayErrorDialog, setDisplayErrorDialog] = useState<ErrorType>("NONE")
     const { setProjects } = useProjectsStore();
     const { setTasks } = useTasksStore();
+    const { setSessionId } = useSessionStore();
     const navigate = useNavigate();
 
     function fetchUserProjects(sessionId: string) {
@@ -44,13 +46,12 @@ export function LoginPage() {
             .then((response) => {
                 const session = response.session
 
-                console.log(response)
                 if(session === "") {
                     setDisplayErrorDialog("INVALID_CREDENTIALS")
                 } else {
                     fetchUserProjects(session)
                     fetchUserTasks(session)
-                    localStorage.setItem("sessionID", session)
+                    setSessionId(session)
                     navigate("/projects")
                 }
         })

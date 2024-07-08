@@ -3,18 +3,10 @@ import gitty_icon from "../../assets/icons/gitty.png";
 import {Searchbar} from "./Searchbar.tsx";
 import {useNavigate} from "react-router-dom";
 import profile_icon from "../../assets/icons/profile_icon_that_looks_overweight.png"
+import {useSessionStore} from "../../stores/SessionStore.ts";
 
-/**
- * Obere Navigationsleiste zum Navigieren (captain obvious) der Webseite.
- *
- * Besitzt im Moment noch keine Funktionen...
- */
 export function Topnav() {
-    /**
-     * Mit diesem useState React-hook können wir dann später definieren, ob ein Benutzer eingeloggt ist oder nicht und
-     * dementsprechend entweder die LoginSection (Wenn der Nutzer nicht eingeloggt ist, also quasi der default-state)
-     * oder die LogoutSection (Wenn der Nutzer eingeloggt ist) in die Topnav rendern.
-     */
+    const { sessionId } = useSessionStore()
     const navigate = useNavigate();
 
     return (
@@ -30,7 +22,7 @@ export function Topnav() {
             </div>
             <Searchbar/>
             {
-                localStorage.getItem("sessionID") === null ?
+                sessionId === "" ?
                     <LoginSection/>
                     :
                     <LogoutSection/>
@@ -52,16 +44,12 @@ function LoginSection() {
     )
 }
 
-/**
- * TODO...
- *
- * Gibt im Moment nur ein leeres JSX-Element zurück, quasi wie "null".
- */
 function LogoutSection() {
+    const { setSessionId } = useSessionStore()
     const navigate = useNavigate()
 
     function logoutUser() {
-        localStorage.setItem("sessionID", "");
+        setSessionId("")
         navigate("/login")
     }
 
