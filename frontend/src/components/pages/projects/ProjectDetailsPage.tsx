@@ -167,15 +167,11 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
     pid: number,
     projectStatus: string
 }) {
-    if (projectName === undefined || projectDescription === undefined) {
-        return <></>
-    }
-
     const [desc, setDesc] = useState(projectDescription)
     const [value] = useDebounce(desc, 300)
     const descRequest = useQuery({
         queryKey: [pid, value],
-        queryFn: () => updateProjectDescription(pid, value)
+        queryFn: () => updateProjectDescription(pid, value ?? "")
     })
 
     if(descRequest.isError) {

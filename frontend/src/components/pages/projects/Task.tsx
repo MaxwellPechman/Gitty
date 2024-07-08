@@ -7,7 +7,7 @@ export function Tasks() {
     const navigate = useNavigate();
 
     return (
-        <div className="w-full border-code-login-gray border-[1px] rounded-2xl p-2">
+        <div className="w-full border-code-login-gray border-[1px] rounded-2xl p-2 overflow-y-scroll">
             <div className="flex flex-row my-2">
                 <span className="w-[50%]">Task name</span>
                 <span className="w-[25%]">Project</span>
@@ -15,9 +15,9 @@ export function Tasks() {
                 <span className="w-[15%]">Action</span>
             </div>
             <hr/>
-            {tasks.map((task) => {
+            {tasks.map((task, index) => {
                 return (
-                    <div key={task.tid}>
+                    <div key={index}>
                         <div className="flex flex-row py-3 hover:bg-code-grey-500"
                              onClick={() => {
                                  navigate("/task/" + task.tid)
