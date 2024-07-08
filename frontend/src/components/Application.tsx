@@ -9,26 +9,29 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {ProjectsPage} from "./pages/projects/ProjectsPage.tsx";
 import {FolderFocusProvider} from "./providers/FolderFocusProvider.tsx";
 import {TaskDetails} from "./pages/projects/TaskDetails.tsx";
+import {SearchBarProvider} from "./providers/SearchBarProvider.tsx";
 
 const queryClient = new QueryClient();
 
 export function Application() {
     return (
         <QueryClientProvider client={queryClient}>
-            <FolderFocusProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<LandingPage/>}/>
-                        <Route path="/projects" element={<ProjectsPage/>}/>
-                        <Route path="/project/:id" element={<ProjectDetailsPage/>}/>
-                        <Route path="/task/:id" element={<TaskDetails />}/>
-                        <Route path="/tasks" element={<TasksPage/>}/>
-                        <Route path="/register" element={<RegisterPage/>}/>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/profile" element={<ProfilePage/>}/>
-                    </Routes>
-                </BrowserRouter>
-            </FolderFocusProvider>
+            <SearchBarProvider>
+                <FolderFocusProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<LandingPage/>}/>
+                            <Route path="/projects" element={<ProjectsPage/>}/>
+                            <Route path="/project/:id" element={<ProjectDetailsPage/>}/>
+                            <Route path="/task/:id" element={<TaskDetails />}/>
+                            <Route path="/tasks" element={<TasksPage/>}/>
+                            <Route path="/register" element={<RegisterPage/>}/>
+                            <Route path="/login" element={<LoginPage/>}/>
+                            <Route path="/profile" element={<ProfilePage/>}/>
+                        </Routes>
+                    </BrowserRouter>
+                </FolderFocusProvider>
+            </SearchBarProvider>
         </QueryClientProvider>
     )
 }
