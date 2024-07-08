@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {useEffect, useState} from "react";
 import {ITask} from "./Task.tsx";
-import {getTaskById, updateTaskDescription} from "../../../api/Api.ts";
+import {getTaskById, updateTaskDescription, updateTaskStatus} from "../../../api/Api.ts";
 import {useDebounce} from "use-debounce";
 
 export function TaskDetails() {
@@ -24,17 +24,19 @@ export function TaskDetails() {
                 <div className="mt-5 mx-10 text-white">
                     <DescriptionArea Name={task?.Taskname}
                                      Description={task?.Description}
-                                     Id={Number(task?.tid)}/>
+                                     Id={Number(task?.tid)}
+                                     Status={Number(task?.Status)}/>
                 </div>
             </div>
         </div>
     )
 }
 
-function DescriptionArea({Name, Description, Id}: {
+function DescriptionArea({Name, Description, Id, Status}: {
     Name: string | undefined,
     Description: string | undefined,
-    Id: number
+    Id: number,
+    Status: number
 }) {
     if (Name === undefined || Description === undefined) {
         return <></>
@@ -49,8 +51,17 @@ function DescriptionArea({Name, Description, Id}: {
 
     return (
         <>
-            <div className="flex items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center w-full">
                 <h1>{Name}</h1>
+                <select className="bg-code-grey-950" onChange={(event) => {
+                    updateTaskStatus(Number(event.target.value), Id)
+                }}
+                        defaultValue={Status}>
+                    <option key={0} value={0}>New</option>
+                    <option key={1} value={1}>Active</option>
+                    <option key={2} value={2}>Done</option>
+                    <option key={3} value={3}>Canceled</option>
+                </select>
             </div>
             <hr className="my-5"/>
             <span className="text-code-grey-500">Description:</span>

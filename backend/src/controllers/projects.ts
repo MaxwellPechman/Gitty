@@ -33,3 +33,7 @@ export async function updateProjectDescription(db: PostgresClient, sql: SQLFileM
     const values = [projectDescription, projectId]
     await db.execute(sql.getSQLStatement("updateProjectDescription.sql"), values)
 }
+
+export async function updateProjectStatus(db: PostgresClient, sql: SQLFileManager, status: boolean, pid: number) {
+    await db.execute(sql.getSQLStatement("updateProjectStatus.sql"), [status, pid])
+}
