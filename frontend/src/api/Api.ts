@@ -1,8 +1,9 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import {UserLogin, UserLoginResponse, UserRegister, UserRegisterResponse} from "../types/user.ts";
-import {CreateProjectRequest, CreateProjectResponse, newTask, requestId} from "../types/project.ts";
+import {CreateProjectRequest, CreateProjectResponse, requestId} from "../types/project.ts";
 import {SessionRequest} from "../types/session.ts";
 import {ProfileResponse} from "../types/profile.ts";
+import {CreateTaskRequest, CreateTaskResponse} from "../types/task.ts";
 
 // Probably needs to be changed
 function getBackendBaseUrl() {
@@ -60,8 +61,9 @@ export async function createProject(projectData: CreateProjectRequest): Promise<
     return post(url, projectData)
 }
 
-export async function createTask(taskData: newTask): Promise<any> {
+export async function createTask(taskData: CreateTaskRequest): Promise<CreateTaskResponse> {
     const url = getBackendBaseUrl() + "/createTask"
+
     return post(url, taskData)
 }
 

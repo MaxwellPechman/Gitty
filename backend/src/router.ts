@@ -4,7 +4,7 @@ import {SQLFileManager} from "./db/sql";
 import {registerUser, getUserProjects, getUserTasks, loginUser} from "./controllers/user";
 import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
-import {CreateProjectRequest, newTask} from "./types/project";
+import {CreateProjectRequest} from "./types/project";
 import {
     createProject,
     getProjectById,
@@ -16,6 +16,7 @@ import {createTask, getTaskById, updateTaskDescription, updateTaskStatus} from "
 import {getProfileData, uploadProfilePicture} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
 import {createFolder, fetchDirectories, uploadFile} from "./controllers/filesystem";
+import {CreateTaskRequest} from "./types/task";
 
 export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     const router = new Router();
@@ -49,7 +50,7 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     })
 
     router.post("/api/createTask", async (ctx) => {
-        ctx.body = await createTask(db, sql, ctx.request.body as newTask)
+        ctx.body = await createTask(db, sql, ctx.request.body as CreateTaskRequest)
     })
 
     router.post("/api/getProjectById", async (ctx) => {
