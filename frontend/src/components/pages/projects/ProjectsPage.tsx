@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {newProject, Project} from "../../../types/project.ts";
-import {createProject, createTask, requestUserProjects} from "../../../api/Api.ts";
+import {useState} from "react";
+import {Project} from "../../../types/project.ts";
+import {createProject, createTask} from "../../../api/Api.ts";
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {Projects} from "./Project.tsx";
 import {Tasks} from "./Task.tsx";
@@ -12,11 +12,10 @@ import {useTasksStore} from "../../../stores/TasksStore.ts";
 
 export function ProjectsPage() {
     const { sessionId} = useSessionStore()
-    const { updateProjects } = useProjectsStore();
+    const { projects, updateProjects } = useProjectsStore();
     const { updateTasks } = useTasksStore();
     const [showProjectsTab, setShowProjectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
-    const [optionsTask, setOptionsTask] = useState<newProject[]>([])
     const [project, setProject] = useState<Project>({
         pid: 0,
         projectName: "Introduction",
@@ -31,19 +30,6 @@ export function ProjectsPage() {
         taskDescription: "",
         status: 0
     })
-
-    useEffect(() => {
-        requestUserProjects(sessionId).then((data) => {
-            setOptionsTask(data)
-            setTask({
-                tid: 0,
-                taskName: task.taskName,
-                projectName: data[0].projectName,
-                taskDescription: task.taskDescription,
-                status: task.status
-            })
-        });
-    }, []);
 
     function toggleViewProjects() {
         setProject({
@@ -93,15 +79,23 @@ export function ProjectsPage() {
     }
 
     function createTaskEvent() {
+        const adjustedTask: Task = {
+            tid: task.tid,
+            taskName: task.taskName,
+            projectName: task.projectName === "" ? projects[0].projectName : task.projectName,
+            taskDescription: task.taskDescription,
+            status: task.status
+        }
+
         createTask({
             sessionId: sessionId,
-            task: task
+            task: adjustedTask
         }).then((tid) => {
-            toggleViewProjects()
+            toggleViewTasks()
             updateTasks({
                 tid: tid.tid,
                 taskName: task.taskName,
-                projectName: task.projectName,
+                projectName: task.projectName === "" ? projects[0].projectName : task.projectName,
                 taskDescription: task.taskDescription,
                 status: task.status
             })
@@ -145,7 +139,7 @@ export function ProjectsPage() {
                             </button>
                         </div>
                         <p className="text-[14px] text-code-grey-500">A project contains the code and all comments
-                            aswell as information <br/>regarding the allocation.</p>
+                            as well as information <br/>regarding the allocation.</p>
                         <p className="text-[16px] mt-6 text-code-grey-500">Title</p>
                         <input type="text"
                                className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
@@ -205,6 +199,7 @@ export function ProjectsPage() {
                     <span className="text-[30px] text-code-grey-500 ml-4">My tasks</span>
                     <button
                         className="ml-[31px] border-code-border-gray border-[1px] text-[14px] p-1 rounded-xl text-white w-40 hover:bg-white hover:text-black"
+                        disabled={projects.length === 0}
                         onClick={toggleViewTasks}>+
                         Create task
                     </button>
@@ -231,6 +226,7 @@ export function ProjectsPage() {
                         <p className="text-[16px] mt-6 text-code-grey-500">Title</p>
                         <input type="text"
                                className="w-[475px] bg-code-grey-800 h-8 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
+                               value={task.taskName}
                                onChange={(event) => setTask({
                                    tid: task.tid,
                                    taskName: event.target.value,
@@ -249,8 +245,8 @@ export function ProjectsPage() {
                                             taskDescription: task.taskDescription,
                                             status: task.status
                                         })}>
-                                    {optionsTask.map((taskOption, index) => (
-                                        <option value={taskOption.projectName} key={index}>{taskOption.projectName}</option>
+                                    {projects.map((project, index) => (
+                                        <option value={project.projectName} key={index}>{project.projectName}</option>
                                     ))}
                                 </select>
                             </div>
@@ -265,6 +261,7 @@ export function ProjectsPage() {
                         <textarea
                             className="w-[475px] h-[243px] bg-code-grey-800 mt-2 border-code-login-gray border-[1px] rounded-[10px] pl-2"
                             placeholder="What is your task about..."
+                            value={task.taskDescription}
                             onChange={(event) => setTask({
                                 tid: task.tid,
                                 taskName: task.taskName,

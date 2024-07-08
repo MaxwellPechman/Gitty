@@ -1,8 +1,8 @@
 import {PostgresClient} from "../db/db";
 import {SQLFileManager} from "../db/sql";
-import {CreateTaskRequest} from "../types/task";
+import {CreateTaskRequest, CreateTaskResponse} from "../types/task";
 
-export async function createTask(db: PostgresClient, sql: SQLFileManager, taskRequest: CreateTaskRequest) {
+export async function createTask(db: PostgresClient, sql: SQLFileManager, taskRequest: CreateTaskRequest): Promise<CreateTaskResponse> {
     const taskData = taskRequest.task
     const uid = await db.query(sql.getSQLStatement("selectUserIdBySessionId.sql"), [taskRequest.sessionId]);
     const pid = await db.query(sql.getSQLStatement("selectSingleProject.sql"), [taskData.projectName, uid[0].uid]);
@@ -12,7 +12,9 @@ export async function createTask(db: PostgresClient, sql: SQLFileManager, taskRe
 
     await createUserLink(db, sql, dataLink)
 
-    return tid[0].tid
+    return {
+        tid: tid[0].tid
+    }
 }
 
 export async function createUserLink(db: PostgresClient, sql: SQLFileManager, data: any[]) {
