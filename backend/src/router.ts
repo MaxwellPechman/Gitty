@@ -5,7 +5,13 @@ import {registerUser, getUserProjects, getUserTasks, loginUser} from "./controll
 import {UserRegister, requestId, UserLogin} from "./types/user";
 import {getTypes} from "./controllers/types";
 import {CreateProjectRequest, newTask} from "./types/project";
-import {createProject, getProjectById, getProjectTasks, updateProjectDescription} from "./controllers/projects";
+import {
+    createProject,
+    getProjectById,
+    getProjectTasks,
+    updateProjectDescription,
+    updateProjectStatus
+} from "./controllers/projects";
 import {createTask, getTaskById, updateTaskDescription, updateTaskStatus} from "./controllers/task";
 import {getProfileData, uploadProfilePicture} from "./controllers/profile";
 import {SessionRequest} from "./types/session";
@@ -71,6 +77,11 @@ export async function createRouter(db: PostgresClient, sql: SQLFileManager) {
     router.post("/api/updateTaskStatus", async (ctx) => {
         const data = ctx.request.body as [number, number]
         ctx.body = await updateTaskStatus(db, sql, data[0], data[1])
+    })
+
+    router.post("/api/updateProjectStatus", async (ctx) => {
+        const data = ctx.request.body as [boolean, number]
+        ctx.body = await updateProjectStatus(db, sql, data[0], data[1])
     })
 
     router.post("/api/uploadFile", async (ctx) => {
