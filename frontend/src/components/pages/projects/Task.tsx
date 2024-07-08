@@ -1,10 +1,22 @@
 import {useNavigate} from "react-router-dom";
 import {useTasksStore} from "../../../stores/TasksStore.ts";
 import {getTaskStatus} from "../../../utils/tasks.ts";
+import {useContext} from "react";
+import {SearchBarContext} from "../../providers/SearchBarProvider.tsx";
 
 export function Tasks() {
     const { tasks } = useTasksStore()
+    const searchBarContext = useContext(SearchBarContext);
     const navigate = useNavigate();
+
+    function getFilteredTasks() {
+        if (searchBarContext.text === "") {
+            return tasks
+        }
+
+        return tasks.filter((task) =>
+            task.taskName.toLowerCase().includes(searchBarContext.text.toLowerCase()));
+    }
 
     return (
         <div className="w-full border-code-login-gray border-[1px] rounded-2xl p-2 overflow-y-scroll">
@@ -15,7 +27,7 @@ export function Tasks() {
                 <span className="w-[15%]">Action</span>
             </div>
             <hr/>
-            {tasks.map((task, index) => {
+            {getFilteredTasks().map((task, index) => {
                 return (
                     <div key={index}>
                         <div className="flex flex-row py-3 hover:bg-code-grey-500"

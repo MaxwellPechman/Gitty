@@ -3,14 +3,26 @@ import cancelIcon from "../../../assets/icons/projects/small/Cancel.png"
 import {useNavigate} from "react-router-dom";
 import {useProjectsStore} from "../../../stores/ProjectsStore.ts";
 import {getProjectIcon, projectCodeToType} from "../../../utils/projects.ts";
+import {useContext} from "react";
+import {SearchBarContext} from "../../providers/SearchBarProvider.tsx";
 
 export function Projects() {
-    const navigate = useNavigate();
     const { projects } = useProjectsStore();
+    const searchBarContext = useContext(SearchBarContext);
+    const navigate = useNavigate();
+
+    function getFilteredProjects() {
+        if (searchBarContext.text === "") {
+            return projects;
+        }
+
+        return projects.filter((project) =>
+            project.projectName.toLowerCase().includes(searchBarContext.text.toLowerCase()));
+    }
 
     return (
         <div className="flex flex-row">
-            {projects.map((project, index) => {
+            {getFilteredProjects().map((project, index) => {
                 return (
                     <div key={index}
                          className="mt-[38px] mb-[38px] min-w-[215px] min-h-[231px] bg-black text-white rounded-2xl m-2 hover:bg-white hover:text-black cursor-pointer"
