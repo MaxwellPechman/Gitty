@@ -1,17 +1,19 @@
 import {useEffect, useState} from "react";
-import {newProject, newTask, Project} from "../../../types/project.ts";
+import {newProject, Project} from "../../../types/project.ts";
 import {createProject, createTask, requestUserProjects} from "../../../api/Api.ts";
 import {Topnav} from "../../topnav/Topnav.tsx";
 import {Projects} from "./Project.tsx";
 import {Tasks} from "./Task.tsx";
-import {projectTypes, projectTypeToCode} from "../../../utils/projects.ts";
+import {projectTypes} from "../../../utils/projects.ts";
 import {useSessionStore} from "../../../stores/SessionStore.ts";
 import {useProjectsStore} from "../../../stores/ProjectsStore.ts";
-
+import {Task} from "../../../types/task.ts";
+import {useTasksStore} from "../../../stores/TasksStore.ts";
 
 export function ProjectsPage() {
     const { sessionId} = useSessionStore()
     const { updateProjects } = useProjectsStore();
+    const { updateTasks } = useTasksStore();
     const [showProjectsTab, setShowProjectsTab] = useState(false);
     const [showTaskTab, setShowTaskTab] = useState(false);
     const [optionsTask, setOptionsTask] = useState<newProject[]>([])
@@ -22,13 +24,12 @@ export function ProjectsPage() {
         projectType: 0,
         projectDescription: ""
     })
-    const [task, setTask] = useState<newTask>({
+    const [task, setTask] = useState<Task>({
         tid: 0,
         taskName: "",
-        taskStatus: 0,
-        taskPid: "",
+        projectName: "",
         taskDescription: "",
-        uid: sessionId
+        status: 0
     })
 
     useEffect(() => {
@@ -37,10 +38,9 @@ export function ProjectsPage() {
             setTask({
                 tid: 0,
                 taskName: task.taskName,
-                taskStatus: task.taskStatus,
-                taskPid: data[0].projectName,
+                projectName: data[0].projectName,
                 taskDescription: task.taskDescription,
-                uid: sessionId
+                status: task.status
             })
         });
     }, []);
@@ -53,10 +53,19 @@ export function ProjectsPage() {
             projectType: 0,
             projectDescription: ""
         })
+
         setShowProjectsTab((prev) => !prev)
     }
 
     function toggleViewTasks() {
+        setTask({
+            tid: 0,
+            taskName: "",
+            projectName: "",
+            taskDescription: "",
+            status: 0
+        })
+
         setShowTaskTab((prev) => !prev)
     }
 
@@ -79,6 +88,29 @@ export function ProjectsPage() {
                 projectStatus: project.projectStatus,
                 projectType: 0,
                 projectDescription: ""
+            })
+        })
+    }
+
+    function createTaskEvent() {
+        createTask({
+            sessionId: sessionId,
+            task: task
+        }).then((tid) => {
+            toggleViewProjects()
+            updateTasks({
+                tid: tid.tid,
+                taskName: task.taskName,
+                projectName: task.projectName,
+                taskDescription: task.taskDescription,
+                status: task.status
+            })
+            setTask({
+                tid: 0,
+                taskName: "",
+                projectName: "",
+                taskDescription: "",
+                status: 0
             })
         })
     }
@@ -129,13 +161,11 @@ export function ProjectsPage() {
                             <div>
                                 <p className="text-[16px] mt-2 text-code-grey-500">Project type</p>
                                 <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
-                                        onChange={(event) =>
-                                        {
-                                            console.log(event.target.value)
+                                        onChange={(event) => {
                                             setProject({
                                                 pid: project.pid,
                                                 projectName: project.projectName,
-                                                projectType: projectTypeToCode(event.target.value),
+                                                projectType: parseInt(event.target.value),
                                                 projectStatus: project.projectStatus,
                                                 projectDescription: project.projectDescription
                                             })
@@ -204,10 +234,9 @@ export function ProjectsPage() {
                                onChange={(event) => setTask({
                                    tid: task.tid,
                                    taskName: event.target.value,
+                                   projectName: task.projectName,
                                    taskDescription: task.taskDescription,
-                                   taskPid: task.taskPid,
-                                   taskStatus: task.taskStatus,
-                                   uid: task.uid
+                                   status: task.status
                                })}/>
                         <div className="flex justify-between flex-row">
                             <div>
@@ -216,10 +245,9 @@ export function ProjectsPage() {
                                         onChange={(event) => setTask({
                                             tid: task.tid,
                                             taskName: task.taskName,
+                                            projectName: event.target.value,
                                             taskDescription: task.taskDescription,
-                                            taskPid: event.target.value,
-                                            taskStatus: task.taskStatus,
-                                            uid: task.uid
+                                            status: task.status
                                         })}>
                                     {optionsTask.map((taskOption, index) => (
                                         <option value={taskOption.projectName} key={index}>{taskOption.projectName}</option>
@@ -240,23 +268,12 @@ export function ProjectsPage() {
                             onChange={(event) => setTask({
                                 tid: task.tid,
                                 taskName: task.taskName,
+                                projectName: task.projectName,
                                 taskDescription: event.target.value,
-                                taskPid: task.taskPid,
-                                taskStatus: task.taskStatus,
-                                uid: task.uid
+                                status: task.status
                             })}></textarea>
                         <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
-                                onClick={() => createTask(task).then(() => {
-                                    toggleViewProjects()
-                                    setTask({
-                                        tid: 0,
-                                        taskName: "",
-                                        taskStatus: 0,
-                                        taskPid: "",
-                                        taskDescription: "",
-                                        uid: sessionId
-                                    })
-                                })}>Create Task
+                                onClick={() => createTaskEvent()}>Create Task
                         </button>
                     </div>
                 </div>
