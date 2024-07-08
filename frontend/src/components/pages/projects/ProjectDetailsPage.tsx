@@ -16,6 +16,7 @@ import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
 import {FileArea} from "./FileArea.tsx";
 import {useDebounce} from "use-debounce";
+import {useQuery} from "@tanstack/react-query";
 
 export function ProjectDetailsPage() {
     const navigate = useNavigate();
@@ -182,9 +183,17 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
     const [desc, setDesc] = useState(projectDescription)
     const [value] = useDebounce(desc, 300)
 
-    useEffect(() => {
-        updateProjectDescription(pid, value)
-    }, [value]);
+    const descRequest = useQuery({
+        queryKey: [pid, value],
+        queryFn: () => updateProjectDescription(pid, value)
+    })
+
+    if(descRequest.isError) {
+        return <div>Error...</div>
+    }
+    if(descRequest.isLoading) {
+        return <div>Loading...</div>
+    }
 
     return (
         <>
