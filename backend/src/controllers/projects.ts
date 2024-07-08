@@ -5,11 +5,10 @@ import {requestId} from "../types/user";
 
 export async function createProject(db: PostgresClient, sql: SQLFileManager, requestData: CreateProjectRequest) {
     const project = requestData.project
-    const uid = await db.query(sql.getSQLStatement("selectUserIdBySessionId.sql"), [requestData.sessionId])
     const pid = await db.query(sql.getSQLStatement("createProject.sql"),
         [project.projectName, project.projectType, project.projectDescription]);
 
-    await createUserLink(db, sql, [pid[0].pid, uid])
+    await createUserLink(db, sql, [pid[0].pid, requestData.sessionId])
 
     return pid[0].pid;
 }

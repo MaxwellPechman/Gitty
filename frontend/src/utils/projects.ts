@@ -3,7 +3,15 @@ import iconGame from "../assets/icons/projects/small/Game.png";
 import iconWebsite from "../assets/icons/projects/small/Website.png";
 import iconDatabase from "../assets/icons/projects/small/Database.png";
 import iconOther from "../assets/icons/projects/small/Other.png";
-import {ProjectType} from "../types/project.ts";
+import {Project, ProjectType} from "../types/project.ts";
+
+export const emptyProject: Project = {
+    pid: 0,
+    projectName: "",
+    projectStatus: true,
+    projectType: 0,
+    projectDescription: ""
+}
 
 export const projectTypes: ProjectType[] = [
     {
