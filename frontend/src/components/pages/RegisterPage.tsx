@@ -46,7 +46,7 @@ export function RegisterPage() {
 
                         } else {
                             localStorage.setItem("sessionID", response.session)
-                            navigate("/home")
+                            navigate("/projects")
                         }
                     })
                     .catch(() => {
