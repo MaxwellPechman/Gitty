@@ -7,7 +7,7 @@ import {useSessionStore} from "../../stores/SessionStore.ts";
 import {useProjectsStore} from "../../stores/ProjectsStore.ts";
 import {useTasksStore} from "../../stores/TasksStore.ts";
 
-export function Topnav() {
+export function Topnav({ showSearchbar }: { showSearchbar: boolean} ) {
     const { sessionId } = useSessionStore()
     const navigate = useNavigate();
 
@@ -28,7 +28,12 @@ export function Topnav() {
                     </li>
                 </ul>
             </div>
-            <Searchbar/>
+            {
+                showSearchbar ?
+                    <Searchbar/>
+                    :
+                    <></>
+            }
             {
                 sessionId === "" ?
                     <LoginSection/>

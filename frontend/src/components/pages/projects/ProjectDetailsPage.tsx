@@ -40,7 +40,7 @@ export function ProjectDetailsPage() {
 
     return (
         <div className="w-screen h-screen bg-code-grey-950">
-            <Topnav/>
+            <Topnav showSearchbar={false}/>
             <div className="m-4">
                 <button className="text-4xl text-code-grey-500 hover:text-white transition duration-200 ease-in-out cursor-pointer"
                         onClick={() => navigate(-1)}>&lt;</button>

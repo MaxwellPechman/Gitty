@@ -21,7 +21,7 @@ export function ProfilePage() {
 
     return (
         <div className="w-screen min-h-screen h-full bg-code-grey-950">
-            <Topnav/>
+            <Topnav showSearchbar={false}/>
             {profileRequest.isLoading ? <div>Loading...</div> :
             <div className="mt-12 w-screen flex gap-x-12 justify-around">
                 <div className="flex flex-col gap-y-6 top-32 left-16 fixed">

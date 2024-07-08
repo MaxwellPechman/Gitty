@@ -4,7 +4,7 @@ export function TasksPage() {
 
     return (
         <div className="w-screen h-screen bg-code-grey-950">
-            <Topnav/>
+            <Topnav showSearchbar={false}/>
 
         </div>
     )

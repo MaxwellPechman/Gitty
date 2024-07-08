@@ -111,7 +111,7 @@ export function ProjectsPage() {
 
     return (
         <div className="w-screen h-screen bg-code-grey-950">
-            <Topnav/>
+            <Topnav showSearchbar={true}/>
             <div className="flex justify-around mt-[54px]">
                 <div className="w-9/12 h-[363px]">
                     <span className="text-[30px] text-code-grey-500 ml-4">My projects</span>

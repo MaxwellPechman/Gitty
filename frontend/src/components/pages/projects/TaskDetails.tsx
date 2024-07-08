@@ -24,7 +24,7 @@ export function TaskDetails() {
 
     return (
         <div className="h-screen bg-code-grey-950">
-            <Topnav />
+            <Topnav showSearchbar={false}/>
             <div className="m-4">
                 <button className="text-4xl text-code-grey-500" onClick={() => navigate(-1)}>&lt;</button>
                 <div className="mt-5 mx-10 text-white">
@@ -44,15 +44,11 @@ function DescriptionArea({Name, Description, Id, Status}: {
     Id: number,
     Status: number
 }) {
-    if (Name === undefined || Description === undefined) {
-        return <></>
-    }
-
     const [desc, setDesc] = useState(Description)
     const [value] = useDebounce(desc, 300)
 
     useEffect(() => {
-        updateTaskDescription(Id, value)
+        updateTaskDescription(Id, value ?? "")
     }, [value]);
 
     return (
