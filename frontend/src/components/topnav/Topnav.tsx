@@ -4,6 +4,8 @@ import {Searchbar} from "./Searchbar.tsx";
 import {useNavigate} from "react-router-dom";
 import profile_icon from "../../assets/icons/profile_icon_that_looks_overweight.png"
 import {useSessionStore} from "../../stores/SessionStore.ts";
+import {useProjectsStore} from "../../stores/ProjectsStore.ts";
+import {useTasksStore} from "../../stores/TasksStore.ts";
 
 export function Topnav() {
     const { sessionId } = useSessionStore()
@@ -52,10 +54,14 @@ function LoginSection() {
 
 function LogoutSection() {
     const { setSessionId } = useSessionStore()
+    const { setProjects } = useProjectsStore()
+    const { setTasks } = useTasksStore()
     const navigate = useNavigate()
 
     function logoutUser() {
         setSessionId("")
+        setProjects([])
+        setTasks([])
         navigate("/login")
     }
 
