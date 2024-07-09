@@ -19,7 +19,7 @@ export function Tasks() {
     }
 
     return (
-        <div className="w-full border-code-login-gray border-[1px] rounded-2xl p-2 overflow-y-scroll">
+        <div className="w-full border-code-login-gray border-[1px] rounded-2xl p-2 overflow-y-scroll noScrollbar">
             <div className="flex flex-row my-2">
                 <span className="w-[50%]">Task name</span>
                 <span className="w-[25%]">Project</span>
@@ -30,7 +30,7 @@ export function Tasks() {
             {getFilteredTasks().map((task, index) => {
                 return (
                     <div key={index}>
-                        <div className="flex flex-row py-3 hover:bg-code-grey-500"
+                        <div className="flex flex-row py-3 hover:bg-white hover:text-black hover:cursor-pointer"
                              onClick={() => {
                                  navigate("/task/" + task.tid)
                              }}>
