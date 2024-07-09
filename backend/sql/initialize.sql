@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS projectsUsers (
 
 CREATE TABLE IF NOT EXISTS tasks (
     tid SERIAL PRIMARY KEY,
-    task_name VARCHAR(16) NOT NULL,
+    task_name VARCHAR(64) NOT NULL,
     task_status INTEGER NOT NULL,
     task_description VARCHAR(256),
     pid INTEGER,
