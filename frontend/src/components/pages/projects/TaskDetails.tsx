@@ -5,6 +5,7 @@ import {updateTaskDescription, updateTaskStatus} from "../../../api/Api.ts";
 import {useDebounce} from "use-debounce";
 import {useTasksStore} from "../../../stores/TasksStore.ts";
 import {emptyTask} from "../../../utils/tasks.ts";
+import {Task} from "../../../types/task.ts";
 
 export function TaskDetails() {
     const { tasks } = useTasksStore()
@@ -47,6 +48,25 @@ function DescriptionArea({Name, Description, Id, Status}: {
     const [desc, setDesc] = useState(Description)
     const [value] = useDebounce(desc, 300)
 
+    const { tasks, setTasks } = useTasksStore()
+
+    function handleStatusUpdate(newStatus: number, id: number) {
+        const task = tasks.filter((task) => task.tid === id)[0]
+        const newTasks = tasks.filter((task) => task.tid !== id)
+        let newTask: Task = {
+            tid: task.tid,
+            taskName: task.taskName,
+            projectName: task.projectName,
+            taskDescription: task.taskDescription,
+            status: newStatus,
+            action: "..."
+        }
+
+        newTasks.push(newTask)
+
+        setTasks(newTasks)
+    }
+
     useEffect(() => {
         updateTaskDescription(Id, value ?? "")
     }, [value]);
@@ -57,8 +77,9 @@ function DescriptionArea({Name, Description, Id, Status}: {
                 <h1>{Name}</h1>
                 <select className="bg-code-grey-950" onChange={(event) => {
                     updateTaskStatus(Number(event.target.value), Id)
+                    handleStatusUpdate(Number(event.target.value), Id)
                 }}
-                        defaultValue={Status}>
+                        defaultValue={Number(Status)}>
                     <option key={0} value={0}>New</option>
                     <option key={1} value={1}>Active</option>
                     <option key={2} value={2}>Done</option>
