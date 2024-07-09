@@ -74,7 +74,7 @@ function FolderView({ folder } : { folder: FileElement }) {
 
 function FileView({file}: { file: FileElement }) {
     return (
-        <div key={file.id} className="flex flex-row p-1 hover:bg-code-grey-500 rounded-2xl">
+        <div key={file.id} className="flex flex-row p-1 pl-3 hover:bg-code-grey-500 rounded-2xl">
             <img src={file_img} alt="file_img"/>
             <a href={file.file_content} className="text-white" download={file.name}>{file.name}</a>
         </div>
