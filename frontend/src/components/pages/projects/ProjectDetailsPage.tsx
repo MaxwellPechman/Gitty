@@ -199,7 +199,7 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
 }) {
     const { projects, setProjects } = useProjectsStore()
     const [desc, setDesc] = useState(projectDescription)
-    const [value] = useDebounce(desc, 300)
+    const [value] = useDebounce(desc, 1000)
     const descRequest = useQuery({
         queryKey: [pid, value],
         queryFn: () => updateProjectDescription(pid, value ?? "")
