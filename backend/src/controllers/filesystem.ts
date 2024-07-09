@@ -70,10 +70,6 @@ function buildDirectoryHierarchy(directories: FilesystemItem[]): FilesystemItem[
     return rootDirectories;
 }
 
-export async function deleteFile(db: PostgresClient, sql: SQLFileManager, pid: requestId) {
-
-}
-
 export async function createFolder(db: PostgresClient, sql: SQLFileManager, pid: number, parentDir: number, dirName: string) {
     return await db.execute(sql.getSQLStatement("createFolder.sql"), [pid, parentDir, dirName]);
 }

@@ -49,6 +49,7 @@ export function ProjectDetailsPage() {
                                      projectDescription={projectData?.project_description}
                                      pid={Number(projectData?.pid)}
                                      projectStatus={projectData?.active ? "true" : "false"}/>
+
                     <div className="flex flex-row gap-x-4">
                         <div className="w-2/3">
                             <FolderToolbar id={idRef.current}/>
@@ -62,9 +63,38 @@ export function ProjectDetailsPage() {
     )
 }
 
-function TasksArea({ id }: { id: number }) {
-    const { tasks } = useTasksStore()
-    const { projects } = useProjectsStore()
+/*
+<UsersArea id={idRef.current}/>
+
+function UsersArea({ id }: { id: number }) {
+    const userRef = useRef("")
+
+    function addUserToProject(username: string) {
+        if (username === "") {
+            return
+        }
+    }
+
+    return (
+        <>
+            <div className="py-2 flex gap-x-2">
+                <input className="pl-3 bg-transparent ml-2 rounded-2xl border-white border-[1px]"
+                       type={"text"}
+                       placeholder={"Add user..."}
+                       onChange={(event) => userRef.current = event.target.value}/>
+                <button className="mx-1 p-1 bg-white text-black w-24 rounded-sm justify-end"
+                        onClick={() => addUserToProject(userRef.current)}>Add User</button>
+            </div>
+            <hr className="my-4"/>
+        </>
+    )
+}
+
+ */
+
+function TasksArea({id}: { id: number }) {
+    const {tasks} = useTasksStore()
+    const {projects} = useProjectsStore()
     const navigate = useNavigate();
 
     function getProjectTasks(projectId: number) {
@@ -115,7 +145,7 @@ function FolderToolbar({id}: { id: number }) {
 
     function fileAddEvent() {
         createFile(id, folderFocusContext.id, folderName).then(() => {
-            window.location.reload();
+            window.location.reload()
         });
     }
 

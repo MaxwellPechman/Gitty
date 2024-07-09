@@ -154,7 +154,7 @@ export function ProjectsPage() {
                         <div className="flex justify-between flex-row">
                             <div>
                                 <p className="text-[16px] mt-2 text-code-grey-500">Project type</p>
-                                <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
+                                <select className="w-[475px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
                                         onChange={(event) => {
                                             setProject({
                                                 pid: project.pid,
@@ -169,12 +169,6 @@ export function ProjectsPage() {
                                     ))}
                                 </select>
                             </div>
-                            <div>
-                                <p className="text-[16px] mt-2 text-code-grey-500">Add people to project</p>
-                                <button
-                                    className="w-[244px] h-7 mt-2 mr-4 bg-code-grey-800 rounded-2xl">PLATZHALTER
-                                </button>
-                            </div>
                         </div>
                         <p className="text-[16px] mt-2 text-code-grey-500">Description</p>
                         <textarea
@@ -188,7 +182,7 @@ export function ProjectsPage() {
                                 projectStatus: project.projectStatus,
                                 projectDescription: event.target.value
                             })}></textarea>
-                        <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
+                        <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px] hover:bg-code-grey-300 transition duration-200 ease-in-out"
                                 onClick={() => createProjectEvent()}>Create project
                         </button>
                     </div>
@@ -237,7 +231,7 @@ export function ProjectsPage() {
                         <div className="flex justify-between flex-row">
                             <div>
                                 <p className="text-[16px] mt-2 text-code-grey-500">Project</p>
-                                <select className="w-[244px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
+                                <select className="w-[475px] h-7 mt-2 bg-code-grey-800 rounded-2xl pl-2"
                                         onChange={(event) => setTask({
                                             tid: task.tid,
                                             taskName: task.taskName,
@@ -249,12 +243,6 @@ export function ProjectsPage() {
                                         <option value={project.projectName} key={index}>{project.projectName}</option>
                                     ))}
                                 </select>
-                            </div>
-                            <div>
-                                <p className="text-[16px] mt-2 text-code-grey-500">Add people to task</p>
-                                <button
-                                    className="w-[244px] h-7 mt-2 mr-4 bg-code-grey-800 rounded-2xl">PLATZHALTER
-                                </button>
                             </div>
                         </div>
                         <p className="text-[16px] mt-2 text-code-grey-500">Description</p>
@@ -269,7 +257,7 @@ export function ProjectsPage() {
                                 taskDescription: event.target.value,
                                 status: task.status
                             })}></textarea>
-                        <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px]"
+                        <button className="mt-7 w-[474px] h-7 bg-white text-code-grey-800 rounded-2xl text-[14px] hover:bg-code-grey-300 transition duration-200 ease-in-out"
                                 onClick={() => createTaskEvent()}>Create Task
                         </button>
                     </div>
