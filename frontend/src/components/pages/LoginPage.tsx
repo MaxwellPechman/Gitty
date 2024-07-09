@@ -108,7 +108,7 @@ export function LoginPage() {
                             className="bg-code-grey-950 flex gap-x-2 items-center rounded-xl border border-code-grey-600 cursor-text hover:border-code-grey-300 transition duration-200 ease-in-out">
                             <img className="mx-3 w-[25px] h-[25px]" src={lock_icon} alt="lock_icon"/>
                             <input
-                                className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300"
+                                className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300 w-full mr-2"
                                 type="password"
                                 name="password"
                                 placeholder="Enter your password"
