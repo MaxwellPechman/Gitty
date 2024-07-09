@@ -8,7 +8,7 @@ import {
     updateProjectDescription, updateProjectStatus,
     uploadFile
 } from "../../../api/Api.ts";
-import {projectDetails} from "../../../types/project.ts";
+import {Project, projectDetails} from "../../../types/project.ts";
 import {FileElement} from "../../../types/filesystem.ts";
 import {convertFileToBase64} from "../../../utils/files.ts";
 import {FolderFocusContext} from "../../providers/FolderFocusProvider.tsx";
@@ -167,6 +167,7 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
     pid: number,
     projectStatus: string
 }) {
+    const { projects, setProjects } = useProjectsStore()
     const [desc, setDesc] = useState(projectDescription)
     const [value] = useDebounce(desc, 300)
     const descRequest = useQuery({
@@ -181,11 +182,28 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
         return <div>Loading...</div>
     }
 
+    function changeStatusHandler(status: boolean, pid: number, name: string, desc: string) {
+        const project = projects.filter((p) => p.pid === pid)[0]
+        const newProjects = projects.filter((p) => p !== project)
+        let newProject: Project = {
+            pid: pid,
+            projectName: name,
+            projectDescription: desc,
+            projectStatus: status,
+            projectType: project.projectType
+        }
+
+        newProjects.push(newProject)
+
+        setProjects(newProjects)
+    }
+
     return (
         <>
             <div className="flex flex-col items-center justify-center w-full gap-x-4">
                 <h1>{projectName}</h1>
                 <select className="bg-code-grey-950" onChange={(event) => {
+                    changeStatusHandler(event.target.value === "true", pid, projectName || "", projectDescription || "")
                     updateProjectStatus(event.target.value === "true", pid)
                 }}
                     defaultValue={projectStatus}>
