@@ -127,7 +127,7 @@ export function RegisterPage() {
                                 passwordSecureBorder ? "" : "border-code-red hover:border-code-red")}>
                             <img className="mx-3 w-[25px] h-[25px]" src={lock_icon} alt="lock_icon"/>
                             <input
-                                className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300"
+                                className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300 w-full mr-2"
                                 type="password"
                                 name="password"
                                 placeholder="Enter your password"
@@ -154,7 +154,7 @@ export function RegisterPage() {
                                 confPasswordBorder ? "border-code-grey-300" : "")}>
                             <img className="mx-3 w-[25px] h-[25px]" src={lock_icon} alt="lock_icon"/>
                             <input
-                                className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300"
+                                className="-mx-2 py-5 bg-code-grey-950 font-roboto text-code-grey-500 focus:outline-none focus:text-white focus:border-code-grey-300 w-full mr-2"
                                 type="password"
                                 name="conf_password"
                                 placeholder="Confirm your password"
