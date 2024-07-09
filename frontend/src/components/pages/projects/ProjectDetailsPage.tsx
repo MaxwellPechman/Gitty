@@ -238,7 +238,7 @@ function DescriptionArea({projectName, projectDescription, pid, projectStatus}: 
                 }}
                     defaultValue={projectStatus}>
                     <option key="true" value="true">Active</option>
-                    <option key="false" value="false">Done</option>
+                    <option key="false" value="false">Canceled</option>
                 </select>
             </div>
             <hr className="my-5"/>
