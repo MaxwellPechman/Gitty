@@ -120,7 +120,7 @@ export function ProjectsPage() {
                         onClick={toggleViewProjects}>+ Create project
                     </button>
                     <div
-                        className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll">
+                        className="bg-code-grey-800 h-[308px] rounded-2xl mt-4 border-code-border-projects border-[1px] flex overflow-x-scroll noScrollbar">
                         <Projects/>
                     </div>
                 </div>
